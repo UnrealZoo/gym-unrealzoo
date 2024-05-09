@@ -20,7 +20,7 @@ class RunUnreal():
         assert os.path.exists(self.path2binary), \
             'Please load env binary in UnrealEnv and Check the env_bin in setting file!'
 
-    def start(self, docker, resolution=(160, 160), display=None, opengl=False, offscreen=False, nullrhi=False):
+    def start(self, docker, resolution=(160, 160), display=None, opengl=False, offscreen=False, nullrhi=False, gpu_id=0):
         port = self.read_port()
         self.write_resolution(resolution)
         self.use_docker = docker
@@ -43,6 +43,8 @@ class RunUnreal():
                 cmd_exe.append('-RenderOffScreen')
             if nullrhi:
                 cmd_exe.append('-nullrhi')  # the rendering process is not launched, so we can not get the image
+            if gpu_id is not None: # specify which gpu to use, if you have multiple gpus
+                cmd_exe.append(f'-graphicsadapter={gpu_id}')
             # cmd_exe.append('-windowed')
             if self.env_map is not None:
                 cmd_exe.append(self.env_map)
