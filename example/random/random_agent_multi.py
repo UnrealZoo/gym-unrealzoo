@@ -5,7 +5,7 @@ from gym import wrappers
 import cv2
 import time
 import numpy as np
-from gym_unrealcv.envs.wrappers import time_dilation, early_done, auto_monitor
+from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, agents, augmentation
 
 class RandomAgent(object):
     """The world's simplest agent!"""
@@ -29,12 +29,15 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     env = gym.make(args.env_id)
-    if args.time_dilation > 0:  # -1 means no time_dilation
+    if int(args.time_dilation) > 0:  # -1 means no time_dilation
         env = time_dilation.TimeDilationWrapper(env, args.time_dilation)
-    if args.early_done > 0:  # -1 means no early_done
+    if int(args.early_done) > 0:  # -1 means no early_done
         env = early_done.EarlyDoneWrapper(env, args.early_done)
     if args.monitor:
-        env = auto_monitor.DisplayWrapper(env)
+        env = monitor.DisplayWrapper(env)
+
+    env = augmentation.RandomPopulationWrapper(env, 1, 10, random_target=False)
+    # env = agents.NavAgents(env, mask_agent=False)
     episode_count = 100
     rewards = 0
     done = False
@@ -45,14 +48,14 @@ if __name__ == '__main__':
         for eps in range(1, episode_count):
             obs = env.reset()
             agents_num = len(env.action_space)
-            agents = [RandomAgent(env.action_space[i]) for i in range(len(env.action_space))] # reset agents
+            agents = [RandomAgent(env.action_space[i]) for i in range(agents_num)] # reset agents
             count_step = 0
             t0 = time.time()
             agents_num = len(obs)
             C_rewards = np.zeros(agents_num)
             while True:
                 actions = [agents[i].act(obs[i]) for i in range(agents_num)]
-                obs, rewards, done, _ = env.step(actions)
+                obs, rewards, done, info = env.step(actions)
                 C_rewards += rewards
                 count_step += 1
                 if args.render:
