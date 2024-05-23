@@ -162,7 +162,7 @@ for env in ['FlexibleRoom', 'Garden', 'UrbanTree']:
 for env in ['FlexibleRoom', 'SnowForest', 'UrbanCity', 'Garage', 'Garden']:
     for i in range(7):  # reset type
         for action in ['Discrete', 'Continuous']:  # action type
-            for obs in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask']:  # observation type
+            for obs in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']:  # observation type
                 for target in ['Ram', 'Nav', 'PZRNav', 'AdvNav', 'PZR', 'Adv', 'AdvShare']:
                         name = 'UnrealTrackMulti-{env}{target}-{action}{obs}-v{reset}'.format(env=env, action=action, obs=obs, target=target, reset=i)
                         setting_file = 'tracking/1vn/{env}.json'.format(env=env)
