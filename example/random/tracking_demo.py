@@ -6,7 +6,7 @@ import cv2
 import time
 import numpy as np
 from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, agents, augmentation
-from gym_unrealcv.envs.tracking.baseline import PoseTracker
+from gym_unrealcv.envs.tracking.baseline import PoseTracker, Nav2GoalAgent
 
 
 if __name__ == '__main__':
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     if args.monitor:
         env = monitor.DisplayWrapper(env)
 
-    env = augmentation.RandomPopulationWrapper(env, 2, 5, random_target=True)
+    env = augmentation.RandomPopulationWrapper(env, 8, 10, random_target=False)
     env = agents.NavAgents(env, mask_agent=True)
     episode_count = 100
     rewards = 0
@@ -42,7 +42,9 @@ if __name__ == '__main__':
             agents_num = len(env.action_space)
             tracker_id = env.unwrapped.tracker_id
             target_id = env.unwrapped.target_id
-            tracker = PoseTracker(env.action_space[0], env.unwrapped.exp_distance) # TODO support multi trackers
+            # trackers = [PoseTracker(env.action_space[i], env.unwrapped.exp_distance) for i in range(agents_num) ]
+            trackers = [PoseTracker(env.action_space[i], env.unwrapped.exp_distance) for i in range(agents_num) if i%2==1]
+            targets = [Nav2GoalAgent(env.action_space[i], env.unwrapped.reset_area, max_len=100) for i in range(agents_num) if i%2==0]
             count_step = 0
             t0 = time.time()
             agents_num = len(obs)
@@ -50,7 +52,14 @@ if __name__ == '__main__':
             print('eps:', eps, 'agents_num:', agents_num)
             while True:
                 obj_poses = env.unwrapped.obj_poses
-                actions = [tracker.act(obj_poses[tracker_id], obj_poses[target_id])]
+                # actions = [trackers[i].act(obj_poses[i], obj_poses[target_id]) for i in range(agents_num)]
+                actions = []
+                for i in range(agents_num):
+                    if i%2==0:
+                        action = targets[i//2].act(obj_poses[i])
+                    else:
+                        action = trackers[i//2].act(obj_poses[i], obj_poses[i-1])
+                    actions.append(action)
                 obs, rewards, done, _ = env.step(actions)
                 C_rewards += rewards
                 count_step += 1
