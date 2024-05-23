@@ -26,7 +26,7 @@ class UnrealCvTracking_1vn(gym.Env):
                  setting_file,
                  reset_type=0,
                  action_type='Discrete',  # 'discrete', 'continuous'
-                 observation_type='Color',  # 'color', 'depth', 'rgbd', 'Gray'
+                 observation_type='Color',  # 'color', 'depth', 'rgbd', 'Gray', 'Pose'
                  reward_type='distance',  # distance
                  docker=False,
                  resolution=(320, 240),
@@ -109,7 +109,7 @@ class UnrealCvTracking_1vn(gym.Env):
         # define observation space,
         # color, depth, rgbd,...
         self.observation_type = observation_type
-        assert self.observation_type in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask']
+        assert self.observation_type in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']
         self.observation_space = [self.unrealcv.define_observation(self.cam_id[0], self.observation_type, 'fast')
                                   for i in range(self.max_player_num)]
         self.unrealcv.pitch = self.pitch
@@ -434,10 +434,11 @@ class UnrealCvTracking_1vn(gym.Env):
                 self.random_agents[i].reset()
 
         self.bbox_init = []
-        mask = self.unrealcv.read_image(self.cam_id[1], 'object_mask', 'fast')
-        mask, bbox = self.unrealcv.get_bbox(mask, self.player_list[1], normalize=False)
-        self.mask_percent = mask.sum()/(255 * self.resolution[0] * self.resolution[1])
-        self.bbox_init.append(bbox)
+        if self.observation_type != 'Pose':
+            mask = self.unrealcv.read_image(self.cam_id[1], 'object_mask', 'fast')
+            mask, bbox = self.unrealcv.get_bbox(mask, self.player_list[1], normalize=False)
+            self.mask_percent = mask.sum()/(255 * self.resolution[0] * self.resolution[1])
+            self.bbox_init.append(bbox)
 
         self.pose = []
         self.act_smooth = [np.zeros(2) for i in range(self.controable_agent)]
@@ -500,6 +501,10 @@ class UnrealCvTracking_1vn(gym.Env):
             return np.array(img_list)
         elif observation_type == 'Rgbd':
             return np.append(np.array(img_list), np.array(depth_list), axis=-1)
+        elif observation_type == 'Pose':
+            return self.obj_pos
+        else:
+            raise ValueError('Wrong observation type')
 
     def rotate2exp(self, yaw_exp, obj, th=1):
         yaw_pre = self.unrealcv.get_obj_rotation(obj)[1]
@@ -533,7 +538,7 @@ class UnrealCvTracking_1vn(gym.Env):
         info['target_viewed'] = view_mat_tracker[1] # target in the observable area
 
         relative_oir_norm = np.fabs(relative_ori) / 45.0
-        relation_norm = np.fabs(relative_dis - self.exp_distance)/self.exp_distance + relative_oir_norm
+        relation_norm = np.fabs(relative_dis - self.exp_distance)/self.max_distance + relative_oir_norm
         reward_tracker = 1 - relation_norm[0]  # measuring the quality among tracker to others
         info['tracked_id'] = np.argmax(reward_tracker)  # which one is tracked
         info['perfect'] = info['target_viewed'] * (info['d_in'] == 0) * (reward_tracker[1] > 0.5)
