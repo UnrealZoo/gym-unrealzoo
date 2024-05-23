@@ -39,10 +39,11 @@ class Navigation(UnrealCv):
             self.img_gray = self.img_color.mean(2)
             self.img_gray = np.expand_dims(self.img_gray, -1)
             state = np.concatenate((self.img_color, self.img_gray), axis=2)
+        elif observation_type == 'Pose':
+            state = self.get_pose() # fake pose
         return state
 
     def define_observation(self, cam_id, observation_type, mode='direct'):
-
         if observation_type == 'Pose' or cam_id < 0:
             observation_space = spaces.Box(low=-100, high=100, shape=(6,), dtype=np.float16) # TODO check the range and shape
         else:
