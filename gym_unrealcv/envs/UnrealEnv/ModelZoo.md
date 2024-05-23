@@ -1,1 +1,0 @@
-If you need more UE scenes for your task, you can go to [Model Zoo](http://docs.unrealcv.org/en/master/reference/model_zoo.html) to get more.
