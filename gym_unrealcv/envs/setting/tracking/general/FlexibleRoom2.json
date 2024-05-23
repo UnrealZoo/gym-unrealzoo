@@ -20,7 +20,7 @@
 		"max_distance": 1000,
 		"exp_distance": 300
 	},
-	"interval": 1000,
+	"interval": 2000,
 	"agents":{
 		"car": {
 			"internal_nav": true,
@@ -67,7 +67,7 @@
 			}
 		},
 		"player": {
-			"internal_nav": true,
+			"internal_nav": false,
 			"cam_id": [2],
 			"name": ["target_3"],
 			"class_name": ["Target_C"],
@@ -111,6 +111,7 @@
 			}
 		}
 	},
+	"random_init": true,
 	"safe_start" :[
 		[ -1000, -600,  230],
 		[  -100, -600,  230],
