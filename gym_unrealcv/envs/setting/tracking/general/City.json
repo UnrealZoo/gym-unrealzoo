@@ -24,6 +24,7 @@
 	"interval": 1000,
 	"agents":{
 		"car": {
+			"internal_nav": true,
 			"cam_id": [5],
 			"name": ["BP_BaseCar_2"],
 			"class_name": ["BP_BaseCar_C"],
@@ -31,6 +32,7 @@
 			"relative_rotation": [0, 0, 0],
 			"discrete_action": [
 				[ 1,  0],
+				[ -0.3,  0],
 				[ 0.5,  1],
 				[ 0.5, -1],
 				[ 0,  0]
@@ -41,6 +43,7 @@
 			}
 		},
 		"drone": {
+			"internal_nav": false,
 			"cam_id": [4],
 			"name": ["BP_Drone2"],
 			"class_name": ["BP_Drone01_C"],
@@ -63,6 +66,7 @@
 			}
 		},
 		"player": {
+			"internal_nav": true,
 			"cam_id": [1, 2, 3],
 			"name": ["target2_2", "target3_5", "target_2"],
 			"class_name": ["BP_Target2_C", "BP_Target2_C", "BP_Target2_C"],
@@ -94,5 +98,15 @@
 		[   500, -250,  120],
 		[   500,  500,  120]
     ],
-	"reset_area" : [-1500, 1000, -1500, 1000, 135, 140]
+	"reset_area" : [-1500, 1000, -1500, 1000, 135, 140],
+	"env": 	{
+		"objects": [
+		]
+	},
+	"backgrounds": [
+
+    ],
+    "lights": [
+
+    ]
 }
