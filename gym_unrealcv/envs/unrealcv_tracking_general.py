@@ -272,6 +272,11 @@ class UnrealCvTracking_general(gym.Env):
         # get pose state
         # pose_obs, relative_pose = self.get_pose_states(obj_pos)
 
+        for obj in self.unrealcv.get_objects():
+            if obj in self.player_list or obj in self.objects_list:
+                continue
+            self.unrealcv.set_obj_color(obj, [0, 0, 0])
+
         return observations
 
     def close(self):
