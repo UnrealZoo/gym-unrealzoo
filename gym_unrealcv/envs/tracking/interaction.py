@@ -5,9 +5,8 @@ import time
 
 
 class Tracking(Navigation):
-    def __init__(self, env, cam_id=0, port=9000,
-                 ip='127.0.0.1', resolution=(160, 120)):
-        super(Tracking, self).__init__(env=env, port=port, ip=ip, cam_id=cam_id, resolution=resolution)
+    def __init__(self, port=9000, ip='127.0.0.1', resolution=(160, 120), comm_mode='tcp'):
+        super(Tracking, self).__init__(port=port, ip=ip, resolution=resolution, comm_mode=comm_mode)
         self.obstacles = []
 
     def random_texture(self, backgrounds, img_dirs, num=5):
@@ -152,7 +151,7 @@ class Tracking(Navigation):
         while res is None:
             res = self.client.request(cmd, -1)
 
-    def set_move_new(self, target, params):
+    def set_move_bp(self, target, params, return_cmd=False):
         '''
         new move function, can adapt to different number of params
         2 params: [v_angle, v_linear], used for agents moving in plane, e.g. human, car, animal
@@ -160,6 +159,8 @@ class Tracking(Navigation):
         '''
         params_str = ' '.join([str(param) for param in params])
         cmd = f'vbp {target} set_move {params_str}'
+        if return_cmd:
+            return cmd
         res = None
         while res is None:
             res = self.client.request(cmd, -1)
@@ -287,6 +288,7 @@ class Tracking(Navigation):
         flag[1] = observation_type == 'Color' or observation_type == 'Rgbd' or use_color
         flag[2] = observation_type == 'Mask' or use_mask
         flag[3] = observation_type == 'Depth' or observation_type == 'Rgbd' or use_depth
+        print('cam_flag:', flag)
         return flag
 
     def set_cam(self, obj, loc=[0, 30, 70], rot=[0, 0, 0]):
@@ -329,3 +331,58 @@ class Tracking(Navigation):
         res = self.client.request(cmd, -1)
         return res
 
+    def get_pose_img_batch(self, objs_list, cam_ids, img_flag=[False, True, False, False]):
+        # get pose and image of objects in objs_list from cameras in cam_ids
+        cmd_list = []
+        decoder_list = []
+        [use_cam_pose, use_color, use_mask, use_depth] = img_flag
+        for obj in objs_list:
+            cmd_list.extend([self.get_obj_location(obj, True),
+                             self.get_obj_rotation(obj, True)])
+
+        for cam_id in cam_ids:
+            if cam_id < 0:
+                continue
+            if use_cam_pose:
+                cmd_list.extend([self.get_cam_location(cam_id, return_cmd=True),
+                                 self.get_cam_rotation(cam_id, return_cmd=True)])
+            if use_color:
+                cmd_list.append(self.get_image(cam_id, 'lit', 'png', return_cmd=True))
+            if use_mask:
+                cmd_list.append(self.get_image(cam_id, 'lit', 'png', return_cmd=True))
+            if use_depth:
+                cmd_list.append(f'vget /camera/{cam_id}/depth npy')
+        decoders = [self.decoder.decode_map[self.decoder.cmd2key(cmd)] for cmd in cmd_list]
+        res_list = self.batch_cmd(cmd_list, decoders)
+        obj_pose_list = []
+        cam_pose_list = []
+        img_list = []
+        mask_list = []
+        depth_list = []
+        # start to read results
+        start_point = 0
+        for i, obj in enumerate(objs_list):
+            obj_pose_list.append(res_list[start_point] + res_list[start_point+1])
+            start_point += 2
+        for i, cam_id in enumerate(cam_ids):
+            # print(cam_id)
+            if cam_id < 0:
+                img_list.append(np.zeros((self.resolution[1], self.resolution[0], 3), dtype=np.uint8))
+                continue
+            if use_cam_pose:
+                cam_pose_list.append(res_list[start_point] + res_list[start_point+1])
+                start_point += 2
+            if use_color:
+                # image = self.decoder.decode_bmp(res_list[start_point])
+                img_list.append(res_list[start_point])
+                start_point += 1
+            if use_mask:
+                # image = self.decoder.decode_bmp(res_list[start_point])
+                mask_list.append(res_list[start_point])
+                start_point += 1
+            if use_depth:
+                # image = 1 / self.decoder.decode_depth(res_list[start_point])
+                depth_list.append(res_list[start_point])  # 500 is the default max depth of most depth cameras
+                start_point += 1
+
+        return obj_pose_list, cam_pose_list, img_list, mask_list, depth_list

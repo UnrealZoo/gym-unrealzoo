@@ -23,8 +23,9 @@ if __name__ == '__main__':
                         help='Select the environment to run')
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     parser.add_argument("-s", '--seed', dest='seed', default=0, help='random seed')
-    parser.add_argument("-t", '--time_dilation', dest='time_dilation', default=10, help='time_dilation to keep fps in simulator')
-    parser.add_argument("-d", '--early_done', dest='early_done', default=100, help='early_done when lost in n steps')
+    parser.add_argument("-t", '--time-dilation', dest='time_dilation', default=10, help='time_dilation to keep fps in simulator')
+    parser.add_argument("-n", '--nav-agent', dest='nav_agent', action='store_true', help='use nav agent to control the agents')
+    parser.add_argument("-d", '--early-done', dest='early_done', default=100, help='early_done when lost in n steps')
     parser.add_argument("-m", '--monitor', dest='monitor', action='store_true', help='auto_monitor')
 
     args = parser.parse_args()
@@ -36,8 +37,9 @@ if __name__ == '__main__':
     if args.monitor:
         env = monitor.DisplayWrapper(env)
 
-    env = augmentation.RandomPopulationWrapper(env, 1, 10, random_target=False)
-    # env = agents.NavAgents(env, mask_agent=False)
+    env = augmentation.RandomPopulationWrapper(env, 3, 4, random_target=False)
+    if args.nav_agent:
+        env = agents.NavAgents(env, mask_agent=True)
     episode_count = 100
     rewards = 0
     done = False

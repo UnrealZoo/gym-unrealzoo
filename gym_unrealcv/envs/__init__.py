@@ -7,3 +7,4 @@ from gym_unrealcv.envs.unrealcv_tracking_multicam import UnrealCvMC
 from gym_unrealcv.envs.unrealcv_MC import UnrealCvMultiCam
 from gym_unrealcv.envs.unrealcv_tracking_1vn import UnrealCvTracking_1vn
 from gym_unrealcv.envs.unrealcv_tracking_general import UnrealCvTracking_general
+from gym_unrealcv.envs.base_env import UnrealCv_base

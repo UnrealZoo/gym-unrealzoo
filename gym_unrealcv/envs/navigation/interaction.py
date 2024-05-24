@@ -1,4 +1,5 @@
-from gym_unrealcv.envs.utils.unrealcv_basic import UnrealCv
+# from gym_unrealcv.envs.utils.unrealcv_basic import UnrealCv
+from unrealcv.api import UnrealCv_API
 import numpy as np
 import time
 from gym import spaces
@@ -6,22 +7,22 @@ import gym
 import distutils.version
 
 
-class Navigation(UnrealCv):
-    def __init__(self, env, cam_id=0, port=9000,
-                 ip='127.0.0.1', targets=None, resolution=(160, 120)):
-        super(Navigation, self).__init__(env=env, port=port, ip=ip, cam_id=cam_id, resolution=resolution)
+class Navigation(UnrealCv_API):
+    def __init__(self, port=9000, ip='127.0.0.1', resolution=(160, 120), comm_mode='tcp'):
+        super(Navigation, self).__init__(port=port, ip=ip, resolution=resolution, mode=comm_mode)
 
+        self.img_color = np.zeros(1)
+        self.img_depth = np.zeros(1)
+
+        self.use_gym_10_api = distutils.version.LooseVersion(gym.__version__) >= distutils.version.LooseVersion('0.10.0')
+
+    def init_mask_color(self, targets=None):
         if targets == 'all':
             self.targets = self.get_objects()
             self.color_dict = self.build_color_dic(self.targets)
         elif targets is not None:
             self.targets = targets
             self.color_dict = self.build_color_dic(self.targets)
-
-        self.img_color = np.zeros(1)
-        self.img_depth = np.zeros(1)
-
-        self.use_gym_10_api = distutils.version.LooseVersion(gym.__version__) >= distutils.version.LooseVersion('0.10.0')
 
     def get_observation(self, cam_id, observation_type, mode='direct'):
         if observation_type == 'Color':

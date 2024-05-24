@@ -199,3 +199,20 @@ for env in ['City', 'FlexibleRoom', 'FlexibleRoom2', 'Forest', 'UrbanCity', 'Urb
                                     },
                             max_episode_steps=500
                             )
+
+# Env for general purpose active object tracking
+for env in ['City', 'FlexibleRoom', 'FlexibleRoom2', 'Forest', 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', 'Garden', 'DesertRuins', 'BrassGardens', 'EFGus']:
+    for i in range(7):  # reset type
+        for action in ['Discrete', 'Continuous']:  # action type
+            for obs in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']:  # observation type
+                        name = 'UnrealAgent-{env}-{action}{obs}-v{reset}'.format(env=env, action=action, obs=obs, target=target, reset=i)
+                        setting_file = 'tracking/general/{env}.json'.format(env=env)
+                        register(
+                            id=name,
+                            entry_point='gym_unrealcv.envs:UnrealCv_base',
+                            kwargs={'setting_file': setting_file,
+                                    'action_type': action,
+                                    'observation_type': obs,
+                                    },
+                            max_episode_steps=500
+                            )

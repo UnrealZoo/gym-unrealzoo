@@ -14,14 +14,14 @@
 	},
 	"height": 230,
 	"height_top_view": 2000,
-		"max_steps": 1000,
+	"max_steps": 1000,
 	"rewards": {
 		"min_distance": 150,
 		"max_direction": 60,
 		"max_distance": 700,
 		"exp_distance": 250
 	},
-	"interval": 150,
+	"interval": 1000,
 	"players": [
         "targetbp", "targetbp2"
 	],

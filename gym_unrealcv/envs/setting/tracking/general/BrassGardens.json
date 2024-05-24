@@ -1,6 +1,6 @@
 {
 	"env_name": "brass_gardens",
-	"env_bin": "Collection_linux_v0/Collection/Binaries/Linux/Collection",
+	"env_bin": "Collection_linux_v4/Collection/Binaries/Linux/Collection",
 	"env_map": "brass_gardens",
 	"env_bin_win": "Collection_win_v0\\Collection\\Binaries\\Win\\Collection.exe",
     "imgs_dir": "textures",
@@ -25,9 +25,9 @@
 	"agents":{
 		"player": {
 			"internal_nav": false,
-			"cam_id": [1, 2],
-			"name": ["target_1", "target_2"],
-			"class_name": ["Target_C", "Target_C"],
+			"cam_id": [2],
+			"name": ["bp_character_2"],
+			"class_name": ["BP_Character_C"],
 			"relative_location": [30, 0, 60],
 			"relative_rotation": [0, -15, 0],
 			"discrete_action": [
@@ -63,6 +63,29 @@
 			"continuous_action": {
 			"high": [30,     200],
 			"low":  [-30,   -200]
+			}
+		},
+		"drone": {
+			"internal_nav": false,
+			"cam_id": [1],
+			"name": ["BP_Drone01_2"],
+			"class_name": ["BP_Drone01_C"],
+			"relative_location": [0, 0,  0],
+			"relative_rotation": [0,  0, 0],
+			"discrete_action": [
+				[0.5, 0, 0, 0],
+				[-0.5, 0, 0, 0],
+				[0, 0.5, 0, 0],
+				[0,-0.5, 0, 0],
+				[0, 0, 0.5, 0],
+				[0, 0,-0.5, 0],
+				[0, 0, 0,  1],
+				[0, 0, 0, -1],
+				[0, 0, 0,  0]
+			],
+			"continuous_action": {
+				"high": [1,  1,   1,  1],
+				"low":  [-1, -1, -1, -1]
 			}
 		}
 	},

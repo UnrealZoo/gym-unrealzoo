@@ -26,7 +26,7 @@ class RandomPopulationWrapper(Wrapper):
         else:
             # Randomize the number of agents
             env.num_agents = np.random.randint(self.min_num, self.max_num)
-        env.adjust_agents(env.num_agents)
+        env.set_population(env.num_agents)
         if self.random_tracker_id:
             env.tracker_id = env.sample_tracker()
         if self.random_target_id:
