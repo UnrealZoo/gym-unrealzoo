@@ -29,7 +29,7 @@ class NavAgents(Wrapper):
             elif mode == 1:
                 goal = self.agents[idx].act(env.obj_poses[idx])
                 if goal is not None:
-                    env.unwrapped.unrealcv.move_to(env.player_list[idx], goal)
+                    env.unwrapped.unrealcv.nav_to_goal(env.player_list[idx], goal)
                     # env.unwrapped.unrealcv.set_speed(env.player_list[idx], 200)
                 new_action.append(None)
             elif mode == 2:
@@ -52,13 +52,12 @@ class NavAgents(Wrapper):
                 self.agents.append(None)
             elif mode == 0:
                 self.agents.append(RandomAgent(env.action_space[idx], 10, 50))
-            elif mode == 1:
+            elif mode == 1:  # use internal navigation
                 self.agents.append(InternalNavAgent(env.safe_start, env.reset_area))
-            elif mode == 2:
-                # print(env.action_space[i])
+            elif mode == 2:  # use external goal navigation
                 self.agents.append(Nav2GoalAgent(env.action_space[idx], env.reset_area, max_len=200))
         if self.mask_agent:
-            states = np.array([states[id] for id,value in enumerate(self.nav_list) if value < 0])
+            states = np.array([states[id] for id, value in enumerate(self.nav_list) if value < 0])
             self.action_space = [self.env.action_space[i] for i, nav in enumerate(self.nav_list) if nav < 0]
             self.observation_space = [self.env.observation_space[i] for i, nav in enumerate(self.nav_list) if nav < 0]
         return states
@@ -76,7 +75,7 @@ class NavAgents(Wrapper):
             '''
             if i == env.protagonist_id:
                 nav_list.append(-1)
-            elif env.agents[obj_name]['agent_type'] in ['car', 'player']:
+            elif env.agents[obj_name]['agent_type'] in ['car', 'animal', 'player']:
                 if env.agents[obj_name]['internal_nav'] is True:
                     nav_list.append(1)
                 else:
