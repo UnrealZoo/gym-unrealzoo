@@ -166,14 +166,9 @@ class UnrealCv_base(gym.Env):
             self.unrealcv.set_obj_location(obj, init_poses[i])
         # set view point
             self.unrealcv.set_cam(obj, self.agents[obj]['relative_location'], self.agents[obj]['relative_rotation'])
-            if self.agents[obj]['agent_type'] == 'drone':
-                self.unrealcv.set_phy(obj, 1)  # enable physics
 
         # get state
-        obj_poses, cam_poses, imgs, masks, depths = self.unrealcv.get_pose_img_batch(self.player_list, self.cam_list, self.cam_flag)
-        observations = self.prepare_observation(self.observation_type, imgs, masks, depths, obj_poses)
-        self.obj_poses = obj_poses
-        self.img_show = self.prepare_img2show(self.protagonist_id, observations)
+        observations, self.obj_poses, self.img_show = self.update_observation(self.player_list, self.cam_list, self.cam_flag, self.observation_type)
 
         return observations
 
@@ -191,6 +186,12 @@ class UnrealCv_base(gym.Env):
         np.random.seed(seed)
         # if seed is not None:
         #     self.player_num = seed % (self.max_player_num-2) + 2
+
+    def update_observation(self, player_list, cam_list, cam_flag, observation_type):
+        obj_poses, cam_poses, imgs, masks, depths = self.unrealcv.get_pose_img_batch(player_list, cam_list, cam_flag)
+        observations = self.prepare_observation(observation_type, imgs, masks, depths, obj_poses)
+        img_show = self.prepare_img2show(self.protagonist_id, observations)
+        return observations, obj_poses, img_show
 
     def get_start_area(self, safe_start, safe_range):
         start_area = [safe_start[0]-safe_range, safe_start[0]+safe_range,
@@ -419,7 +420,7 @@ class UnrealCv_base(gym.Env):
                 self.remove_agent(obj)
 
         for obj in self.player_list:
-            self.agents[obj]['scale'] = self.unrealcv.get_obj_scale(obj)
+            self.unrealcv.set_obj_scale(obj, self.agents[obj]['scale'])
             self.unrealcv.set_random(obj, 0)
             self.unrealcv.set_interval(self.interval, obj)
 
