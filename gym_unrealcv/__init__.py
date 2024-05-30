@@ -200,17 +200,52 @@ for env in ['City', 'FlexibleRoom', 'FlexibleRoom2', 'Forest', 'UrbanCity', 'Urb
                             max_episode_steps=500
                             )
 
+maps = ['Greek_Island', 'supermarket', 'Brass_Gardens', 'Brass_Palace', 'Brass_Streets',
+            'EF_Gus', 'EF_Lewis_1', 'EF_Lewis_2', 'EF_Grounds', 'Eastern_Garden', 'Western_Garden', 'Colosseum_Desert',
+            'Desert_ruins', 'SchoolGymDay', 'Venice', 'TrainStation', 'Stadium', 'IndustrialArea', 'ModularBuilding',
+            'TemplePlaza', 'DowntownWest', 'TerrainDemo', 'InteriorDemo_NEW', 'AncientRuins', 'Grass_Hills', 'ChineseWaterTown_Ver1',
+            'ContainerYard_Night', 'ContainerYard_Day', 'Old_Factory_01', 'racing_track', 'Watermills', 'WildWest',
+            'SunsetMap', 'Hospital', 'Medieval_Castle', 'Real_Landscape', 'UndergroundParking', 'Demonstration_Castle',
+            'Demonstration_Cave', 'Arctic', 'Medieval_Daytime', 'Medieval_Nighttime', 'ModularGothic_Day', 'ModularGothic_Night',
+            'UltimateFarming', 'RuralAustralia_Example_01', 'RuralAustralia_Example_02', 'RuralAustralia_Example_03',
+            'LV_Soul_Cave', 'Dungeon_Demo_00', 'SwimmingPool', 'DesertMap', 'RainMap', 'SnowMap', 'ModularVictorianCity_scene1',
+            'SuburbNeighborhood_Day', 'SuburbNeighborhood_Night', 'Storagehouse', 'OceanFloor',
+            'ModularNeighborhood', 'ModularSciFiVillage', 'ModularSciFiSeason1', 'LowPolyMedievalInterior_1',
+            'QA_Holding_Cells_A', 'ParkingLot'
+            ]
+
+Tasks = ['Rendezvous', 'Rescue', 'Track']
+Observations = ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']
+Actions = ['Discrete', 'Continuous', 'Mixed']
 # Env for general purpose active object tracking
-for env in ['City', 'FlexibleRoom', 'FlexibleRoom2', 'Forest', 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', 'Garden', 'DesertRuins', 'BrassGardens', 'EFGus']:
+# Base env for general purpose multi-agent interaction
+for env in maps:
     for i in range(7):  # reset type
-        for action in ['Discrete', 'Continuous']:  # action type
-            for obs in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']:  # observation type
+        for action in Actions:  # action type
+            for obs in Observations:  # observation type
                         name = 'UnrealAgent-{env}-{action}{obs}-v{reset}'.format(env=env, action=action, obs=obs, target=target, reset=i)
-                        setting_file = 'tracking/general/{env}.json'.format(env=env)
+                        setting_file = 'env_config/{env}.json'.format(env=env)
                         register(
                             id=name,
                             entry_point='gym_unrealcv.envs:UnrealCv_base',
                             kwargs={'setting_file': setting_file,
+                                    'action_type': action,
+                                    'observation_type': obs,
+                                    },
+                            max_episode_steps=500
+                            )
+# Task-oriented envs
+for env in maps:
+    for i in range(7):  # reset type
+        for action in Actions:  # action type
+            for obs in Observations:  # observation type
+                for task in Tasks:
+                        name = f'Unreal{task}-{env}-{action}{obs}-v{i}'
+                        setting_file = 'env_config/{env}.json'.format(env=env)
+                        register(
+                            id=name,
+                            entry_point=f'gym_unrealcv.envs:{task}',
+                            kwargs={'env_file': setting_file,
                                     'action_type': action,
                                     'observation_type': obs,
                                     },

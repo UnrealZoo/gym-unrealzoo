@@ -8,3 +8,7 @@ from gym_unrealcv.envs.unrealcv_MC import UnrealCvMultiCam
 from gym_unrealcv.envs.unrealcv_tracking_1vn import UnrealCvTracking_1vn
 from gym_unrealcv.envs.unrealcv_tracking_general import UnrealCvTracking_general
 from gym_unrealcv.envs.base_env import UnrealCv_base
+from gym_unrealcv.envs.rendezvous import Rendezvous
+from gym_unrealcv.envs.rescue import Rescue
+from gym_unrealcv.envs.track import Track
+
