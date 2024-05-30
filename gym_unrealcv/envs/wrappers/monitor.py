@@ -4,7 +4,7 @@ import time
 import cv2
 
 class DisplayWrapper(Wrapper):
-    def __init__(self, env, dynamic_top_down=True, fix_camera=True, get_bbox=True):
+    def __init__(self, env, dynamic_top_down=True, fix_camera=True, get_bbox=False):
         super().__init__(env)
         self.dynamic_top_down = dynamic_top_down
         self.fix_camera = fix_camera
@@ -17,7 +17,7 @@ class DisplayWrapper(Wrapper):
 
         # for recording demo
         if self.get_bbox:
-            mask = env.unrealcv.read_image(env.cam_list[env.tracker_id], 'object_mask', 'fast')
+            mask = env.unrealcv.get_image(env.cam_list[env.protagonist_id], 'object_mask', 'bmp')
             mask, bbox = env.unrealcv.get_bbox(mask, env.player_list[env.target_id], normalize=False)
             self.show_bbox(env.img_show.copy(), bbox)
             info['bbox'] = bbox
