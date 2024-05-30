@@ -312,6 +312,9 @@ if __name__ == '__main__':
         env_config['third_cam']['height_top_view'] = env_config['height'] + 1000
         # print(env_config)
         import os
+        target_dir = 'gym_unrealcv/envs/setting/env_config'
+        if not os.path.exists(target_dir):
+            os.makedirs(target_dir)
         with open(os.path.join('gym_unrealcv/envs/setting/env_config', f'{env_map}.json'), 'w') as json_file:
             json.dump(env_config, json_file, indent=4)
 
