@@ -1,15 +1,12 @@
 import os
 import numpy as np
-
+import json
 
 def load_env_setting(filename):
     f = open(get_settingpath(filename))
     type = os.path.splitext(filename)[1]
-    if type == '.json':
-        import json
-        setting = json.load(f)
-    else:
-        print ('unknown type')
+    assert type in ['.json'], type + ' is not supported'
+    setting = json.load(f)
     return setting
 
 
@@ -56,13 +53,11 @@ def convert_dict(old_dict):
         names = info["name"]
         for i, name in enumerate(names):
             new_dict[name] = {
-                "cam_id": info["cam_id"][i],
-                "internal_nav": info["internal_nav"],
                 "agent_type": agent,
-                "discrete_action": info["discrete_action"],
-                "continuous_action": info["continuous_action"],
-                "class_name": info["class_name"][i],
-                "relative_location": info["relative_location"],
-                "relative_rotation": info["relative_rotation"]
             }
+            for key in info.keys():
+                if key == "name" or key == "cam_id" or key == "class_name":
+                    new_dict[name][key] = info[key][i]
+                else:
+                    new_dict[name][key] = info[key]
     return new_dict
