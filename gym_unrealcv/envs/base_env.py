@@ -6,9 +6,8 @@ import gym
 import numpy as np
 from gym import spaces
 from gym_unrealcv.envs.utils import env_unreal, misc
-from unrealcv.api import UnrealCv_API
 from unrealcv.launcher import RunUnreal
-from gym_unrealcv.envs.tracking.interaction import Tracking
+from gym_unrealcv.envs.agent.character import Character_API
 import gym_unrealcv
 import cv2
 import random
@@ -25,15 +24,15 @@ Done : define by the task wrapper
 # TODO: matain a general agent list
 class UnrealCv_base(gym.Env):
     def __init__(self,
-                 setting_file, # the setting file to define the task
+                 setting_file,  # the setting file to define the task
                  action_type='Discrete',  # 'discrete', 'continuous'
                  observation_type='Color',  # 'color', 'depth', 'rgbd', 'Gray'
-                 resolution=(240, 240)
+                 resolution=(160, 160)
                  ):
 
         setting = misc.load_env_setting(setting_file)
         self.env_name = setting['env_name']
-        self.max_steps = setting['max_steps']
+        # self.max_steps = setting['max_steps']
         self.height = setting['height']
         self.cam_id = [setting['third_cam']['cam_id']]
         self.agent_configs = setting['agents']
@@ -49,9 +48,9 @@ class UnrealCv_base(gym.Env):
 
         self.height_top_view = setting['third_cam']['height_top_view']
 
-        self.objects_list = self.env_configs["objects"]
+        # self.env_obj_list = self.env_configs[""]
+        self.objects_list = []
         self.reset_area = setting['reset_area']
-        self.max_player_num = setting['max_player_num']  # the max players number
 
         self.safe_start = setting['safe_start']
         self.interval = setting['interval']
@@ -70,7 +69,7 @@ class UnrealCv_base(gym.Env):
         self.nullrhi = False
         self.launched = False
 
-        self.agents_category = ['player'] # the agent category we use in the env
+        self.agents_category = ['player', 'animal'] # the agent category we use in the env
         self.protagonist_id = 0
 
         # init agents
@@ -79,7 +78,7 @@ class UnrealCv_base(gym.Env):
 
         # define action space
         self.action_type = action_type
-        assert self.action_type in ['Discrete', 'Continuous']
+        assert self.action_type in ['Discrete', 'Continuous', 'Mixed']
         self.action_space = [self.define_action_space(self.action_type, self.agents[obj]) for obj in self.player_list]
 
         # define observation space,
@@ -115,12 +114,11 @@ class UnrealCv_base(gym.Env):
             Depth=None,
             Relative_Pose=[]
         )
-
-        actions2player = self.action_mapping(actions, self.player_list)
-
-        move_cmds = [self.unrealcv.set_move_bp(obj, actions2player[i], return_cmd=True) for i, obj in enumerate(self.player_list) if actions2player[i] is not None]
-        self.unrealcv.batch_cmd(move_cmds, None)
-        # self.unrealcv.set_move_batch(self.player_list, actions2player)
+        actions2move, actions2turn, actions2animate = self.action_mapping(actions, self.player_list)
+        move_cmds = [self.unrealcv.set_move_bp(obj, actions2move[i], return_cmd=True) for i, obj in enumerate(self.player_list) if actions2move[i] is not None]
+        head_cmds = [self.unrealcv.set_cam(obj, self.agents[obj]['relative_location'], actions2turn[i], return_cmd=True) for i, obj in enumerate(self.player_list) if actions2turn[i] is not None]
+        anim_cmds = [self.unrealcv.set_animation(obj, actions2animate[i], return_cmd=True) for i, obj in enumerate(self.player_list) if actions2animate[i] is not None]
+        self.unrealcv.batch_cmd(move_cmds+head_cmds+anim_cmds, None)
         self.count_steps += 1
 
         # get states
@@ -133,18 +131,18 @@ class UnrealCv_base(gym.Env):
         pose_obs, relative_pose = self.get_pose_states(obj_poses)
 
         # prepare the info
-        info['Pose'] = obj_poses[self.protagonist_id]
+        info['Pose'] = obj_poses
         info['Relative_Pose'] = relative_pose
         info['Pose_Obs'] = pose_obs
         info['Reward'] = np.zeros(len(self.player_list))
 
-        if self.count_steps > self.max_steps:
-            info['Done'] = True
         return observations, info['Reward'], info['Done'], info
 
-    def reset(self, ):
+    def reset(self):
         if not self.launched:  # first time to launch
-            self.launched = self.launch_ue_env()
+            self.launched = self.launch_ue_env(docker=self.docker, resolution=self.resolution, display=self.display,
+                                               use_opengl=self.use_opengl, offscreen_rendering=self.offscreen_rendering,
+                                               nullrhi=self.nullrhi)
             self.init_agents()
             self.init_objects()
 
@@ -163,14 +161,13 @@ class UnrealCv_base(gym.Env):
                 self.unrealcv.set_phy(obj, 0)
 
         # reset target location
-        for obj in self.player_list:
-            self.unrealcv.set_obj_location(obj, self.sample_init_pose(self.random_init))
-
-
+        init_poses = self.sample_init_pose(self.random_init, len(self.player_list))
+        for i, obj in enumerate(self.player_list):
+            self.unrealcv.set_obj_location(obj, init_poses[i])
         # set view point
-        for obj in self.player_list:
             self.unrealcv.set_cam(obj, self.agents[obj]['relative_location'], self.agents[obj]['relative_rotation'])
-            self.unrealcv.set_phy(obj, 1) # enable physics
+            if self.agents[obj]['agent_type'] == 'drone':
+                self.unrealcv.set_phy(obj, 1)  # enable physics
 
         # get state
         obj_poses, cam_poses, imgs, masks, depths = self.unrealcv.get_pose_img_batch(self.player_list, self.cam_list, self.cam_flag)
@@ -203,14 +200,14 @@ class UnrealCv_base(gym.Env):
     def set_topview(self, current_pose, cam_id):
         cam_loc = current_pose[:3]
         cam_loc[-1] = self.height_top_view
-        cam_rot = [0, 0, -90]
-        self.unrealcv.set_location(cam_id, cam_loc)
-        self.unrealcv.set_rotation(cam_id, cam_rot)
+        cam_rot = [-90, 0, 0]
+        self.unrealcv.set_cam_location(cam_id, cam_loc)
+        self.unrealcv.set_cam_rotation(cam_id, cam_rot)
 
     def get_relative(self, pose0, pose1):  # pose0-centric
         delt_yaw = pose1[4] - pose0[4]
         angle = misc.get_direction(pose0, pose1)
-        distance = self.unrealcv.get_distance(pose1, pose0, 2)
+        distance = self.unrealcv.get_distance(pose1, pose0, 3)
         # distance_norm = distance / self.exp_distance
         obs_vector = [np.sin(delt_yaw/180*np.pi), np.cos(delt_yaw/180*np.pi),
                       np.sin(angle/180*np.pi), np.cos(angle/180*np.pi),
@@ -257,7 +254,6 @@ class UnrealCv_base(gym.Env):
         return info
 
     def add_agent(self, name, loc, refer_agent):
-        # print(f'add {name}')
         new_dict = refer_agent.copy()
         cam_num = self.unrealcv.get_camera_num()
         self.unrealcv.new_obj(refer_agent['class_name'], name, random.sample(self.safe_start, 1)[0])
@@ -274,7 +270,7 @@ class UnrealCv_base(gym.Env):
         self.unrealcv.set_obj_location(name, loc)
         self.action_space.append(self.define_action_space(self.action_type, agent_info=new_dict))
         self.observation_space.append(self.define_observation_space(new_dict['cam_id'], self.observation_type, self.resolution))
-        # self.unrealcv.set_phy(name, 0)
+        self.unrealcv.set_phy(name, 0)
         return new_dict
 
     def remove_agent(self, name, freeze=False):
@@ -301,10 +297,20 @@ class UnrealCv_base(gym.Env):
 
     def define_action_space(self, action_type, agent_info):
         if action_type == 'Discrete':
-            return spaces.Discrete(len(agent_info["discrete_action"]))
+            return spaces.Discrete(len(agent_info["move_action"]))
         elif action_type == 'Continuous':
-            return spaces.Box(low=np.array(agent_info["continuous_action"]['low']),
-                              high=np.array(agent_info["continuous_action"]['high']), dtype=np.float32)
+            return spaces.Box(low=np.array(agent_info["move_action_continuous"]['low']),
+                              high=np.array(agent_info["move_action_continuous"]['high']), dtype=np.float32)
+        else:  # Hybrid
+            move_space = spaces.Box(low=np.array(agent_info["move_action_continuous"]['low']),
+                                    high=np.array(agent_info["move_action_continuous"]['high']), dtype=np.float32)
+            turn_space = None
+            animation_space = None
+            if "head_action" in agent_info.keys():
+                turn_space = spaces.Discrete(len(agent_info["head_action"]))
+            if "animation_action" in agent_info.keys():
+                animation_space = spaces.Discrete(len(agent_info["animation_action"]))
+            return spaces.Tuple((move_space, turn_space, animation_space))
 
     def define_observation_space(self, cam_id, observation_type, resolution=(160, 120)):
         if observation_type == 'Pose' or cam_id < 0:
@@ -323,43 +329,42 @@ class UnrealCv_base(gym.Env):
                 s_high[:, :, -1] = 100.0  # max_depth
                 s_high[:, :, :-1] = 255  # max_rgb
                 observation_space = spaces.Box(low=s_low, high=s_high, dtype=np.float16)
-
         return observation_space
 
     def sample_init_pose(self, use_reset_area=False, num_agents=1):
         # sample poses to reset the agents
-        if num_agents < len(self.safe_start):
+        if num_agents > len(self.safe_start):
             use_reset_area = True
             warnings.warn('The number of agents is less than the number of pre-defined start points, random sample points from the pre-defined area instead.')
         if use_reset_area:
-            locations, _ = self.unrealcv.get_startpoint(reset_area=self.reset_area, exp_height=self.height)
+            locations = self.sample_from_area(self.reset_area, num_agents)  # sample from a pre-defined area
         else:
-            locations = random.choice(self.safe_start, num_agents) # sample one pre-defined start point
-        # self.unrealcv.set_obj_location(self.player_list[self.target_id], target_pos)
-
+            locations = random.sample(self.safe_start, num_agents) # sample one pre-defined start point
         return locations
 
+    def random_app(self):
+        app_map = {
+            'player': range(1, 19),
+            'animal': range(0, 27),
+        }
+        for obj in self.player_list:
+            category = self.agents[obj]['agent_type']
+            if category not in app_map.keys():
+                continue
+            app_id = np.random.choice(app_map[category])
+            self.unrealcv.set_appearance(obj, app_id)
 
     def environment_augmentation(self, player_mesh=False, player_texture=False,
                                  light=False, background_texture=False,
                                  layout=False, layout_texture=False):
+        app_map = {
+            'player': range(1, 19),
+            'animal': range(0, 27),
+        }
         if player_mesh:  # random human mesh
             for obj in self.player_list:
-                if self.agents[obj]['agent_type'] == 'player':
-                    if self.env_name == 'MPRoom':
-                        map_id = [2, 3, 6, 7, 9]
-                        spline = False
-                        app_id = np.random.choice(map_id)
-                    else:
-                        map_id = [1, 2, 3, 4]
-                        spline = True
-                        app_id = np.random.choice(map_id)
-                    self.unrealcv.set_appearance(obj, app_id, spline)
-                if self.agents[obj]['agent_type'] == 'animal':
-                    map_id = [2, 5, 6, 7, 11, 12, 16]
-                    spline = True
-                    app_id = np.random.choice(map_id)
-                    self.unrealcv.set_appearance(obj, app_id, spline)
+                app_id = np.random.choice(app_map[self.agents[obj]['agent_type']])
+                self.unrealcv.set_appearance(obj, app_id)
         # random light and texture of the agents
         if player_texture:
             if self.env_name == 'MPRoom':  # random target texture
@@ -404,7 +409,7 @@ class UnrealCv_base(gym.Env):
         # launch the UE4 binary and connect to UnrealCV
         env_ip, env_port = self.ue_binary.start(**kwargs)
         # connect UnrealCV
-        self.unrealcv = Tracking(port=env_port, ip=env_ip, resolution=self.resolution, comm_mode=comm_mode)
+        self.unrealcv = Character_API(port=env_port, ip=env_ip, resolution=self.resolution, comm_mode=comm_mode)
 
         return True
 
@@ -419,7 +424,7 @@ class UnrealCv_base(gym.Env):
             self.unrealcv.set_interval(self.interval, obj)
 
         self.unrealcv.build_color_dict(self.player_list)
-        self.cam_flag = self.unrealcv.get_cam_flag(self.observation_type)
+        self.cam_flag = self.get_cam_flag(self.observation_type)
 
     def init_objects(self):
         self.unrealcv.init_objects(self.objects_list)
@@ -455,15 +460,77 @@ class UnrealCv_base(gym.Env):
         return mask_percent
 
     def action_mapping(self, actions, player_list):
+        actions2move = []
+        actions2animate = []
+        actions2head = []
         actions2player = []
         for i, obj in enumerate(player_list):
-            if actions[i] is None:  # if the action is None, then we don't control this agent
-                actions2player.append(None)  # place holder
+            action_space = self.action_space[i]
+            act = actions[i]
+            if act is None:  # if the action is None, then we don't control this agent
+                actions2move.append(None)  # place holder
+                actions2animate.append(None)
+                actions2head.append(None)
                 continue
-            if self.action_type == 'Discrete':
-                act_index = actions[i]
-                act_now = self.agents[obj]["discrete_action"][act_index]
-                actions2player.append(act_now)
+            if isinstance(action_space, spaces.Discrete):
+                actions2move.append(self.agents[obj]["move_action"][act])
+                actions2animate.append(None)
+                actions2head.append(None)
+            elif isinstance(action_space, spaces.Box):
+                actions2move.append(act)
+                actions2animate.append(None)
+                actions2head.append(None)
+            elif isinstance(action_space, spaces.Tuple):
+                for j, action in enumerate(actions[i]):
+                    if j == 0:
+                        if isinstance(action, int):
+                            actions2move.append(self.agents[obj]["move_action"][action])
+                        else:
+                            actions2move.append(action)
+                    elif j == 1:
+                        if isinstance(action, int):
+                            actions2head.append(self.agents[obj]["head_action"][action])
+                        else:
+                            actions2head.append(action)
+                    elif j == 2:
+                        actions2animate.append(self.agents[obj]["animation_action"][action])
+        return actions2move, actions2head, actions2animate
+
+
+    def get_cam_flag(self, observation_type, use_color=False, use_mask=False, use_depth=False, use_cam_pose=False):
+        # get flag for camera
+        # observation_type: 'color', 'depth', 'mask', 'cam_pose'
+        flag = [False, False, False, False]
+        flag[0] = use_cam_pose
+        flag[1] = observation_type == 'Color' or observation_type == 'Rgbd' or use_color
+        flag[2] = observation_type == 'Mask' or use_mask
+        flag[3] = observation_type == 'Depth' or observation_type == 'Rgbd' or use_depth
+        print('cam_flag:', flag)
+        return flag
+
+    def sample_from_area(self, area, num):
+        x = np.random.randint(area[0], area[1], num)
+        y = np.random.randint(area[2], area[3], num)
+        z = np.random.randint(area[4], area[5], num)
+        return np.vstack((x, y, z)).T
+
+    def get_startpoint(self, target_pos=[], distance=None, reset_area=[], exp_height=200, direction=None):
+        for i in range(5):  # searching a safe point
+            if direction == None:
+                direction = 2 * np.pi * np.random.sample(1)
             else:
-                actions2player.append(actions[i])
-        return actions2player
+                direction = direction % (2 * np.pi)
+            if distance == None:
+                x = np.random.randint(reset_area[0], reset_area[1])
+                y = np.random.randint(reset_area[2], reset_area[3])
+            else:
+                dx = float(distance * np.cos(direction))
+                dy = float(distance * np.sin(direction))
+                x = dx + target_pos[0]
+                y = dy + target_pos[1]
+            cam_pos_exp = [x, y, exp_height]
+            if reset_area[0] < x < reset_area[1] and reset_area[2] < y < reset_area[3]:
+                cam_pos_exp[0] = x
+                cam_pos_exp[1] = y
+                return cam_pos_exp
+        return []
