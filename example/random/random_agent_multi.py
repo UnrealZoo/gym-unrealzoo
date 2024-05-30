@@ -11,10 +11,21 @@ class RandomAgent(object):
     """The world's simplest agent!"""
     def __init__(self, action_space):
         self.action_space = action_space
+        self.count_steps = 0
+        self.action = self.action_space.sample()
 
-    def act(self, observation):
-        # return 2
-        return self.action_space.sample()
+    def act(self, observation, keep_steps=10):
+        self.count_steps += 1
+        if self.count_steps > keep_steps:
+            self.action = self.action_space.sample()
+            self.count_steps = 0
+        else:
+            return self.action
+        return self.action
+
+    def reset(self):
+        self.action = self.action_space.sample()
+        self.count_steps = 0
 
 
 if __name__ == '__main__':
@@ -31,15 +42,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
     env = gym.make(args.env_id)
     if int(args.time_dilation) > 0:  # -1 means no time_dilation
-        env = time_dilation.TimeDilationWrapper(env, args.time_dilation)
+        env = time_dilation.TimeDilationWrapper(env, int(args.time_dilation))
     if int(args.early_done) > 0:  # -1 means no early_done
-        env = early_done.EarlyDoneWrapper(env, args.early_done)
+        env = early_done.EarlyDoneWrapper(env, int(args.early_done))
     if args.monitor:
         env = monitor.DisplayWrapper(env)
 
-    env = augmentation.RandomPopulationWrapper(env, 3, 4, random_target=False)
+    env = augmentation.RandomPopulationWrapper(env, 2, 4, random_target=False)
     if args.nav_agent:
-        env = agents.NavAgents(env, mask_agent=True)
+        env = agents.NavAgents(env, mask_agent=False)
     episode_count = 100
     rewards = 0
     done = False
@@ -50,7 +61,7 @@ if __name__ == '__main__':
         for eps in range(1, episode_count):
             obs = env.reset()
             agents_num = len(env.action_space)
-            agents = [RandomAgent(env.action_space[i]) for i in range(agents_num)] # reset agents
+            agents = [RandomAgent(env.action_space[i]) for i in range(agents_num)]  # reset agents
             count_step = 0
             t0 = time.time()
             agents_num = len(obs)
