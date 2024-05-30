@@ -23,7 +23,7 @@ class DisplayWrapper(Wrapper):
             info['bbox'] = bbox
 
         if self.dynamic_top_down:
-            env.set_topview(info['Pose'], env.cam_id[0]) # set top_down camera
+            env.set_topview(info['Pose'][env.protagonist_id], env.cam_id[0]) # set top_down camera
 
         return obs, reward, done, info # return the same results as the wrapped environment
 
