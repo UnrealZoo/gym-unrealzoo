@@ -23,7 +23,7 @@ class Track(UnrealCv_base):
                                          resolution=resolution)
         self.count_lost = 0
         self.max_lost_steps = 20
-        self.agents_category = ['drone']
+        self.agents_category = ['player']
         self.reward_type = 'dense'  # 'dense', 'sparse'
         self.reward_params = {
             "min_distance": 100,
