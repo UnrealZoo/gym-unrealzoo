@@ -5,7 +5,7 @@ from gym import wrappers
 import cv2
 import time
 import numpy as np
-from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, agents, augmentation
+from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, agents, augmentation, configUE
 
 class RandomAgent(object):
     """The world's simplest agent!"""
@@ -49,6 +49,7 @@ if __name__ == '__main__':
         env = monitor.DisplayWrapper(env)
 
     env = augmentation.RandomPopulationWrapper(env, 2, 4, random_target=False)
+    env = configUE.ConfigUEWrapper(env, offscreen=True)
     if args.nav_agent:
         env = agents.NavAgents(env, mask_agent=False)
     episode_count = 100

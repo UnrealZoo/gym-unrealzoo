@@ -67,7 +67,10 @@ class UnrealCv_base(gym.Env):
         self.use_opengl = False
         self.offscreen_rendering = False
         self.nullrhi = False
+        self.gpu_id = None  # None means using the default gpu
+        self.sleep_time = 5
         self.launched = False
+        self.comm_mode = 'tcp'
 
         self.agents_category = ['player', 'animal'] # the agent category we use in the env
         self.protagonist_id = 0
@@ -140,9 +143,7 @@ class UnrealCv_base(gym.Env):
 
     def reset(self):
         if not self.launched:  # first time to launch
-            self.launched = self.launch_ue_env(docker=self.docker, resolution=self.resolution, display=self.display,
-                                               use_opengl=self.use_opengl, offscreen_rendering=self.offscreen_rendering,
-                                               nullrhi=self.nullrhi)
+            self.launched = self.launch_ue_env()
             self.init_agents()
             self.init_objects()
 
@@ -406,11 +407,13 @@ class UnrealCv_base(gym.Env):
 
         return np.array(pose_obs), relative_pose
 
-    def launch_ue_env(self, comm_mode='tcp', **kwargs):
+    def launch_ue_env(self):
         # launch the UE4 binary and connect to UnrealCV
-        env_ip, env_port = self.ue_binary.start(**kwargs)
+        env_ip, env_port = self.ue_binary.start(docker=self.docker, resolution=self.resolution, display=self.display,
+                                               opengl=self.use_opengl, offscreen=self.offscreen_rendering,
+                                               nullrhi=self.nullrhi)
         # connect UnrealCV
-        self.unrealcv = Character_API(port=env_port, ip=env_ip, resolution=self.resolution, comm_mode=comm_mode)
+        self.unrealcv = Character_API(port=env_port, ip=env_ip, resolution=self.resolution, comm_mode=self.comm_mode)
 
         return True
 

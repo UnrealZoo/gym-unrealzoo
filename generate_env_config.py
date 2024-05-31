@@ -6,6 +6,7 @@ from unrealcv.util import measure_fps, parse_resolution
 import argparse
 import json
 import copy
+import numpy as np
 '''
 An example to show how to use the UnrealCV API to launch the game and run some functions
 '''
@@ -245,7 +246,43 @@ if __name__ == '__main__':
             cam_locs.append(loc)
         # Test the API
         objects = unrealcv.get_objects()
+
+        obj_locations = []
+        obj_size = []
+        obj_info = {}
         # print(objects)
+        print(env_map, len(objects))
+        env_config['obj_num'] = len(objects)
+        for obj in objects:
+            if 'RecastNavMesh' in obj:
+                uclass = unrealcv.get_obj_uclass(obj)
+                bbox = unrealcv.get_obj_size(obj, box=True)
+                bbox[0] = bbox[0]/100.0
+                bbox[1] = bbox[1]/100.0
+                bbox[2] = bbox[2]/100.0
+                size = bbox[0] * bbox[1] * bbox[2]
+                area = bbox[0] * bbox[1]
+                print(obj, uclass, bbox, size, area)
+                env_config['size'] = size
+                env_config['area'] = area
+                env_config['bbox'] = bbox
+        # for obj in objects:
+        #     if 'NavMesh' in obj or 'PostProcess' in obj or 'Capture' in obj or 'SkyLight' in obj or 'Light' in obj or 'DirectionalLight' in obj or 'ExponentialHeightFog' in obj or 'AtmosphericFog' in obj or 'ReflectionCapture' in obj or 'SphereReflectionCapture' in obj or 'PlanarReflection' in obj:
+        #         continue
+        #     uclass = unrealcv.get_obj_uclass(obj)
+        #     bbox = unrealcv.get_obj_size(obj, box=True)
+        #     size = bbox[0] * bbox[1] * bbox[2]
+        #     location = unrealcv.get_obj_location(obj)
+        #     if size == 0:
+        #         continue
+        #     obj_data = {}
+        #     obj_data['size'] = size
+        #     obj_data['bbox'] = bbox
+        #     obj_data['location'] = unrealcv.get_obj_location(obj)
+        #     obj_info[obj] = obj_data
+            # obj_size.append(unrealcv.get_obj_size(obj, box=True))
+            # obj_locations.append(unrealcv.get_obj_location(obj))
+        # rint(obj_info, len(obj_info))
 
         def generate_nav_goal(player, radius):
             cmd = f'vbp {player} generate_nav_goal {radius}'
@@ -312,10 +349,11 @@ if __name__ == '__main__':
         env_config['third_cam']['height_top_view'] = env_config['height'] + 1000
         # print(env_config)
         import os
-        target_dir = 'gym_unrealcv/envs/setting/env_config'
+        # target_dir = 'gym_unrealcv/envs/setting/env_config'
+        target_dir = './statistic'
         if not os.path.exists(target_dir):
             os.makedirs(target_dir)
-        with open(os.path.join('gym_unrealcv/envs/setting/env_config', f'{env_map}.json'), 'w') as json_file:
+        with open(os.path.join(target_dir, f'{env_map}.json'), 'w') as json_file:
             json.dump(env_config, json_file, indent=4)
 
 
