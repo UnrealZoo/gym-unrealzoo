@@ -322,7 +322,7 @@ class Character_API(UnrealCv_API):
             if use_color:
                 cmd_list.append(self.get_image(cam_id, 'lit', 'bmp', return_cmd=True))
             if use_mask:
-                cmd_list.append(self.get_image(cam_id, 'lit', 'bmp', return_cmd=True))
+                cmd_list.append(self.get_image(cam_id, 'seg', 'bmp', return_cmd=True))
             if use_depth:
                 cmd_list.append(f'vget /camera/{cam_id}/depth npy')
         decoders = [self.decoder.decode_map[self.decoder.cmd2key(cmd)] for cmd in cmd_list]
