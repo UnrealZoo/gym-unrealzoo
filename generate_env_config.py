@@ -2,7 +2,7 @@ import re
 import time
 from unrealcv.api import UnrealCv_API
 from unrealcv.launcher import RunUnreal
-from unrealcv.util import measure_fps, parse_resolution
+from unrealcv.util import parse_resolution
 import argparse
 import json
 import copy
@@ -167,6 +167,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--env-bin', default='/home/zfw/UnrealEnv/Collection_Linux_v5/Collection/Binaries/Linux/Collection', help='The path to the UE4Editor binary')
     parser.add_argument('--env-map', default='Brass_Palace', help='The map to load')
+    parser.add_argument('--target_dir', default='gym_unrealcv/envs/setting/env_config', help='The folder to save the json file')
     parser.add_argument('--use-docker', action='store_true', help='Run the game in a docker container')
     parser.add_argument('--resolution', '-res', default='640x480', help='The resolution in the unrealcv.ini file')
     parser.add_argument('--display', default=None, help='The display to use')
@@ -349,11 +350,9 @@ if __name__ == '__main__':
         env_config['third_cam']['height_top_view'] = env_config['height'] + 1000
         # print(env_config)
         import os
-        # target_dir = 'gym_unrealcv/envs/setting/env_config'
-        target_dir = './statistic'
-        if not os.path.exists(target_dir):
-            os.makedirs(target_dir)
-        with open(os.path.join(target_dir, f'{env_map}.json'), 'w') as json_file:
+        if not os.path.exists(args.target_dir):
+            os.makedirs(args.target_dir)
+        with open(os.path.join(args.target_dir, f'{env_map}.json'), 'w') as json_file:
             json.dump(env_config, json_file, indent=4)
 
 
