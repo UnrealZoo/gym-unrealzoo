@@ -1,15 +1,10 @@
-import os
-import time
 import warnings
-
 import gym
 import numpy as np
 from gym import spaces
-from gym_unrealcv.envs.utils import env_unreal, misc
+from gym_unrealcv.envs.utils import misc
 from unrealcv.launcher import RunUnreal
 from gym_unrealcv.envs.agent.character import Character_API
-import gym_unrealcv
-import cv2
 import random
 import sys
 ''' 
@@ -128,7 +123,6 @@ class UnrealCv_base(gym.Env):
         obj_poses, cam_poses, imgs, masks, depths = self.unrealcv.get_pose_img_batch(self.player_list, self.cam_list, self.cam_flag)
         self.obj_poses = obj_poses
         observations = self.prepare_observation(self.observation_type, imgs, masks, depths, obj_poses)
-
         self.img_show = self.prepare_img2show(self.protagonist_id, observations)
 
         pose_obs, relative_pose = self.get_pose_states(obj_poses)
@@ -275,18 +269,15 @@ class UnrealCv_base(gym.Env):
         self.unrealcv.set_phy(name, 0)
         return new_dict
 
-    def remove_agent(self, name, freeze=False):
+    def remove_agent(self, name):
         # print(f'remove {name}')
         agent_index = self.player_list.index(name)
         self.player_list.remove(name)
         self.cam_list = self.remove_cam(name)
         self.action_space.pop(agent_index)
         self.observation_space.pop(agent_index)
-        if freeze:
-            self.freeze_list.append(name)  # the agent still exists in the scene, but it is frozen
-        else:
-            self.unrealcv.destroy_obj(name)  # the agent is removed from the scene
-            self.agents.pop(name)
+        self.unrealcv.destroy_obj(name)  # the agent is removed from the scene
+        self.agents.pop(name)
 
     def remove_cam(self, name):
         cam_id = self.agents[name]['cam_id']
@@ -436,8 +427,10 @@ class UnrealCv_base(gym.Env):
     def prepare_img2show(self, index, states):
         if self.observation_type == 'Rgbd':
             return states[index][:, :, :3]
-        elif self.observation_type in ['Color', 'Depth', 'Gray', 'CG', 'Mask']:
+        elif self.observation_type in ['Color', 'Gray', 'CG', 'Mask']:
             return states[index]
+        elif self.observation_type == 'Depth':
+            return states[index]/states[index].max()  # normalize the depth image
         else:
             return None
 
@@ -456,12 +449,6 @@ class UnrealCv_base(gym.Env):
     def set_agent(self):
         # the agent is controlled by the external controller
         return self.cam_list.index(random.choice([x for x in self.cam_list if x > 0]))
-
-    def check_visibility(self, cam_id):
-        mask = self.unrealcv.read_image(self.cam_id[cam_id], 'object_mask', 'fast')
-        mask, bbox = self.unrealcv.get_bbox(mask, self.player_list[self.target_id], normalize=False)
-        mask_percent = mask.sum()/(self.resolution[0] * self.resolution[1])
-        return mask_percent
 
     def action_mapping(self, actions, player_list):
         actions2move = []
