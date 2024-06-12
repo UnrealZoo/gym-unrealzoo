@@ -346,15 +346,12 @@ class Character_API(UnrealCv_API):
                 cam_pose_list.append(res_list[start_point] + res_list[start_point+1])
                 start_point += 2
             if use_color:
-                # image = self.decoder.decode_bmp(res_list[start_point])
                 img_list.append(res_list[start_point])
                 start_point += 1
             if use_mask:
-                # image = self.decoder.decode_bmp(res_list[start_point])
                 mask_list.append(res_list[start_point])
                 start_point += 1
             if use_depth:
-                # image = 1 / self.decoder.decode_depth(res_list[start_point])
                 depth_list.append(res_list[start_point])  # 500 is the default max depth of most depth cameras
                 start_point += 1
 
