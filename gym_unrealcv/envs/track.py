@@ -1,3 +1,5 @@
+import time
+
 from gym_unrealcv.envs.base_env import UnrealCv_base
 import numpy as np
 import random
@@ -63,7 +65,7 @@ class Track(UnrealCv_base):
         tracker_name = self.player_list[self.tracker_id]
         self.unrealcv.set_obj_location(tracker_name, cam_pos_exp)
         self.unrealcv.set_obj_rotation(tracker_name, [0, yaw_exp, 0])
-
+        # self.check_visibility(self.cam_list[self.tracker_id])
         # update the observation
         observations, self.obj_poses, self.img_show = self.update_observation(self.player_list, self.cam_list, self.cam_flag, self.observation_type)
         self.count_lost = 0
@@ -143,3 +145,9 @@ class Track(UnrealCv_base):
         yaw = float(direction / np.pi * 180 - 180)
 
         return [cam_pos_exp, yaw]
+
+    def check_visibility(self, cam_id):
+        mask = self.unrealcv.get_image(cam_id, 'object_mask', 'bmp')
+        mask, bbox = self.unrealcv.get_bbox(mask, self.player_list[self.target_id], normalize=False)
+        mask_percent = mask.sum()/(self.resolution[0] * self.resolution[1])
+        return mask_percent
