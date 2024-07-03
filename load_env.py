@@ -43,7 +43,7 @@ binary_win = dict(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument("-e", "--env", nargs='?', default='RealisticRoom',
+    parser.add_argument("-e", "--env", nargs='?', default='Textures',
                         help='Select the binary to download')
     if 'win' in sys.platform:
         binary_all = binary_win
@@ -55,7 +55,10 @@ if __name__ == '__main__':
         filename = wget.download(binary_all[args.env])  # download the binary
         with zipfile.ZipFile(filename, "r") as z:
             z.extractall()  # extract the zip file
-        folder = filename[:-4]
+        if 'Textures' in filename:
+            folder ='textures'
+        else:
+            folder = filename[:-4]
         target = 'gym_unrealcv/envs/UnrealEnv'
         shutil.move(folder, target)
         os.remove(filename)
