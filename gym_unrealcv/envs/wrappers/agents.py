@@ -53,7 +53,7 @@ class NavAgents(Wrapper):
             elif mode == 0:
                 self.agents.append(RandomAgent(env.action_space[idx], 10, 50))
             elif mode == 1:  # use internal navigation
-                self.agents.append(InternalNavAgent(env.safe_start, env.reset_area))
+                self.agents.append(InternalNavAgent(env,env.safe_start, env.reset_area))
             elif mode == 2:  # use external goal navigation
                 self.agents.append(Nav2GoalAgent(env.action_space[idx], env.reset_area, max_len=200))
         if self.mask_agent:
@@ -73,7 +73,7 @@ class NavAgents(Wrapper):
             1: use the internal navigation
             2: use the goal navigation
             '''
-            if i == env.protagonist_id:
+            if i == env.unwrapped.tracker_id: #if i == env.protagonist_id
                 nav_list.append(-1)
             elif env.agents[obj_name]['agent_type'] in ['car', 'animal', 'player']:
                 if env.agents[obj_name]['internal_nav'] is True:

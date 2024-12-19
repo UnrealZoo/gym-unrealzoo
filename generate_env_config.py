@@ -165,8 +165,8 @@ env_config = {
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env-bin', default='/home/zfw/UnrealEnv/Collection_Linux_v5/Collection/Binaries/Linux/Collection', help='The path to the UE4Editor binary')
-    parser.add_argument('--env-map', default='Brass_Palace', help='The map to load')
+    parser.add_argument('--env-bin', default='UE5_ExampleScene_Win64\\Compile_unrealcv5_4\\Binaries\\Win64\\Compile_unrealcv5_4.exe', help='The path to the UE4Editor binary')
+    parser.add_argument('--env-map', default='Map_ChemicalPlant_1', help='The map to load')
     parser.add_argument('--target_dir', default='gym_unrealcv/envs/setting/env_config', help='The folder to save the json file')
     parser.add_argument('--use-docker', action='store_true', help='Run the game in a docker container')
     parser.add_argument('--resolution', '-res', default='640x480', help='The resolution in the unrealcv.ini file')
@@ -191,7 +191,7 @@ if __name__ == '__main__':
                 'LV_Soul_Cave', 'Dungeon_Demo_00', 'SwimmingPool', 'DesertMap', 'RainMap', 'SnowMap', 'ModularVictorianCity_scene1',
                 'SuburbNeighborhood_Day', 'SuburbNeighborhood_Night', 'ModularSciFiVillage', 'Storagehouse', 'OceanFloor',
                 'ModularNeighborhood', 'ModularSciFiVillage', 'ModularSciFiSeason1', 'LowPolyMedievalInterior_1',
-                'QA_Holding_Cells_A', 'ParkingLot'
+                'QA_Holding_Cells_A', 'ParkingLot','Map_ChemicalPlant_1'
                 ]
         env_map = maps[0]
     else:
@@ -237,7 +237,7 @@ if __name__ == '__main__':
         env_config['env_name'] = env_map
         env_config['env_map'] = env_map
         env_config['env_bin'] = ue_binary.env_bin
-        env_config['env_bin_win'] = ue_binary.env_bin.replace("/", "\\").replace("Linux", "Win") + ".exe"
+        env_config['env_bin_win'] = ue_binary.env_bin.replace("/", "\\").replace("Linux", "Win")
         # time.sleep(1)
         cam_num = unrealcv.get_camera_num()
         start_pos_list = []

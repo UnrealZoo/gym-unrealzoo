@@ -2,8 +2,8 @@ from gym_unrealcv.envs.navigation.interaction import Navigation
 import numpy as np
 import math
 import time
-
-
+import json
+import re
 class Tracking(Navigation):
     def __init__(self, port=9000, ip='127.0.0.1', resolution=(160, 120), comm_mode='tcp'):
         super(Tracking, self).__init__(port=port, ip=ip, resolution=resolution, comm_mode=comm_mode)
@@ -82,8 +82,8 @@ class Tracking(Navigation):
             return pose
 
         if mode == 'hard':
-            self.cam[cam_id]['location'] = self.get_location(cam_id)
-            self.cam[cam_id]['rotation'] = self.get_rotation(cam_id)
+            self.cam[cam_id]['location'] = self.get_cam_location(cam_id)
+            self.cam[cam_id]['rotation'] = self.get_cam_rotation(cam_id)
             pose = self.cam[cam_id]['location'] + self.cam[cam_id]['rotation']
             return pose
 
@@ -146,6 +146,13 @@ class Tracking(Navigation):
             self.set_phy(obj, 1)
 
     def set_move(self, target, angle, velocity):
+        cmd = 'vbp {target} set_move {angle} {velocity}'.format(target=target, angle=angle, velocity=velocity)
+        res = None
+        while res is None:
+            res = self.client.request(cmd, -1)
+    def set_move_new(self, target, param_list):
+        angle =param_list[0]
+        velocity = param_list[1]
         cmd = 'vbp {target} set_move {angle} {velocity}'.format(target=target, angle=angle, velocity=velocity)
         res = None
         while res is None:
@@ -253,7 +260,7 @@ class Tracking(Navigation):
             while start_area[0] <= obstacle_loc[0] <= start_area[1] and start_area[2] <= obstacle_loc[1] <= start_area[3]:
                 obstacle_loc[0] = np.random.uniform(area[0]+100, area[1]-100)
                 obstacle_loc[1] = np.random.uniform(area[2]+100, area[3]-100)
-                obstacle_loc[2] = np.random.uniform(area[4], area[5])
+                obstacle_loc[2] = np.random.uniform(area[4], area[5])-50
             self.set_obj_location(obstacle, obstacle_loc)
             time.sleep(0.01)
 
@@ -269,7 +276,7 @@ class Tracking(Navigation):
         cmd = [f'vset /objects/spawn {obj_class_name} {obj_name}',
                f'vset /object/{obj_name}/location {x} {y} {z}',
                f'vset /object/{obj_name}/rotation {pitch} {yaw} {roll}',
-               f'vbp {obj_name} set_phy 1'
+               f'vbp {obj_name} set_phy 0'
                ]
         self.client.request(cmd, -1)
         return obj_name
@@ -318,12 +325,21 @@ class Tracking(Navigation):
         cmd = f'vbp {obj} nav_to_goal {x} {y} {z}'
         res = self.client.request(cmd, -1)
         return res
-
+    def nav_to_goal_bypath(self, obj, loc): # navigate the agent to a goal location
+        # Assign the agent a navigation goal, and use Navmesh to automatically control its movement to reach the goal via the shortest path.
+        # The goal should be reachable in the environment.
+        x, y, z = loc
+        cmd = f'vbp {obj} nav_to_goal {x} {y} {z}'
+        res = self.client.request(cmd, -1)
+        return res
     def set_max_nav_speed(self, obj, max_vel): # set the maximum navigation speed of the car
         cmd = f'vbp {obj} set_nav_speed {max_vel}'
         res = self.client.request(cmd, -1)
         return res
-
+    def set_standup(self,obj):
+        cmd = f'vbp {obj} set_standup {obj}'
+        res = self.client.request(cmd, -1)
+        return res
     def enter_exit_car(self, obj, player_index):
         # enter or exit the car for a player.
         # If the player is already in the car, it will exit the car. Otherwise, it will enter the car.
@@ -386,3 +402,19 @@ class Tracking(Navigation):
                 start_point += 1
 
         return obj_pose_list, cam_pose_list, img_list, mask_list, depth_list
+    def generate_nav_goal(self, player, radius_max,radius_min):  # navigate the agent to a random location
+        # Agent randomly selects a point within its own radius range for navigation.
+        # The loop parameter controls whether continuous navigation is performed.（True for continuous navigation).
+        # Return with the randomly sampled location.
+        cmd = f'vbp {player} generate_nav_goal {radius_max} {radius_min} '
+        res = self.client.request(cmd)
+        answer_dict = json.loads(res)
+        try:
+            loc = answer_dict["nav_goal"]
+        except:
+            loc = answer_dict["Nav_goal"]
+        coordinates = re.findall(r"[-+]?\d*\.\d+|\d+", loc)
+        # Convert the numbers to floats and store them in an array
+        coordinates = [float(coordinate) for coordinate in coordinates]
+        return coordinates[0],coordinates[1],coordinates[2]
+

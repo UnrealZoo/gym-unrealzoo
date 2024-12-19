@@ -1,4 +1,5 @@
 import random
+import time
 import gym
 from gym_unrealcv.envs.utils import misc
 import numpy as np
@@ -223,23 +224,30 @@ class GoalNavAgentTest(object):
         return distance < 50
 
 class InternalNavAgent(object):
-    def __init__(self, goal_list=None, goal_area=None, max_len=100):
+    def __init__(self, env,goal_list=None, goal_area=None, max_len=200):
         self.step_counter = 0
         self.keep_steps = 0
         self.goal_area = goal_area
         self.goal_id = 0
         self.goal_list = goal_list
-
+        self.env = env
         self.max_len = max_len
         self.goal = self.reset()
+        self.pose_last=[0,0,0,0,0,0]
 
     def act(self, pose):
         self.step_counter += 1
+
+        distance_tmp = np.linalg.norm(np.array(self.pose_last) - np.array(pose))
         self.pose_last = pose
-        if self.check_reach(self.goal, pose) or self.step_counter > self.max_len:
+        if self.check_reach(self.goal, pose) or self.step_counter > self.max_len or distance_tmp<1:
             # sample a new goal
-            self.goal = self.generate_goal()
+            # self.goal = self.generate_goal()
+            self.goal = np.array(random.choice(self.env.unwrapped.safe_start))
+            # print('Sample new NavGoal:',self.goal)
             self.step_counter = 0
+            return self.goal
+        elif self.step_counter==1:
             return self.goal
         else:
             return None
@@ -263,19 +271,23 @@ class InternalNavAgent(object):
         return goal
 
     def generate_goal(self, goal_area=None, fixed=False):
-        if goal_area==None:
-            goal_area = self.goal_area
-        goal_list = [[goal_area[0], goal_area[2]], [goal_area[0], goal_area[3]],
-                     [goal_area[1], goal_area[3]], [goal_area[1], goal_area[2]]]
-        np.random.seed()
-        if fixed:
-            goal = np.array(goal_list[self.goal_id % len(goal_list)])/2
-            self.goal_id += 1
-        else:
-            x = np.random.randint(goal_area[0], goal_area[1])
-            y = np.random.randint(goal_area[2], goal_area[3])
-            z = np.random.randint(goal_area[4], goal_area[5])
-            goal = np.array([x, y, z])
+        # if goal_area==None:
+        #     goal_area = self.goal_area
+        # goal_list = [[goal_area[0], goal_area[2]], [goal_area[0], goal_area[3]],
+        #              [goal_area[1], goal_area[3]], [goal_area[1], goal_area[2]]]
+        # np.random.seed()
+        # if fixed:
+        #     goal = np.array(goal_list[self.goal_id % len(goal_list)])/2
+        #     self.goal_id += 1
+        # else:
+        #     x = np.random.randint(goal_area[0], goal_area[1])
+        #     y = np.random.randint(goal_area[2], goal_area[3])
+        #     z = np.random.randint(goal_area[4], goal_area[5])
+        #     goal = np.array([x, y, z])
+
+        x, y, z = self.env.unwrapped.unrealcv.generate_nav_goal(self.env.unwrapped.player_list[self.env.unwrapped.target_id], 4000,500)
+        goal = np.array([x, y, z])
+        # print('NavMesh Generated goal:', goal)
         return goal
 
     def check_reach(self, goal, pose_now, dim=2):
@@ -291,7 +303,7 @@ class Nav2GoalAgent(object):
             self.discrete = True
         else:
             self.discrete = False
-            self.velocity_high = action_space.high[1]
+            self.velocity_high = action_space.high[1]-40
             self.velocity_low = 0
             self.angle_high = action_space.high[0]
             self.angle_low = action_space.low[0]
@@ -374,7 +386,10 @@ class PoseTracker(object):
 
     def act(self, pose, target_pose):
         delt_yaw = misc.get_direction(pose, target_pose) # get the angle between current pose and goal in x-y plane
-        angle = np.clip(self.angle_pid(-delt_yaw), self.angle_low, self.angle_high)
+        # angle = np.clip(self.angle_pid(-delt_yaw), self.angle_low, self.angle_high)
+        angle = np.clip(self.angle_pid(self.expected_angle-delt_yaw), self.angle_low, self.angle_high)
+
         delt_distance = (np.linalg.norm(np.array(pose[:2]) - np.array(target_pose[:2])) - self.expected_distance)
         velocity = np.clip(self.velocity_pid(-delt_distance), self.velocity_low, self.velocity_high)
+
         return [angle, velocity]

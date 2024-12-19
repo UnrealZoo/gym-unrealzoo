@@ -21,16 +21,16 @@ class UnrealCv(object):
         # build a client to connect to the env
         self.client = unrealcv.Client((ip, port))
         self.client.connect()
-        if 'linux' in sys.platform and unrealcv.__version__ >= '1.0.0': # new socket for linux
-            unix_socket_path = os.path.join('/tmp/unrealcv_{port}.socket'.format(port=port)) # clean the old socket
-            os.remove(unix_socket_path) if os.path.exists(unix_socket_path) else None
-            self.client.disconnect() # disconnect the client for creating a new socket in linux
-            time.sleep(2)
-            if unix_socket_path is not None and os.path.exists(unix_socket_path):
-                self.client = unrealcv.Client(unix_socket_path, 'unix')
-            else:
-                self.client = unrealcv.Client((ip, port)) # reconnect to the tcp socket
-            self.client.connect()
+        # if 'linux' in sys.platform and unrealcv.__version__ >= '1.0.0': # new socket for linux
+        #     unix_socket_path = os.path.join('/tmp/unrealcv_{port}.socket'.format(port=port)) # clean the old socket
+        #     os.remove(unix_socket_path) if os.path.exists(unix_socket_path) else None
+        #     self.client.disconnect() # disconnect the client for creating a new socket in linux
+        #     time.sleep(2)
+        #     if unix_socket_path is not None and os.path.exists(unix_socket_path):
+        #         self.client = unrealcv.Client(unix_socket_path, 'unix')
+        #     else:
+        #         self.client = unrealcv.Client((ip, port)) # reconnect to the tcp socket
+        #     self.client.connect()
         self.cam = dict()
         self.color_dict = dict()
         for i in range(20):

@@ -1,8 +1,10 @@
 import time
-
+import gym_unrealcv
 from gym_unrealcv.envs.base_env import UnrealCv_base
 import numpy as np
+import cv2
 import random
+import os
 '''
 Tasks: The task is to make the agents find the injured person and rescue him. 
 The agents are allowed to communicate with others to plan.
@@ -30,8 +32,9 @@ class Track(UnrealCv_base):
         self.reward_params = {
             "min_distance": 100,
             "max_direction": 60,
-            "max_distance": 600,
-            "exp_distance": 300
+            "max_distance": 750,
+            "exp_distance": 250,
+            "exp_angle": 0
         }
         self.distance_threshold = self.reward_params["min_distance"]  # distance threshold for collision
         self.tracker_id = self.protagonist_id
@@ -56,8 +59,25 @@ class Track(UnrealCv_base):
     def reset(self):
         # initialize the environment
         observations = super(Track, self).reset()
+        target_pos = self.unrealcv.get_obj_location(self.player_list[self.target_id])
+        print(target_pos)
+        self.unrealcv.nav_to_goal(self.player_list[self.target_id], target_pos)
+        time.sleep(1)
         super(Track, self).random_app()
-
+        object_list = self.unrealcv.get_objects()
+        ############
+        for obj in object_list: #binary mask configure
+            if obj == self.player_list[self.target_id]:
+                self.unrealcv.set_obj_color(obj, (255, 255, 255))
+            else:
+                # if random.random() < 0.2:
+                if obj not in self.objects_list and obj not in self.player_list:
+                    try:
+                        self.unrealcv.set_obj_color(obj, (0, 0, 0))
+                    except:
+                        pass
+        ##############
+        time.sleep(1)
         target_pos = self.unrealcv.get_obj_location(self.player_list[self.target_id])
         # initialize the tracker
         cam_pos_exp, yaw_exp= self.get_tracker_init_point(target_pos, self.reward_params["exp_distance"])
@@ -65,7 +85,23 @@ class Track(UnrealCv_base):
         tracker_name = self.player_list[self.tracker_id]
         self.unrealcv.set_obj_location(tracker_name, cam_pos_exp)
         self.unrealcv.set_obj_rotation(tracker_name, [0, yaw_exp, 0])
-        # self.check_visibility(self.cam_list[self.tracker_id])
+        # reset if cannot see the target at initial frame
+        # while self.unwrapped.unrealcv.check_visibility(self.cam_list[self.tracker_id],self.player_list[self.target_id]) == 0:
+        #     # target_locations = self.sample_from_area(self.reset_area, 1)
+        #     target_locations = self.sample_init_pose()
+        #     self.unrealcv.set_obj_location(self.player_list[self.target_id], target_locations[0])
+        #     self.unrealcv.set_cam(self.player_list[self.target_id],
+        #                           self.agents[self.player_list[self.target_id]]['relative_location'],
+        #                           self.agents[self.player_list[self.target_id]]['relative_rotation'])
+        #     target_pos = self.unrealcv.get_obj_location(self.player_list[self.target_id])
+        #     # initialize the tracker
+        #     cam_pos_exp, yaw_exp = self.get_tracker_init_point(target_pos, self.reward_params["exp_distance"])
+        #     # set tracker location
+        #     tracker_name = self.player_list[self.tracker_id]
+        #     self.unrealcv.set_obj_location(tracker_name, cam_pos_exp)
+        #     self.unrealcv.set_obj_rotation(tracker_name, [0, yaw_exp, 0])
+
+
         # update the observation
         observations, self.obj_poses, self.img_show = self.update_observation(self.player_list, self.cam_list, self.cam_flag, self.observation_type)
         self.count_lost = 0
@@ -92,7 +128,17 @@ class Track(UnrealCv_base):
         info['d_in'] = view_mat_tracker.sum() - view_mat_tracker[target_id] - view_mat_tracker[tracker_id]  # distractor in the observable area
         info['target_viewed'] = view_mat_tracker[target_id]  # target in the observable area
 
-        relative_oir_norm = np.fabs(relative_ori) / 45.0
+        # detect target mask to determine if in the view (not work for some environment, which cannot rendering mask, like industrialArea)
+        target_percent = self.unwrapped.unrealcv.check_visibility(self.cam_list[self.tracker_id],
+                                                                  self.player_list[self.target_id])
+        info['target_viewed'] = int(target_percent > 0 and view_mat_tracker[target_id])
+
+        if target_percent <= 0:
+            self.count_lost += 1
+        else:
+            self.count_lost = 0
+
+        relative_oir_norm = np.fabs(relative_ori-self.reward_params['exp_angle']) / 45.0
         relation_norm = np.fabs(relative_dis - self.reward_params['exp_distance'])/self.reward_params['max_distance'] + relative_oir_norm
         reward_tracker = 1 - relation_norm[0]  # measuring the quality among tracker to others
         info['tracked_id'] = np.argmax(reward_tracker)  # which one is tracked
@@ -151,3 +197,42 @@ class Track(UnrealCv_base):
         mask, bbox = self.unrealcv.get_bbox(mask, self.player_list[self.target_id], normalize=False)
         mask_percent = mask.sum()/(self.resolution[0] * self.resolution[1])
         return mask_percent
+
+    # def environment_augmentation(self, player_mesh=False, player_texture=False,
+    #                              light=False, background_texture=False,
+    #                              layout=False, layout_texture=False):
+    #     if player_mesh:  # random human mesh
+    #         for obj in self.player_list:
+    #             if self.agents[obj]['agent_type'] == 'player':
+    #                 if self.env_name == 'MPRoom':
+    #                     map_id = [2, 3, 6, 7, 9]
+    #                     spline = False
+    #                     app_id = np.random.choice(map_id)
+    #                 else:
+    #                     map_id = [1, 2, 3, 4]
+    #                     spline = True
+    #                     app_id = np.random.choice(map_id)
+    #                 self.unrealcv.set_appearance(obj, app_id)
+    #             if self.agents[obj]['agent_type'] == 'animal':
+    #                 map_id = [2, 5, 6, 7, 11, 12, 16]
+    #                 spline = True
+    #                 app_id = np.random.choice(map_id)
+    #                 self.unrealcv.set_appearance(obj, app_id, spline)
+    #     # random light and texture of the agents
+    #     if player_texture:
+    #         if self.env_name == 'MPRoom':  # random target texture
+    #             for obj in self.player_list:
+    #                 if self.agents[obj]['agent_type'] == 'player':
+    #                     self.unrealcv.random_player_texture(obj, self.textures_list, 3)
+    #     if light:
+    #         self.unrealcv.random_lit(self.env_configs["lights"])
+    #
+    #     # random the texture of the background
+    #     if background_texture:
+    #         self.unrealcv.random_texture(self.env_configs["backgrounds"], self.textures_list, 3)
+    #
+    #     # random place the obstacle
+    #     if layout:
+    #         self.unrealcv.clean_obstacles()
+    #         self.unrealcv.random_obstacles(self.objects_list, self.textures_list,
+    #                                        20, self.reset_area, self.start_area, layout_texture)

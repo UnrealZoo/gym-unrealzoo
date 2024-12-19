@@ -82,7 +82,7 @@ class UnrealCv_base(gym.Env):
         # define observation space,
         # color, depth, rgbd,...
         self.observation_type = observation_type
-        assert self.observation_type in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']
+        assert self.observation_type in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose','MaskDepth','ColorMask']
         self.observation_space = [self.define_observation_space(self.cam_list[i], self.observation_type, resolution)
                                   for i in range(len(self.player_list))]
 
@@ -149,8 +149,10 @@ class UnrealCv_base(gym.Env):
         for i, obj in enumerate(self.player_list):
             if self.agents[obj]['agent_type'] in self.agents_category:
                 if not self.agents[obj]['internal_nav']:
-                    self.unrealcv.set_move_bp(obj, [0, 0])
-                    self.unrealcv.set_phy(obj, 0)
+                    # self.unrealcv.set_move_bp(obj, [0, 100])
+                    # self.unrealcv.set_max_speed(obj, 100)
+                    continue
+                    # self.unrealcv.set_phy(obj, 1)
             elif self.agents[obj]['agent_type'] == 'drone':
                 self.unrealcv.set_move_bp(obj, [0, 0, 0, 0])
                 self.unrealcv.set_phy(obj, 0)
@@ -221,6 +223,12 @@ class UnrealCv_base(gym.Env):
             return np.append(np.array(img_list), np.array(depth_list), axis=-1)
         elif observation_type == 'Pose':
             return np.array(pose_list)
+        elif observation_type == 'MaskDepth':
+            return np.append(np.array(mask_list), np.array(depth_list), axis=-1)
+        elif observation_type =='ColorMask':
+            return np.append(np.array(img_list), np.array(mask_list), axis=-1)
+
+
 
     def rotate2exp(self, yaw_exp, obj, th=1):
         yaw_pre = self.unrealcv.get_obj_rotation(obj)[1]
@@ -322,6 +330,15 @@ class UnrealCv_base(gym.Env):
                 s_high[:, :, -1] = 100.0  # max_depth
                 s_high[:, :, :-1] = 255  # max_rgb
                 observation_space = spaces.Box(low=s_low, high=s_high, dtype=np.float16)
+            elif observation_type == 'MaskDepth':
+                s_low = np.zeros((resolution[1], resolution[0], 4))
+                s_high = np.ones((resolution[1], resolution[0], 4))
+                s_high[:, :, -1] = 100.0  # max_depth
+                s_high[:, :, :-1] = 255  # max_rgb
+                observation_space = spaces.Box(low=s_low, high=s_high, dtype=np.float16)
+            elif observation_type=='ColorMask':
+                img_shape = (resolution[1], resolution[0], 6)
+                observation_space = spaces.Box(low=0, high=255, shape=img_shape, dtype=np.uint8)
         return observation_space
 
     def sample_init_pose(self, use_reset_area=False, num_agents=1):
@@ -493,9 +510,9 @@ class UnrealCv_base(gym.Env):
         # observation_type: 'color', 'depth', 'mask', 'cam_pose'
         flag = [False, False, False, False]
         flag[0] = use_cam_pose
-        flag[1] = observation_type == 'Color' or observation_type == 'Rgbd' or use_color
-        flag[2] = observation_type == 'Mask' or use_mask
-        flag[3] = observation_type == 'Depth' or observation_type == 'Rgbd' or use_depth
+        flag[1] = observation_type == 'Color' or observation_type == 'Rgbd' or use_color or observation_type == 'ColorMask'
+        flag[2] = observation_type == 'Mask' or use_mask or observation_type == 'MaskDepth' or observation_type == 'ColorMask'
+        flag[3] = observation_type == 'Depth' or observation_type == 'Rgbd' or use_depth or observation_type == 'MaskDepth'
         print('cam_flag:', flag)
         return flag
 

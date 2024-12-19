@@ -199,7 +199,7 @@ class UnrealCvTracking_general(gym.Env):
                 # self.unrealcv.set_speed(obj, 0)
             elif self.agents[obj]['agent_type'] == 'drone':
                 self.unrealcv.set_move_new(obj, [0, 0, 0, 0])
-                self.unrealcv.set_phy(obj, 0)
+                self.unrealcv.set_phy(obj, 1)
 
         # reset target location
         self.unrealcv.set_obj_location(self.player_list[self.target_id], random.sample(self.safe_start, 1)[0])
@@ -261,7 +261,8 @@ class UnrealCvTracking_general(gym.Env):
         # set view point
         for obj in self.player_list:
             self.unrealcv.set_cam(obj, self.agents[obj]['relative_location'], self.agents[obj]['relative_rotation'])
-            self.unrealcv.set_phy(obj, 1) # enable physics
+            # self.unrealcv.set_phy(obj, 1) # enable physics
+            # self.unrealcv.set_standup(obj, 1)
 
         # get state
         obj_poses, cam_poses, imgs, masks, depths = self.unrealcv.get_pose_img_batch(self.player_list, self.cam_list, self.cam_flag)
@@ -501,7 +502,7 @@ class UnrealCvTracking_general(gym.Env):
                         spline = False
                         app_id = np.random.choice(map_id)
                     else:
-                        map_id = [1, 2, 3, 4]
+                        map_id = [1, 2, 3, 4,5,6]
                         spline = True
                         app_id = np.random.choice(map_id)
                     self.unrealcv.set_appearance(obj, app_id, spline)
@@ -556,8 +557,10 @@ class UnrealCvTracking_general(gym.Env):
                                              self.display, self.use_opengl,
                                              self.offscreen_rendering, self.nullrhi)
         # connect UnrealCV
-        self.unrealcv = Tracking(cam_id=self.cam_id[0], port=env_port, ip=env_ip,
-                                 env=self.unreal.path2env, resolution=self.resolution)
+        # self.unrealcv = Tracking(cam_id=self.cam_id[0], port=env_port, ip=env_ip,
+        #                          env=self.unreal.path2env, resolution=self.resolution)
+        self.unrealcv = Tracking( port=env_port, ip=env_ip,
+                                 resolution=self.resolution)
 
         return True
 
@@ -572,7 +575,7 @@ class UnrealCvTracking_general(gym.Env):
             self.unrealcv.set_random(obj, 0)
             self.unrealcv.set_interval(self.interval, obj)
 
-        self.unrealcv.build_color_dic(self.player_list)
+        self.unrealcv.build_color_dict(self.player_list)
         self.cam_flag = self.unrealcv.get_cam_flag(self.observation_type)
 
     def init_objects(self):
@@ -609,3 +612,10 @@ class UnrealCvTracking_general(gym.Env):
         mask, bbox = self.unrealcv.get_bbox(mask, self.player_list[self.target_id], normalize=False)
         mask_percent = mask.sum()/(self.resolution[0] * self.resolution[1])
         return mask_percent
+    def set_population(self, num_agents):
+        while len(self.player_list) < num_agents:
+            refer_agent = self.agents[random.choice(list(self.agents.keys()))]
+            name = f'{refer_agent["agent_type"]}_EP{self.count_eps}_{len(self.player_list)}'
+            self.agents[name] = self.add_agent(name, random.choice(self.safe_start), refer_agent)
+        while len(self.player_list) > num_agents:
+            self.remove_agent(self.player_list[-1])  # remove the last one

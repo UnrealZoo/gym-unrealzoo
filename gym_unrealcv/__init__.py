@@ -6,12 +6,12 @@ use_docker = False  # True: use nvidia docker   False: do not use nvidia-docker
 
 # Searching/Navigation
 # -------------------------------------------------
-for env in ['RealisticRoom', 'Arch1']:
+for env in ['RealisticRoom', 'Arch1','Demo_Roof','IndustrialArea']:
     setting_file = 'searching/{env}.json'.format(env=env)
     settings = load_env_setting(setting_file)
     for i, reset in enumerate(['random', 'waypoint', 'testpoint']):
         for action in ['Discrete', 'Continuous']:  # action type
-            for obs in ['Color', 'Depth', 'Rgbd']:  # observation type
+            for obs in ['Color', 'Depth', 'Rgbd','Mask']:  # observation type
                 for category in settings['targets']:
                     register(
                         id='UnrealSearch-{env}{category}-{action}{obs}-v{reset}'.format(env=env, category=category, action=action, obs=obs, reset=i),
@@ -24,7 +24,7 @@ for env in ['RealisticRoom', 'Arch1']:
                                 'reward_type': 'bbox_distance',  # bbox, distance, bbox_distance
                                 'docker': use_docker,
                                 },
-                        max_episode_steps=200
+                        max_episode_steps=1000
                     )
 
 # ------------------------------------------------------------------
@@ -211,11 +211,11 @@ maps = ['Greek_Island', 'supermarket', 'Brass_Gardens', 'Brass_Palace', 'Brass_S
             'LV_Soul_Cave', 'Dungeon_Demo_00', 'SwimmingPool', 'DesertMap', 'RainMap', 'SnowMap', 'ModularVictorianCity_scene1',
             'SuburbNeighborhood_Day', 'SuburbNeighborhood_Night', 'Storagehouse', 'OceanFloor',
             'ModularNeighborhood', 'ModularSciFiVillage', 'ModularSciFiSeason1', 'LowPolyMedievalInterior_1',
-            'QA_Holding_Cells_A', 'ParkingLot'
+            'QA_Holding_Cells_A', 'ParkingLot','track_train','Demo_Roof','demonstration_BUNKER','Map_ChemicalPlant_1'
             ]
 
 Tasks = ['Rendezvous', 'Rescue', 'Track']
-Observations = ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']
+Observations = ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose','MaskDepth','ColorMask']
 Actions = ['Discrete', 'Continuous', 'Mixed']
 # Env for general purpose active object tracking
 # Base env for general purpose multi-agent interaction
@@ -231,6 +231,7 @@ for env in maps:
                             kwargs={'setting_file': setting_file,
                                     'action_type': action,
                                     'observation_type': obs,
+
                                     },
                             max_episode_steps=500
                             )
@@ -249,5 +250,5 @@ for env in maps:
                                     'action_type': action,
                                     'observation_type': obs,
                                     },
-                            max_episode_steps=500
+                            max_episode_steps=350
                             )
