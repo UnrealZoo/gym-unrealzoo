@@ -231,7 +231,7 @@ for env in maps:
                             kwargs={'setting_file': setting_file,
                                     'action_type': action,
                                     'observation_type': obs,
-
+                                    'reset_type': i,
                                     },
                             max_episode_steps=500
                             )
@@ -249,6 +249,7 @@ for env in maps:
                             kwargs={'env_file': setting_file,
                                     'action_type': action,
                                     'observation_type': obs,
+                                    'reset_type': i,
                                     },
                             max_episode_steps=350
                             )

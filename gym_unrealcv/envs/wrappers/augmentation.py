@@ -52,11 +52,17 @@ class RandomPopulationWrapper(Wrapper):
                 env.unrealcv.set_obj_color(env.player_list[env.target_id], env.unrealcv.color_dict[env.player_list[new_target]])
                 env.unrealcv.set_obj_color(env.player_list[new_target], [255, 255, 255])
                 env.target_id = new_target
-        if self.reset_type>0:
-            env.unwrapped.environment_augmentation(player_mesh=True, player_texture=True, light=False, background_texture=True,
-                                          layout=True, layout_texture=True)
+        if env.unwrapped.reset_type>0:
+            if env.unwrapped.reset_type==1:
+                env.unwrapped.environment_augmentation(player_mesh=True, player_texture=True, light=False, background_texture=False,layout=False, layout_texture=False)
+            elif env.unwrapped.reset_type==2:
+                env.unwrapped.environment_augmentation(player_mesh=True, player_texture=True, light=True,background_texture=False,layout=False, layout_texture=False)
+            elif env.unwrapped.reset_type==3:
+                env.unwrapped.environment_augmentation(player_mesh=True, player_texture=True, light=True, background_texture=True,layout=False, layout_texture=False)
+            elif env.unwrapped.reset_type==4:
+                env.unwrapped.environment_augmentation(player_mesh=True, player_texture=True, light=True, background_texture=True,layout=True, layout_texture=False)
+            elif env.unwrapped.reset_type == 5:
+                env.unwrapped.environment_augmentation(player_mesh=True, player_texture=True, light=True,background_texture=True, layout=True, layout_texture=True)
+
         states = self.env.reset(**kwargs)
-
-
-
         return states

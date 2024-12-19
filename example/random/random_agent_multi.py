@@ -1,3 +1,6 @@
+# place multiple agent in the environment, each agent share the same action space
+# each agent perform randome action in the environment
+
 import argparse
 import gym_unrealcv
 import gym
@@ -30,7 +33,7 @@ class RandomAgent(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-ContinuousColor-v1',
+    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-ContinuousColor-v5',
                         help='Select the environment to run')
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     parser.add_argument("-s", '--seed', dest='seed', default=0, help='random seed')
@@ -48,8 +51,8 @@ if __name__ == '__main__':
     if args.monitor:
         env = monitor.DisplayWrapper(env)
 
-    env = augmentation.RandomPopulationWrapper(env, 2, 4, random_target=False)
-    env = configUE.ConfigUEWrapper(env, offscreen=True)
+    env = augmentation.RandomPopulationWrapper(env, 2, 10, random_target=False)
+    env = configUE.ConfigUEWrapper(env, offscreen=False)
     if args.nav_agent:
         env = agents.NavAgents(env, mask_agent=False)
     episode_count = 100
@@ -58,36 +61,33 @@ if __name__ == '__main__':
 
     Total_rewards = 0
     env.seed(int(args.seed))
-    try:
-        for eps in range(1, episode_count):
-            obs = env.reset()
-            agents_num = len(env.action_space)
-            agents = [RandomAgent(env.action_space[i]) for i in range(agents_num)]  # reset agents
-            count_step = 0
-            t0 = time.time()
-            agents_num = len(obs)
-            C_rewards = np.zeros(agents_num)
-            while True:
-                actions = [agents[i].act(obs[i]) for i in range(agents_num)]
-                obs, rewards, done, info = env.step(actions)
-                C_rewards += rewards
-                count_step += 1
-                if args.render:
-                    img = env.render(mode='rgb_array')
-                    #  img = img[..., ::-1]  # bgr->rgb
-                    cv2.imshow('show', img)
-                    cv2.waitKey(1)
-                if done:
-                    fps = count_step/(time.time() - t0)
-                    Total_rewards += C_rewards[0]
-                    print ('Fps:' + str(fps), 'R:'+str(C_rewards), 'R_ave:'+str(Total_rewards/eps))
-                    break
+    for eps in range(1, episode_count):
+        obs = env.reset()
+        agents_num = len(env.action_space)
+        agents = [RandomAgent(env.action_space[i]) for i in range(agents_num)]  # reset agents
+        count_step = 0
+        t0 = time.time()
+        agents_num = len(obs)
+        C_rewards = np.zeros(agents_num)
+        while True:
+            actions = [agents[i].act(obs[i]) for i in range(agents_num)]
+            obs, rewards, done, info = env.step(actions)
+            C_rewards += rewards
+            count_step += 1
+            if args.render:
+                img = env.render(mode='rgb_array')
+                #  img = img[..., ::-1]  # bgr->rgb
+                cv2.imshow('show', img)
+                cv2.waitKey(1)
+            if done:
+                fps = count_step/(time.time() - t0)
+                Total_rewards += C_rewards[0]
+                print ('Fps:' + str(fps), 'R:'+str(C_rewards), 'R_ave:'+str(Total_rewards/eps))
+                break
 
-        # Close the env and write monitor result info to disk
-        print('Finished')
-        env.close()
-    except KeyboardInterrupt:
-        print('exiting')
-        env.close()
+    # Close the env and write monitor result info to disk
+    print('Finished')
+    env.close()
+
 
 

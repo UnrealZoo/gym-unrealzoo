@@ -22,7 +22,8 @@ class UnrealCv_base(gym.Env):
                  setting_file,  # the setting file to define the task
                  action_type='Discrete',  # 'discrete', 'continuous'
                  observation_type='Color',  # 'color', 'depth', 'rgbd', 'Gray'
-                 resolution=(160, 160)
+                 resolution=(160, 160),
+                 reset_type = 0
                  ):
 
         setting = misc.load_env_setting(setting_file)
@@ -33,7 +34,7 @@ class UnrealCv_base(gym.Env):
         self.agent_configs = setting['agents']
         self.env_configs = setting["env"]
         self.agents = misc.convert_dict(self.agent_configs)
-
+        self.reset_type = reset_type
         # TODO: it is useless.
         self.character = {
             'player': [], # the list of player to control
@@ -67,7 +68,7 @@ class UnrealCv_base(gym.Env):
         self.launched = False
         self.comm_mode = 'tcp'
 
-        self.agents_category = ['player', 'animal'] # the agent category we use in the env
+        self.agents_category = ['player'] # the agent category we use in the env
         self.protagonist_id = 0
 
         # init agents
@@ -386,13 +387,13 @@ class UnrealCv_base(gym.Env):
 
         # random the texture of the background
         if background_texture:
-            self.unrealcv.random_texture(self.env_configs["backgrounds"], self.textures_list, 3)
+            self.unrealcv.random_texture(self.env_configs["backgrounds"], self.textures_list, 5)
 
-        # random place the obstacle
+        # random place the obstacle`
         if layout:
             self.unrealcv.clean_obstacles()
             self.unrealcv.random_obstacles(self.objects_list, self.textures_list,
-                                           15, self.reset_area, self.start_area, layout_texture)
+                                           len(self.objects_list), self.reset_area, self.start_area, layout_texture)
 
     def get_pose_states(self, obj_pos):
         # get the relative pose of each agent and the absolute location and orientation of the agent
