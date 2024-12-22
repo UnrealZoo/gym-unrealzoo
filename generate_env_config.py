@@ -165,8 +165,8 @@ env_config = {
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env-bin', default='UE5_ExampleScene_Win64\\Compile_unrealcv5_4\\Binaries\\Win64\\Compile_unrealcv5_4.exe', help='The path to the UE4Editor binary')
-    parser.add_argument('--env-map', default='Map_ChemicalPlant_1', help='The map to load')
+    parser.add_argument('--env-bin', default='Rescue_Win64/Rescue/Binaries/Win64/Rescue.exe', help='The path to the UE4Editor binary')
+    parser.add_argument('--env-map', default='track_train', help='The map to load')
     parser.add_argument('--target_dir', default='gym_unrealcv/envs/setting/env_config', help='The folder to save the json file')
     parser.add_argument('--use-docker', action='store_true', help='Run the game in a docker container')
     parser.add_argument('--resolution', '-res', default='640x480', help='The resolution in the unrealcv.ini file')
@@ -196,7 +196,7 @@ if __name__ == '__main__':
         env_map = maps[0]
     else:
         maps = [env_map]
-    print(len(maps))
+    # print(len(maps))
     ue_binary = RunUnreal(ENV_BIN=env_bin, ENV_MAP=env_map)
     env_ip, env_port = ue_binary.start(args.use_docker, parse_resolution(args.resolution), args.display, args.use_opengl, args.offscreen, args.nullrhi, str(args.gpu_id))
     unrealcv = UnrealCv_API(env_port, env_ip, parse_resolution(args.resolution), 'tcp')  # 'tcp' or 'unix', 'unix' is only for local machine in Linux
@@ -252,7 +252,7 @@ if __name__ == '__main__':
         obj_size = []
         obj_info = {}
         # print(objects)
-        print(env_map, len(objects))
+        print(env_map, 'object number:',len(objects))
         env_config['obj_num'] = len(objects)
         for obj in objects:
             if 'RecastNavMesh' in obj:
@@ -309,9 +309,11 @@ if __name__ == '__main__':
                 agents['player']['class_name'].append(class_name['player'])
                 agents['player']['cam_id'].append(match_cam_id(cam_locs, obj))
                 start_pos_list.append(unrealcv.get_obj_location(obj))
+                print('Sample start point from Nav Mesh:')
                 for i in range(10):
                     # print(generate_nav_goal(obj, 1000))
                     goal_loc = generate_nav_goal(obj, 2000)
+                    print(goal_loc)
                     if goal_loc is not None:
                         goal_loc[-1] += 50
                         start_pos_list.append(goal_loc)
