@@ -11,7 +11,7 @@ from gym_unrealcv.envs.tracking.baseline import PoseTracker, Nav2GoalAgent
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrackingMPRoom-DiscreteColor-v2',
+    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-ContinuousColor-v5',
                         help='Select the environment to run')
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     parser.add_argument("-s", '--seed', dest='seed', default=0, help='random seed')
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         env = monitor.DisplayWrapper(env)
 
     env = augmentation.RandomPopulationWrapper(env, 8, 10, random_target=False)
-    env = agents.NavAgents(env, mask_agent=True)
+    # env = agents.NavAgents(env, mask_agent=True)
     episode_count = 100
     rewards = 0
     done = False
@@ -43,7 +43,7 @@ if __name__ == '__main__':
             tracker_id = env.unwrapped.tracker_id
             target_id = env.unwrapped.target_id
             # trackers = [PoseTracker(env.action_space[i], env.unwrapped.exp_distance) for i in range(agents_num) ]
-            trackers = [PoseTracker(env.action_space[i], env.unwrapped.exp_distance) for i in range(agents_num) if i%2==1]
+            trackers = [PoseTracker(env.action_space[i], env.unwrapped.reward_params['exp_distance']) for i in range(agents_num) if i%2==1]
             targets = [Nav2GoalAgent(env.action_space[i], env.unwrapped.reset_area, max_len=100) for i in range(agents_num) if i%2==0]
             count_step = 0
             t0 = time.time()
@@ -66,8 +66,8 @@ if __name__ == '__main__':
                 if args.render:
                     img = env.render(mode='rgb_array')
                     #  img = img[..., ::-1]  # bgr->rgb
-                    cv2.imshow('show', img)
-                    cv2.waitKey(1)
+                cv2.imshow('show', obs[1])
+                cv2.waitKey(1)
                 if done:
                     fps = count_step/(time.time() - t0)
                     Total_rewards += C_rewards[0]
