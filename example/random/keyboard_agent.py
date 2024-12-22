@@ -1,8 +1,9 @@
 import argparse
 import gym
-from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, augmentation, configUE
+from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, augmentation, configUE,agents
 from pynput import keyboard
 import time
+import cv2
 class RandomAgent(object):
     """The world's simplest agent!"""
     def __init__(self, action_space):
@@ -14,10 +15,10 @@ class RandomAgent(object):
 
 
 key_state = {
-    'w': False,
-    'a': False,
-    's': False,
-    'd': False,
+    'i': False,
+    'j': False,
+    'k': False,
+    'l': False,
     'space': False,
     '1': False,
     '2': False,
@@ -49,19 +50,20 @@ def on_release(key):
             key_state['head_up'] = False
         if key == keyboard.Key.down:
             key_state['head_down'] = False
-
+listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+listener.start()
 def get_key_action():
     action = ([0, 0], 0, 0)
     action = list(action)  # Convert tuple to list for modification
     action[0] = list(action[0])  # Convert inner tuple to list for modification
 
-    if key_state['w']:
+    if key_state['i']:
         action[0][1] = 100
-    if key_state['s']:
+    if key_state['k']:
         action[0][1] = -100
-    if key_state['a']:
+    if key_state['j']:
         action[0][0] = -30
-    if key_state['d']:
+    if key_state['l']:
         action[0][0] = 30
     if key_state['space']:
         action[2] = 1
@@ -84,14 +86,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
     # parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-ContinuousMask-v4',
     #                     help='Select the environment to run')
-    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-SuburbNeighborhood_Day-MixedColor-v0',
+    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-MixedColor-v0',
                         help='Select the environment to run')
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     parser.add_argument("-s", '--seed', dest='seed', default=10, help='random seed')
     parser.add_argument("-t", '--time-dilation', dest='time_dilation', default=-1,
                         help='time_dilation to keep fps in simulator')
-    parser.add_argument("-n", '--nav-agent', dest='nav_agent', action='store_true',
-                        help='use nav agent to control the agents')
     parser.add_argument("-d", '--early-done', dest='early_done', default=-1, help='early_done when lost in n steps')
     parser.add_argument("-m", '--monitor', dest='monitor', action='store_true', help='auto_monitor')
 
@@ -103,8 +103,9 @@ if __name__ == '__main__':
         env = early_done.EarlyDoneWrapper(env, int(args.early_done))
     if args.monitor:
         env = monitor.DisplayWrapper(env)
-
-    env = configUE.ConfigUEWrapper(env, offscreen=True, resolution=(640, 480))
+    env = augmentation.RandomPopulationWrapper(env, 2, 2, random_target=False)
+    env = agents.NavAgents(env, mask_agent=False)
+    env = configUE.ConfigUEWrapper(env, offscreen=True, resolution=(240, 240))
     agent = RandomAgent(env.action_space[0])
     rewards = 0
     done = False
@@ -115,19 +116,11 @@ if __name__ == '__main__':
     t0 = time.time()
     while True:
         action = get_key_action()
-        # action = agent.act(obs[0])
-        # action = ([0, 0], 0, 0)
         obs, rewards, done, info = env.step([action])
-        # cv2.imshow('obs',obs[0])
-        # cv2.waitKey(1)
+        cv2.imshow('obs',obs[0])
+        cv2.waitKey(1)
         count_step += 1
-        print(action)
         print(count_step)
-        if count_step > 99:
-            fps = count_step / (time.time() - t0)
-            print('Failed')
-            print('Fps:' + str(fps))
-            break
         if done:
             fps = count_step / (time.time() - t0)
             print('Success')
