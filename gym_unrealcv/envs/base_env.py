@@ -16,8 +16,14 @@ Done : define by the task wrapper
 
 # TODO: agent apis for blueprints commands
 # TODO: config env by parapmeters
-# TODO: matain a general agent list
+# TODO: maintain a general agent list
 class UnrealCv_base(gym.Env):
+    """
+    A base environment for general purpose agent-environment interaction, including single/multi-agent navigation, tracking, etc.
+    Observation: color image, depth image, rgbd image, mask image, pose
+    Action: Discrete, Continuous, Mixed
+    Done: defined by the task wrapper
+    """
     def __init__(self,
                  setting_file,  # the setting file to define the task
                  action_type='Discrete',  # 'discrete', 'continuous'
@@ -25,7 +31,16 @@ class UnrealCv_base(gym.Env):
                  resolution=(160, 160),
                  reset_type = 0
                  ):
+        """
+        Initialize the UnrealCv_base environment.
 
+        Args:
+            setting_file (str): The setting file to define the task and environments (path2binary, action space, reset area).
+            action_type (str): Type of action space ('Discrete', 'Continuous').
+            observation_type (str): Type of observation space ('Color', 'Depth', 'Rgbd', 'Gray').
+            resolution (tuple): Resolution of the observation space.
+            reset_type (int): Type of reset.
+        """
         setting = misc.load_env_setting(setting_file)
         self.env_name = setting['env_name']
         # self.max_steps = setting['max_steps']
@@ -37,9 +52,9 @@ class UnrealCv_base(gym.Env):
         self.reset_type = reset_type
         # TODO: it is useless.
         self.character = {
-            'player': [], # the list of player to control
-            'npc': [], # the list of Non-player character
-            'freeze': [], # the list of player that exists in the scene, but it is frozen
+            'player': [],  # the list of player to control
+            'npc': [],  # the list of Non-player character
+            'freeze': [],  # the list of player that exists in the scene, but it is frozen
         }
 
         self.height_top_view = setting['third_cam']['height_top_view']
@@ -100,6 +115,15 @@ class UnrealCv_base(gym.Env):
         self.ue_binary = RunUnreal(ENV_BIN=env_bin, ENV_MAP=env_map)
 
     def step(self, actions):
+        """
+        Execute one step in the environment.
+
+        Args:
+            actions (list): List of actions to be performed by the agents.
+
+        Returns:
+            tuple: Observations, rewards, done flag, and additional info.
+        """
         info = dict(
             Collision=0,
             Done=False,
@@ -137,6 +161,12 @@ class UnrealCv_base(gym.Env):
         return observations, info['Reward'], info['Done'], info
 
     def reset(self):
+        """
+        Reset the environment to its initial state.
+
+        Returns:
+            np.array: Initial observations.
+        """
         if not self.launched:  # first time to launch
             self.launched = self.launch_ue_env()
             self.init_agents()
@@ -171,32 +201,78 @@ class UnrealCv_base(gym.Env):
         return observations
 
     def close(self):
+        """
+        Close the environment and disconnect from UnrealCV.
+        """
         if self.launched:
             self.unrealcv.client.disconnect()
             self.ue_binary.close()
 
     def render(self, mode='rgb_array', close=False):
+        """
+        Show the rendered image.
+
+        Args:
+            mode (str): Mode of rendering.
+            close (bool): Flag to close the rendering.
+
+        Returns:
+            np.array: Image to be rendered.
+        """
         if close==True:
             self.ue_binary.close()
         return self.img_show
 
     def seed(self, seed=None):
+        """
+        Set the random seed for the environment.
+
+        Args:
+            seed (int): Seed value.
+        """
         np.random.seed(seed)
-        # if seed is not None:
-        #     self.player_num = seed % (self.max_player_num-2) + 2
 
     def update_observation(self, player_list, cam_list, cam_flag, observation_type):
+        """
+        Update the observations for the agents.
+
+        Args:
+            player_list (list): List of player agents.
+            cam_list (list): List of camera IDs.
+            cam_flag (list): List of camera flags.
+            observation_type (str): Type of observation.
+
+        Returns:
+            tuple: Updated observations, object poses, and image to show.
+        """
         obj_poses, cam_poses, imgs, masks, depths = self.unrealcv.get_pose_img_batch(player_list, cam_list, cam_flag)
         observations = self.prepare_observation(observation_type, imgs, masks, depths, obj_poses)
         img_show = self.prepare_img2show(self.protagonist_id, observations)
         return observations, obj_poses, img_show
 
     def get_start_area(self, safe_start, safe_range):
+        """
+        Get the start area for the agents.
+
+        Args:
+            safe_start (list): Safe start coordinates.
+            safe_range (int): Safe range value.
+
+        Returns:
+            list: Start area coordinates.
+        """
         start_area = [safe_start[0]-safe_range, safe_start[0]+safe_range,
                      safe_start[1]-safe_range, safe_start[1]+safe_range]
         return start_area
 
     def set_topview(self, current_pose, cam_id):
+        """
+        Set the virtual camera on top of a point(current pose) to capture images from the bird's eye view.
+
+        Args:
+            current_pose (list): Current pose of the camera.
+            cam_id (int): Camera ID.
+        """
         cam_loc = current_pose[:3]
         cam_loc[-1] = self.height_top_view
         cam_rot = [-90, 0, 0]
@@ -204,16 +280,38 @@ class UnrealCv_base(gym.Env):
         self.unrealcv.set_cam_rotation(cam_id, cam_rot)
 
     def get_relative(self, pose0, pose1):  # pose0-centric
+        """
+        Get the relative pose between two objects, pose0 is the reference object.
+
+        Args:
+            pose0 (list): Pose of the reference object (the center of the coordinate system).
+            pose1 (list): Pose of the target object.
+
+        Returns:
+            tuple: Relative observation vector, distance, and angle.
+        """
         delt_yaw = pose1[4] - pose0[4]
         angle = misc.get_direction(pose0, pose1)
         distance = self.unrealcv.get_distance(pose1, pose0, 3)
-        # distance_norm = distance / self.exp_distance
         obs_vector = [np.sin(delt_yaw/180*np.pi), np.cos(delt_yaw/180*np.pi),
                       np.sin(angle/180*np.pi), np.cos(angle/180*np.pi),
                       distance]
         return obs_vector, distance, angle
 
     def prepare_observation(self, observation_type, img_list, mask_list, depth_list, pose_list):
+        """
+        Prepare the observation based on the observation type.
+
+        Args:
+            observation_type (str): Type of observation.
+            img_list (list): List of images.
+            mask_list (list): List of masks.
+            depth_list (list): List of depth images.
+            pose_list (list): List of poses.
+
+        Returns:
+            np.array: Prepared observation.
+        """
         if observation_type == 'Depth':
             return np.array(depth_list)
         elif observation_type == 'Mask':
@@ -232,6 +330,17 @@ class UnrealCv_base(gym.Env):
 
 
     def rotate2exp(self, yaw_exp, obj, th=1):
+        """
+        Rotate the object to the expected yaw.
+
+        Args:
+            yaw_exp (float): Expected yaw.
+            obj (str): Object name.
+            th (int): Threshold value.
+
+        Returns:
+            float: Delta yaw.
+        """
         yaw_pre = self.unrealcv.get_obj_rotation(obj)[1]
         delta_yaw = yaw_exp - yaw_pre
         while abs(delta_yaw) > th:
@@ -246,7 +355,15 @@ class UnrealCv_base(gym.Env):
         return delta_yaw
 
     def relative_metrics(self, relative_pose):
-        # compute the relative relation (collision, in-the-view, misleading) among agents for rewards and evaluation metrics
+        """
+        Compute the relative metrics among agents for rewards and evaluation.
+
+        Args:
+            relative_pose (np.array): Relative pose array.
+
+        Returns:
+            dict: Dictionary containing collision and average distance metrics.
+        """
         info = dict()
         relative_dis = relative_pose[:, :, 0]
         relative_ori = relative_pose[:, :, 1]
@@ -259,6 +376,17 @@ class UnrealCv_base(gym.Env):
         return info
 
     def add_agent(self, name, loc, refer_agent):
+        """
+        Add a new agent to the environment.
+
+        Args:
+            name (str): Name of the new agent.
+            loc (list): Location of the new agent.
+            refer_agent (dict): Reference agent configuration.
+
+        Returns:
+            dict: New agent configuration.
+        """
         new_dict = refer_agent.copy()
         cam_num = self.unrealcv.get_camera_num()
         self.unrealcv.new_obj(refer_agent['class_name'], name, random.sample(self.safe_start, 1)[0])
@@ -279,6 +407,12 @@ class UnrealCv_base(gym.Env):
         return new_dict
 
     def remove_agent(self, name):
+        """
+        Remove an agent from the environment.
+
+        Args:
+            name (str): Name of the agent to be removed.
+        """
         # print(f'remove {name}')
         agent_index = self.player_list.index(name)
         self.player_list.remove(name)
@@ -289,6 +423,15 @@ class UnrealCv_base(gym.Env):
         self.agents.pop(name)
 
     def remove_cam(self, name):
+        """
+        Remove the camera associated with an agent.
+
+        Args:
+            name (str): Name of the agent.
+
+        Returns:
+            list: Updated list of camera IDs.
+        """
         cam_id = self.agents[name]['cam_id']
         cam_list = []
         for obj in self.player_list:
@@ -298,6 +441,16 @@ class UnrealCv_base(gym.Env):
         return cam_list
 
     def define_action_space(self, action_type, agent_info):
+        """
+        Define the action space for an agent.
+
+        Args:
+            action_type (str): Type of action space ('Discrete', 'Continuous', 'Mixed').
+            agent_info (dict): Agent configuration.
+
+        Returns:
+            gym.Space: Defined action space.
+        """
         if action_type == 'Discrete':
             return spaces.Discrete(len(agent_info["move_action"]))
         elif action_type == 'Continuous':
@@ -315,6 +468,17 @@ class UnrealCv_base(gym.Env):
             return spaces.Tuple((move_space, turn_space, animation_space))
 
     def define_observation_space(self, cam_id, observation_type, resolution=(160, 120)):
+        """
+        Define the observation space for an agent.
+
+        Args:
+            cam_id (int): Camera ID.
+            observation_type (str): Type of observation space.
+            resolution (tuple): Resolution of the observation space.
+
+        Returns:
+            gym.Space: Defined observation space.
+        """
         if observation_type == 'Pose' or cam_id < 0:
             observation_space = spaces.Box(low=-100, high=100, shape=(6,),
                                                dtype=np.float16)  # TODO check the range and shape
@@ -343,7 +507,16 @@ class UnrealCv_base(gym.Env):
         return observation_space
 
     def sample_init_pose(self, use_reset_area=False, num_agents=1):
-        # sample poses to reset the agents
+        """
+        Sample initial poses to reset the agents.
+
+        Args:
+            use_reset_area (bool): Flag to indicate whether to use the reset area for sampling.
+            num_agents (int): Number of agents to sample poses for.
+
+        Returns:
+            list: List of sampled locations for the agents.
+        """
         if num_agents > len(self.safe_start):
             use_reset_area = True
             warnings.warn('The number of agents is less than the number of pre-defined start points, random sample points from the pre-defined area instead.')
@@ -354,6 +527,15 @@ class UnrealCv_base(gym.Env):
         return locations
 
     def random_app(self):
+        """
+        Randomly assign an appearance to each agent in the player list based on their category.
+
+        The appearance is selected from a predefined range of IDs for each category.
+
+        Categories:
+            - player: IDs from 1 to 18
+            - animal: IDs from 0 to 26
+        """
         app_map = {
             'player': range(1, 19),
             'animal': range(0, 27),
@@ -368,6 +550,15 @@ class UnrealCv_base(gym.Env):
     def environment_augmentation(self, player_mesh=False, player_texture=False,
                                  light=False, background_texture=False,
                                  layout=False, layout_texture=False):
+        """
+        Randomly assign an appearance to each agent in the player list based on their category.
+
+        The appearance is selected from a predefined range of IDs for each category.
+
+        Categories:
+            - player: IDs from 1 to 18
+            - animal: IDs from 0 to 26
+        """
         app_map = {
             'player': range(1, 19),
             'animal': range(0, 27),
@@ -417,11 +608,11 @@ class UnrealCv_base(gym.Env):
         return np.array(pose_obs), relative_pose
 
     def launch_ue_env(self):
-        # launch the UE4 binary and connect to UnrealCV
+        # launch the UE4 binary
         env_ip, env_port = self.ue_binary.start(docker=self.docker, resolution=self.resolution, display=self.display,
                                                opengl=self.use_opengl, offscreen=self.offscreen_rendering,
                                                nullrhi=self.nullrhi)
-        # connect UnrealCV
+        # connect to UnrealCV Server
         self.unrealcv = Character_API(port=env_port, ip=env_ip, resolution=self.resolution, comm_mode=self.comm_mode)
 
         return True
