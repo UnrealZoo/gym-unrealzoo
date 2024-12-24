@@ -165,7 +165,10 @@ env_config = {
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env-bin', default='Rescue_Win64/Rescue/Binaries/Win64/Rescue.exe', help='The path to the UE4Editor binary')
+    parser.add_argument('--env-bin', default='UE4_ExampleScene_WindowsNoEditor/UE4_ExampleScene/Binaries/Win64/UE4_ExampleScene.exe', help='The path to the UE4Editor binary')
+    # parser.add_argument('--env-bin', default='UE5_ExampleScene_Win64\Compile_unrealcv5_4\Binaries\Win64\Compile_unrealcv5_4.exe', help='The path to the UE4Editor binary')
+    # parser.add_argument('--env-bin', default='Collection_WinNoEditor\WindowsNoEditor\Collection\Binaries\Win64\Collection.exe', help='The path to the UE4Editor binary')
+
     parser.add_argument('--env-map', default='track_train', help='The map to load')
     parser.add_argument('--target_dir', default='gym_unrealcv/envs/setting/env_config', help='The folder to save the json file')
     parser.add_argument('--use-docker', action='store_true', help='Run the game in a docker container')
@@ -257,7 +260,7 @@ if __name__ == '__main__':
         for obj in objects:
             if 'RecastNavMesh' in obj:
                 uclass = unrealcv.get_obj_uclass(obj)
-                bbox = unrealcv.get_obj_size(obj, box=True)
+                bbox = unrealcv.get_obj_size(obj)
                 bbox[0] = bbox[0]/100.0
                 bbox[1] = bbox[1]/100.0
                 bbox[2] = bbox[2]/100.0

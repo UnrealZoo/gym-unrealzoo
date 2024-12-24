@@ -74,6 +74,7 @@ class NavAgents(Wrapper):
             2: use the goal navigation
             '''
             if i == env.unwrapped.tracker_id: #if i == env.protagonist_id
+            # if i in env.unwrapped.tracker_id: #if i == env.protagonist_id
                 nav_list.append(-1)
             elif env.agents[obj_name]['agent_type'] in ['car', 'animal', 'player']:
                 if env.agents[obj_name]['internal_nav'] is True:

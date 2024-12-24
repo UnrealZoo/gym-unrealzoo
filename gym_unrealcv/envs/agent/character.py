@@ -541,3 +541,8 @@ class Character_API(UnrealCv_API):
         depth = depth[-self.resolution[1] * self.resolution[0]:]
         depth = depth.reshape(self.resolution[1], self.resolution[0], 1)
         return depth
+    def set_location(self, cam_id, loc):  # set camera location, loc=[x,y,z]
+        [x, y, z] = loc
+        cmd = f'vset /camera/{cam_id}/location {x} {y} {z}'
+        self.client.request(cmd, -1)
+        self.cam[cam_id]['location'] = loc
