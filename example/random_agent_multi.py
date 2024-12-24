@@ -44,6 +44,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     env = gym.make(args.env_id)
+    env.unwrapped.agents_category=['player'] #choose the agent type in the scene
+
     if int(args.time_dilation) > 0:  # -1 means no time_dilation
         env = time_dilation.TimeDilationWrapper(env, int(args.time_dilation))
     if int(args.early_done) > 0:  # -1 means no early_done

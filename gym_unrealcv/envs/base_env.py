@@ -186,7 +186,7 @@ class UnrealCv_base(gym.Env):
                     # self.unrealcv.set_phy(obj, 1)
             elif self.agents[obj]['agent_type'] == 'drone':
                 self.unrealcv.set_move_bp(obj, [0, 0, 0, 0])
-                self.unrealcv.set_phy(obj, 0)
+                self.unrealcv.set_phy(obj, 1)
 
         # reset target location
         init_poses = self.sample_init_pose(self.random_init, len(self.player_list))
@@ -539,6 +539,7 @@ class UnrealCv_base(gym.Env):
         app_map = {
             'player': range(1, 19),
             'animal': range(0, 27),
+            'drone':range(0,1)
         }
         for obj in self.player_list:
             category = self.agents[obj]['agent_type']
@@ -562,6 +563,7 @@ class UnrealCv_base(gym.Env):
         app_map = {
             'player': range(1, 19),
             'animal': range(0, 27),
+            'drone': range(0,1)
         }
         if player_mesh:  # random human mesh
             for obj in self.player_list:
