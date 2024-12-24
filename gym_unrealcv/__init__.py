@@ -70,49 +70,6 @@ for env in ['City1', 'City2']:
                             max_episode_steps=3000
                             )
 
-# "End-to-end Active Object Tracking and Its Real-world Deployment via Reinforcement Learning", IEEE TPAMI
-for env in ['RandomRoom']:
-    for i in range(5):  # reset type
-        for action in ['Discrete', 'Continuous']:  # action type
-            for obs in ['Color', 'Depth', 'Rgbd']:  # observation type
-                register(
-                    id='UnrealTrack-{env}-{action}{obs}-v{reset}'.format(env=env, action=action, obs=obs, reset=i),
-                    entry_point='gym_unrealcv.envs:UnrealCvTracking_random',
-                    kwargs={'setting_file': 'tracking/v0/{env}.json'.format(env=env),
-                            'reset_type': i,
-                            'action_type': action,
-                            'observation_type': obs,
-                            'reward_type': 'distance',
-                            'docker': use_docker,
-                            },
-                    max_episode_steps=500
-                )
-
-
-# "AD-VAT: An Asymmetric Dueling mechanism for learning Visual Active Tracking", ICLR 2019
-# DuelingRoom is the training environment, others are testing environment.
-for env in ['DuelingRoom', 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', 'Forest', 'Garden']:
-    for i in range(6):  # reset type
-        for action in ['Discrete', 'Continuous']:  # action type
-            for obs in ['Color', 'Depth', 'Rgbd']:  # observation type
-                for target in ['Ram', 'Nav', 'NavBase', 'NavShort', 'NavFix', 'Internal', 'PZR', 'Adv']:
-                    name = 'UnrealTrack-{env}{target}-{action}{obs}-v{reset}'.format(
-                        env=env, action=action, obs=obs, target=target, reset=i)
-                    setting_file = 'tracking/1v1/{env}.json'.format(env=env)
-                    register(
-                        id=name,
-                        entry_point='gym_unrealcv.envs:UnrealCvTracking_1v1',
-                        kwargs={'setting_file': setting_file,
-                                'reset_type': i,
-                                'action_type': action,
-                                'observation_type': obs,
-                                'reward_type': 'distance',
-                                'docker': use_docker,
-                                'target': target
-                                },
-                        max_episode_steps=500
-                    )
-
 
 # "Pose-Assisted Multi-Camera Collaboration for Active Object Tracking", AAAI 2020
 for env in ['MCRoom', 'Garden', 'UrbanTree']:
@@ -158,47 +115,6 @@ for env in ['FlexibleRoom', 'Garden', 'UrbanTree']:
                                 },
                         max_episode_steps=500
                     )
-
-for env in ['FlexibleRoom', 'SnowForest', 'UrbanCity', 'Garage', 'Garden']:
-    for i in range(7):  # reset type
-        for action in ['Discrete', 'Continuous']:  # action type
-            for obs in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']:  # observation type
-                for target in ['Ram', 'Nav', 'PZRNav', 'AdvNav', 'PZR', 'Adv', 'AdvShare']:
-                        name = 'UnrealTrackMulti-{env}{target}-{action}{obs}-v{reset}'.format(env=env, action=action, obs=obs, target=target, reset=i)
-                        setting_file = 'tracking/1vn/{env}.json'.format(env=env)
-                        register(
-                            id=name,
-                            entry_point='gym_unrealcv.envs:UnrealCvTracking_1vn',
-                            kwargs={'setting_file': setting_file,
-                                    'reset_type': i,
-                                    'action_type': action,
-                                    'observation_type': obs,
-                                    'reward_type': 'distance',
-                                    'docker': use_docker,
-                                    'target': target
-                                    },
-                            max_episode_steps=500
-                            )
-
-# Env for general purpose active object tracking
-for env in ['City', 'FlexibleRoom', 'FlexibleRoom2', 'Forest', 'UrbanCity', 'UrbanRoad', 'Garage', 'SnowForest', 'Garden', 'DesertRuins', 'BrassGardens', 'EFGus']:
-    for i in range(7):  # reset type
-        for action in ['Discrete', 'Continuous']:  # action type
-            for obs in ['Color', 'Depth', 'Rgbd', 'Gray', 'CG', 'Mask', 'Pose']:  # observation type
-                        name = 'UnrealTrackGeneral-{env}-{action}{obs}-v{reset}'.format(env=env, action=action, obs=obs, target=target, reset=i)
-                        setting_file = 'tracking/general/{env}.json'.format(env=env)
-                        register(
-                            id=name,
-                            entry_point='gym_unrealcv.envs:UnrealCvTracking_general',
-                            kwargs={'setting_file': setting_file,
-                                    'reset_type': i,
-                                    'action_type': action,
-                                    'observation_type': obs,
-                                    'reward_type': 'distance',
-                                    'docker': use_docker,
-                                    },
-                            max_episode_steps=500
-                            )
 
 maps = ['Greek_Island', 'supermarket', 'Brass_Gardens', 'Brass_Palace', 'Brass_Streets',
             'EF_Gus', 'EF_Lewis_1', 'EF_Lewis_2', 'EF_Grounds', 'Eastern_Garden', 'Western_Garden', 'Colosseum_Desert',
@@ -251,5 +167,5 @@ for env in maps:
                                     'observation_type': obs,
                                     'reset_type': i,
                                     },
-                            max_episode_steps=350
+                            max_episode_steps=2000
                             )
