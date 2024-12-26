@@ -132,15 +132,15 @@ pip install opencv-python
 Before running the environments, you need to prepare unreal binaries. 
 You can load them from the following link:
 
-| Environment                   | Download Link                                                                                                 | Size   |
-|-------------------------------|---------------------------------------------------------------------------------------------------------------|--------|
-| UE4 Example Scene (Linux)     | [Download](https://app.filen.io/#/d/67ced4e0-4828-4614-9a2d-a9f2360232a5#K7eiIfKYO8GBl7yneiK8kACcRucs5P5O)    | ~3GB   |
-| UE4 Example Scene (Windows)   | [Download](https://app.filen.io/#/d/f4bd1676-b739-4703-885e-df96f032bd84#BPXaTn3HFsGjQI5LRP12IUWvhLqwB3Fd)    | ~3GB   |
-| UE4 Example Scene (Mac)       | [Download](https://app.filen.io/#/d/a0e7fde8-f183-4cb8-8985-5f8d50b7f9b4#LjsLjrKeZxIjemUhzWp7VnJTulSxlpTy)    | ~3GB   |
-| UE5 Example Scene (Linux)     | [Download](https://app.filen.io/#/d/3982f3f5-c21e-400f-b920-0fd7f255a0c1#bgO3LKFfbmISGcYQHuOvliGetWDQMBEc)    | ~10GB  |
-| UE5 Example Scene (Windows)   | [Download](https://app.filen.io/#/d/bb512fa8-ac3a-4b96-ab40-770d262b19e7#2Xj8bDjRxVhdlL5RcmE6aZhC4S1VvMSb)    | ~10GB  |
-| UE4_Scene_Collection(Linux)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD)    | \>60GB |
-| UE4_Scene_Collection(Windows) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb)    | \>60GB |
+| Environment                   | Download Link                                                                                                 | Size       |
+|-------------------------------|---------------------------------------------------------------------------------------------------------------|------------|
+| UE4 Example Scene (Linux)     | [Download](https://app.filen.io/#/d/67ced4e0-4828-4614-9a2d-a9f2360232a5#K7eiIfKYO8GBl7yneiK8kACcRucs5P5O)    | ~3GB       |
+| UE4 Example Scene (Windows)   | [Download](https://app.filen.io/#/d/f4bd1676-b739-4703-885e-df96f032bd84#BPXaTn3HFsGjQI5LRP12IUWvhLqwB3Fd)    | ~3GB       |
+| UE4 Example Scene (Mac)       | [Download](https://app.filen.io/#/d/a0e7fde8-f183-4cb8-8985-5f8d50b7f9b4#LjsLjrKeZxIjemUhzWp7VnJTulSxlpTy)    | ~3GB       |
+| UE5 Example Scene (Linux)     | [Download](https://app.filen.io/#/d/3982f3f5-c21e-400f-b920-0fd7f255a0c1#bgO3LKFfbmISGcYQHuOvliGetWDQMBEc)    | ~10GB      |
+| UE5 Example Scene (Windows)   | [Download](https://app.filen.io/#/d/bb512fa8-ac3a-4b96-ab40-770d262b19e7#2Xj8bDjRxVhdlL5RcmE6aZhC4S1VvMSb)    | ~10GB      |
+| UE4_Scene_Collection(Linux)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD)    | **\>60GB** |
+| UE4_Scene_Collection(Windows) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb)    | **\>60GB** |
 
 [//]: # (`ENV_NAME` can be `RealisticRoom`, `RandomRoom`, `Arm`, etc. )
 
@@ -151,4 +151,54 @@ You can load them from the following link:
 [//]: # ()
 [//]: # (**Please refer the ``binary_list`` in [load_env.py]&#40;load_env.py&#41; for more available example environments.**)
 
+Then move the downloaded binary to the UnrealEnv  folder, which is our default location for binaries, the folder structures are as follows:
+```
+gym-unrealcv/  
+|-- docs/                  
+|-- example/                
+|-- gym_unrealcv/              
+|   |-- envs/    
+|   |   |-- agent/     
+|   |   |-- UnrealEnv/                    # Binary default location
+|   |   |   |-- Collection_WinNoEditor/   # Binary folder
+|   |-- setting/
+|   |   |-- env_config/                   # environment config json file location  
+...
+generate_env_config.py                    # generate environment config json file
+...
+```
+Run **generate_env_config.py** to automatically generate  and store  the config JSON file for the desired map
+```
+python generate_env_config.py --env-bin {binary relative path} --env-map {map name}  
+# binary relative path : the executable file path relative to UnrealEnv folder
+# map name: the user desired map for running.
 
+#example:
+python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\\Collection\\Binaries\\Win64\\Collection.exe --env-map track_train
+```
+
+## Run example codes
+
+### Available Map Name in Exemplar Binary
+
+| UE4                     | UE5                     |
+|-------------------------|-------------------------|
+| track\_train            | Map\_ChemicalPlant\_1   |
+| Greek\_Island           | Old\_Town               |
+| ContainerYard\_Day      | MiddleEast              |
+| ContainerYard\_Night    | Demo\_Roof              |
+| SuburbNeighborhood\_Day |                         |
+| SuburbNeighborhood\_Night|                        |
+
+#### Hint 💡 
+If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
+
+#### 1. Run random agents
+User could choose a map from the available map list and run the random agent to interact with the environment.
+```
+python ./example/random/random_agent_multi.py -e track_train
+```
+#### 2. Run a rule-based tracking agent 
+```
+python ./example/random/tracking_demo.py -e {Map_Name}
+```
