@@ -191,14 +191,19 @@ python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\
 | SuburbNeighborhood\_Night|                        |
 
 #### Hint 💡 
-If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
+- If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
 
 #### 1. Run random agents
-User could choose a map from the available map list and run the random agent to interact with the environment.
+User could choose a map from the available map list, construct a **register name** in the format： ```Unreal{task}-{map_name}-{action space}{Observation type}-v{reset type} ``` and run the random agent to interact with the environment.
 ```
-python ./example/random_agent_multi.py -e track_train
+python ./example/random_agent_multi.py -e UnrealTrack-track_train-ContinusouColor-v0
 ```
 #### 2. Run a rule-based tracking agent 
 ```
-python ./example/tracking_demo.py -e {Map_Name}
+python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinusouColor-v0
+```
+
+#### 2. Run a keyboard tracking agent 
+```
+python ./example/keuboard_agent.py -e UnrealTrack-Old_Town-MixedColor-v0
 ```
