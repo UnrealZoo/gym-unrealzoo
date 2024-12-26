@@ -193,8 +193,17 @@ python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\
 #### Hint 💡 
 - If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
 
+
+#### Naming rule
+We have predefined a naming rule to launch different environment maps and their corresponding task interfaces.  
+```Unreal{task}-{MapName}-{ActionSpace}{ObservationType}-v{version} ```
+- ```{task}```: correspongding to different task interface, we currently support: ```Track```,```Rescue```,```Rendezvous```.
+- ```{MapName}```: the name of the map you want to run, ```track_train```, ```Greek_Island```, etc.
+- ```{ActionSpace}```: the action space of the agent, ```Discrete```, ```Continuous```, ```Mixed```.
+- ```{ObservationType}```: the observation type of the agent, ```Color```, ```Depth```, ```Rgbd```, ```Gray```, ```CG```, ```Mask```, ```Pose```,```MaskDepth```,```ColorMask```.
+- ```{version}```: works on ```track_train``` map, ```0-5``` various the augmentation factor(light, obstacles, layout, textures).
 #### 1. Run random agents
-User could choose a map from the available map list, construct a **register name** in the format： ```Unreal{task}-{map_name}-{action space}{Observation type}-v{reset type} ``` and run the random agent to interact with the environment.
+User could choose a map from the available map list, and run the random agent to interact with the environment.
 ```
 python ./example/random_agent_multi.py -e UnrealTrack-track_train-ContinusouColor-v0
 ```
