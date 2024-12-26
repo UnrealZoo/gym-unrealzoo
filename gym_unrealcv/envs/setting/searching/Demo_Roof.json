@@ -1,0 +1,39 @@
+{
+	"env_name": "Demo_Roof",
+	"env_bin": "Roof_Win64/Roof/Binaries/Win64/Roof.exe",
+	"cam_id": 0,
+	"height": 1500,
+	"pitch": 0,
+	"maxsteps": 2000,
+	"trigger_th": 0.6,
+	"reward_th": 0.1,
+	"reward_factor": 10,
+	"collision_th": 50,
+	"waypoint_th": 200,
+	"player": "bp_character_C_1",
+	"targets": {
+		"Point": ["B_AC_Unit12"]
+	},
+	"reset_area":[-952,802, -56643,-53677, 2650, 2670],
+	"test_xy": [
+		[-106.195,   437.424],
+		[  27.897,  -162.437],
+		[  10.832,   135.126],
+		[  67.903,    26.995],
+		[ -23.558,  -187.354],
+		[ -80.312,   254.579]
+	],
+	"discrete_actions": [
+		[0,   200, 0,0],
+		[0,  -200, 0,0],
+		[15, 50, 0,0],
+		[-15,  50, 0,0],
+		[0,0, 1, 0],
+		[0,0, 0, 1],
+		[0,0,0,0]
+	],
+	"continous_actions": {
+		"high": [100,   45, 1],
+		"low":  [  0,  -45, 0]
+	}
+}
