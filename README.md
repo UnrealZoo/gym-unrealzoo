@@ -196,9 +196,9 @@ If your mouse cursor disappears after the game launches, press ``` ` ``` (the ke
 #### 1. Run random agents
 User could choose a map from the available map list and run the random agent to interact with the environment.
 ```
-python ./example/random/random_agent_multi.py -e track_train
+python ./example/random_agent_multi.py -e track_train
 ```
 #### 2. Run a rule-based tracking agent 
 ```
-python ./example/random/tracking_demo.py -e {Map_Name}
+python ./example/tracking_demo.py -e {Map_Name}
 ```
