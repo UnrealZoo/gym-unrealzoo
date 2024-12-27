@@ -21,7 +21,7 @@ Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of
 
 [//]: # (- ```OpenAI Gym``` is a toolkit for developing an RL algorithm, compatible with most numerical computation libraries, such as TensorFlow or PyTorch. )
 - The ```Unreal Engine Environments (Binary)``` contains the scenes and playable entities.
-- The ```UnrealCV+ Server``` is built in the UE binary as a plugin, icluding modules for rendering , data capture, object/agent control, and command parsing. We have optimized the rendering pipeline and command system in the server.
+- The ```UnrealCV+ Server``` is built in the UE binary as a plugin, including modules for rendering , data capture, object/agent control, and command parsing. We have optimized the rendering pipeline and command system in the server.
 - The ```UnrealCV+ Client``` provides Python-based utility functions for launching the binary, connecting with the server, and interacting with UE environments. It uses IPC sockets and batch commands for optimized performance.
 - The ```OpenAI Gym Interface``` provides agent-level interface for agent-environment interactions, which has been widely used in the community. Our gym interface supports customizing the task in a configuration file and contains a toolkit with a set of gym wrappers for environment augmentation, population control, etc.
 
@@ -45,7 +45,7 @@ git clone https://github.com/UnrealZoo/gym-unrealzoo.git
 cd gym-unrealzoo
 pip install -e . 
 ```
-While installing gym-unrealcv, dependencies including [OpenAI Gym](https://github.com/openai/gym), unrealcv, numpy and matplotlib are installed.
+While installing gym-unrealcv, dependencies including OpenAI Gym, UnrealCV, numpy and matplotlib are installed.
 
 ## Prepare UE Binary
 Before running the environments, you need to prepare unreal binaries. To accommodate users' local memory limitations, we provide two different lightweight environment options based on **UE4 and UE5**. A larger preview-version environment package, which currently contain 50 scene maps (>60GB), is also available for download **here**. The full version of the UnrealZoo environment package will be released soon.
@@ -65,20 +65,22 @@ Before running the environments, you need to prepare unreal binaries. To accommo
         <figcaption>Greek Island</figcaption>
       </figure>
     </td>
+  </tr>
+  <tr>
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/Containeryard_Day.png" width="320" height="180">
-        <figcaption>ContaineYard_Day</figcaption>
+        <figcaption>ContainerYard_Day</figcaption>
       </figure>
     </td>
-  </tr>
-  <tr>
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/ContainerYard_Night.png" width="320" height="180">
         <figcaption>ContainerYard_Night</figcaption>
       </figure>
     </td>
+  </tr>
+  <tr>
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Day.png" width="320" height="180">
@@ -91,6 +93,7 @@ Before running the environments, you need to prepare unreal binaries. To accommo
         <figcaption>SuburbNeighborhood_Night</figcaption>
       </figure>
     </td>
+
   </tr>
 </table>
 
@@ -190,7 +193,7 @@ python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\
 #### Naming rule for the environment
 We have predefined a naming rule to launch different environment maps and their corresponding task interfaces.  
 ```Unreal{task}-{MapName}-{ActionSpace}{ObservationType}-v{version} ```
-- ```{task}```: correspongding to different task interface, we currently support: ```Track```,```Rescue```,```Rendezvous```.
+- ```{task}```: the name of the task, we currently support: ```Track```,```Rescue```,```Rendezvous```.
 - ```{MapName}```: the name of the map you want to run, ```track_train```, ```Greek_Island```, etc.
 - ```{ActionSpace}```: the action space of the agent, ```Discrete```, ```Continuous```, ```Mixed```.
 - ```{ObservationType}```: the observation type of the agent, ```Color```, ```Depth```, ```Rgbd```, ```Gray```, ```CG```, ```Mask```, ```Pose```,```MaskDepth```,```ColorMask```.
