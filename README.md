@@ -3,8 +3,8 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 
 # Introduction
 ![framework](doc/figs/overview.png)
-UnrealZoo is a rich collection of photo-realistic 3D virtual worlds (🛖🛣️⛰️🏭🏟️🏰🛕🏙️🚉🏗️🏥🤽🏻‍♂️🏝️🛶) built on Unreal Engine, designed to reflect the complexity and variability of the open worlds. 
-There are various playable entities (🚶🏻‍♂️🚶🏻🤖🚗🏍️🛩️🐘🐕🐎🐧🐢🐖🐏🐂 ) for embodied AI. 
+UnrealZoo is a rich collection of photo-realistic 3D virtual worlds built on Unreal Engine, designed to reflect the complexity and variability of the open worlds. 
+There are various playable entities for embodied AI. 
 Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of easy-to-use Python APIs and tools for various potential applications, such as data annotation and collection, environment augmentation, distributed training, and benchmarking agents.
 **This repository provides the gym interface based on UnrealCV APIs for UnrealZoo, which is compatible with OpenAI Gym and supports the high-level agent-environment interactions in UnrealZoo.**
 ## Key Features
