@@ -195,7 +195,7 @@ class UnrealCv_base(gym.Env):
             self.unrealcv.set_obj_location(obj, init_poses[i])
         # set view point
             self.unrealcv.set_cam(obj, self.agents[obj]['relative_location'], self.agents[obj]['relative_rotation'])
-
+        self.set_topview(init_poses[self.protagonist_id], self.cam_id[0])
         # get state
         observations, self.obj_poses, self.img_show = self.update_observation(self.player_list, self.cam_list, self.cam_flag, self.observation_type)
 
