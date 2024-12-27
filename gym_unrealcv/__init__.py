@@ -158,7 +158,7 @@ for env in maps:
             for obs in Observations:  # observation type
                 for task in Tasks:
                         name = f'Unreal{task}-{env}-{action}{obs}-v{i}'
-                        setting_file = 'env_config/{env}.json'.format(env=env)
+                        setting_file = '{task}/{env}.json'.format(task=task,env=env)
                         register(
                             id=name,
                             entry_point=f'gym_unrealcv.envs:{task}',
