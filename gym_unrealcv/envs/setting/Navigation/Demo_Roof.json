@@ -1,0 +1,199 @@
+{
+    "env_name": "Demo_Roof",
+    "env_bin": "UE5_ExampleScene_Win64\\Compile_unrealcv5_4\\Binaries\\Win64\\Compile_unrealcv5_4.exe",
+    "env_map": "Demo_Roof",
+    "env_bin_win": "UE5_ExampleScene_Win64\\Compile_unrealcv5_4\\Binaries\\Win64\\Compile_unrealcv5_4.exe",
+    "third_cam": {
+        "cam_id": 0,
+        "pitch": -90,
+        "yaw": 0,
+        "roll": 0,
+        "height_top_view": 3890.0,
+        "fov": 90
+    },
+    "height": 2890.0,
+    "interval": 1000,
+    "agents": {
+        "player": {
+            "name": [
+                "BP_Character_C_1"
+            ],
+            "cam_id": [
+                1
+            ],
+            "class_name": [
+                "bp_character_C"
+            ],
+            "internal_nav": true,
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "relative_location": [
+                20,
+                0,
+                0
+            ],
+            "relative_rotation": [
+                0,
+                0,
+                0
+            ],
+            "head_action_continuous": {
+                "high": [
+                    15,
+                    15,
+                    15
+                ],
+                "low": [
+                    -15,
+                    -15,
+                    -15
+                ]
+            },
+            "head_action": [
+                [
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    30,
+                    0
+                ],
+                [
+                    0,
+                    -30,
+                    0
+                ]
+            ],
+            "animation_action": [
+                "stand",
+                "jump",
+                "crouch"
+            ],
+            "move_action": [
+                [
+                    0,
+                    100
+                ],
+                [
+                    0,
+                    -100
+                ],
+                [
+                    15,
+                    50
+                ],
+                [
+                    -15,
+                    50
+                ],
+                [
+                    30,
+                    0
+                ],
+                [
+                    -30,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ]
+            ],
+            "move_action_continuous": {
+                "high": [
+                    30,
+                    100
+                ],
+                "low": [
+                    -30,
+                    -100
+                ]
+            }
+        }
+    },
+    "safe_start": [
+        [
+            830.0,
+            -55830.0,
+            2598.275
+        ],
+        [
+            1455.0,
+            -54000.0,
+            2890.0
+        ],
+        [
+            850.408,
+            -55553.889,
+            2573.104
+        ],
+        [
+            282.74,
+            -55617.772,
+            2674.0
+        ],
+        [
+            1775.0,
+            -55830.0,
+            2585.125
+        ],
+        [
+            2585.0,
+            -56400.0,
+            2566.0
+        ],
+        [
+            -841.422,
+            -55228.137,
+            2566.0
+        ],
+        [
+            67.175,
+            -54534.501,
+            2566.0
+        ],
+        [
+            1798.746,
+            -54394.422,
+            2890.0
+        ],
+        [
+            2045.127,
+            -57400.0,
+            2571.602
+        ],
+        [
+            -73.001,
+            -54903.271,
+            2568.653
+        ]
+    ],
+    "reset_area": [
+        -841.422,
+        2585.0,
+        -57400.0,
+        -54000.0,
+        2566.0,
+        2890.0
+    ],
+    "random_init": false,
+    "env": {
+        "interactive_door": [],
+        "targets": {
+		    "Point": ["B_AC_Unit12"]
+	}
+    },
+    "obj_num": 4523,
+    "size": 121176.0,
+    "area": 6600.0,
+    "bbox": [
+        110.0,
+        60.0,
+        18.36
+    ]
+}
