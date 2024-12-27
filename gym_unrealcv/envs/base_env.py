@@ -135,7 +135,8 @@ class UnrealCv_base(gym.Env):
             Distance=None,
             Color=None,
             Depth=None,
-            Relative_Pose=[]
+            Relative_Pose=[],
+            Success=False
         )
         actions2move, actions2turn, actions2animate = self.action_mapping(actions, self.player_list)
         move_cmds = [self.unrealcv.set_move_bp(obj, actions2move[i], return_cmd=True) for i, obj in enumerate(self.player_list) if actions2move[i] is not None]

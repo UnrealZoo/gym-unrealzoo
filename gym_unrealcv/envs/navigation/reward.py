@@ -2,9 +2,11 @@ class Reward():
     '''
     define different type reward function
     '''
-    def __init__(self, setting):
-        self.reward_factor = setting['reward_factor']
-        self.reward_th = setting['reward_th']
+    def __init__(self):
+        # self.reward_factor = setting['reward_factor']
+        # self.reward_th = setting['reward_th']
+        self.reward_factor = 10
+        self.reward_th = 0.1
         self.dis2target_last = 0
 
     def reward_bbox(self, boxes):

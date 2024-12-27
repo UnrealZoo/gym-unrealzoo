@@ -1,6 +1,6 @@
 {
 	"env_name": "Demo_Roof",
-	"env_bin": "Roof_Win64/Roof/Binaries/Win64/Roof.exe",
+	"env_bin_win": "UE5_ExampleScene_Win64\\Compile_unrealcv5_4\\Binaries\\Win64\\Compile_unrealcv5_4.exe",
 	"cam_id": 0,
 	"height": 1500,
 	"pitch": 0,
