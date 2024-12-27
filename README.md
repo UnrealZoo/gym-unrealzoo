@@ -164,6 +164,7 @@ gym-unrealcv/
 ...
 generate_env_config.py                    # generate environment config json file
 ...
+
 ```
 Run **generate_env_config.py** to automatically generate  and store  the config JSON file for the desired map
 ```
@@ -174,8 +175,6 @@ python generate_env_config.py --env-bin {binary relative path} --env-map {map na
 #example:
 python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\\Collection\\Binaries\\Win64\\Collection.exe --env-map track_train
 ```
-
-## Run example codes
 
 ### Available Map Name in Exemplar Binary
 
@@ -188,10 +187,6 @@ python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\
 | SuburbNeighborhood\_Day |                         |
 | SuburbNeighborhood\_Night|                        |
 
-#### Hint 💡 
-- If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
-
-
 #### Naming rule for the environment
 We have predefined a naming rule to launch different environment maps and their corresponding task interfaces.  
 ```Unreal{task}-{MapName}-{ActionSpace}{ObservationType}-v{version} ```
@@ -200,6 +195,11 @@ We have predefined a naming rule to launch different environment maps and their 
 - ```{ActionSpace}```: the action space of the agent, ```Discrete```, ```Continuous```, ```Mixed```.
 - ```{ObservationType}```: the observation type of the agent, ```Color```, ```Depth```, ```Rgbd```, ```Gray```, ```CG```, ```Mask```, ```Pose```,```MaskDepth```,```ColorMask```.
 - ```{version}```: works on ```track_train``` map, ```0-5``` various the augmentation factor(light, obstacles, layout, textures).
+
+## Run the Example Code
+#### Hint 💡 
+- If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
+
 #### 1. Run random agents
 User could choose a map from the available map list, and run the random agent to interact with the environment.
 ```
@@ -210,7 +210,11 @@ python ./example/random_agent_multi.py -e UnrealTrack-track_train-ContinuousColo
 python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinuousColor-v0
 ```
 
-#### 2. Run a keyboard tracking agent 
+#### 3. Run a keyboard tracking agent 
 ```
 python ./example/keyboard_agent.py -e UnrealTrack-Greek_Island-MixedColor-v0
 ```
+
+## Wrappers for Advanced Usage
+We provide a set of wrappers for FPS control, population randomization, etc.
+Please refer to the [wrapper](doc/wrapper.md) for more details.
