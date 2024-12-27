@@ -86,7 +86,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
     # parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-ContinuousMask-v4',
     #                     help='Select the environment to run')
-    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-MixedColor-v0',
+    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-Old_Town-MixedColor-v0',
                         help='Select the environment to run')
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     parser.add_argument("-s", '--seed', dest='seed', default=10, help='random seed')

@@ -383,7 +383,7 @@ class PoseTracker(object):
         self.expected_angle = expected_angle
         from simple_pid import PID
         self.angle_pid = PID(1, 0.01, 0, setpoint=1)
-        self.velocity_pid = PID(5, 0.1, 0.05, setpoint=1)
+        self.velocity_pid = PID(5.5, 0.1, 0.05, setpoint=1)
 
     def act(self, pose, target_pose):
         delt_yaw = misc.get_direction(pose, target_pose) # get the angle between current pose and goal in x-y plane
@@ -394,3 +394,26 @@ class PoseTracker(object):
         velocity = np.clip(self.velocity_pid(-delt_distance), self.velocity_low, self.velocity_high)
 
         return [angle, velocity]
+
+class DronePoseTracker(object):
+    def __init__(self, expected_distance = 250, expected_angle = 0):
+
+        self.velocity_high = 1
+        self.velocity_low = -1
+        self.angle_high = 1
+        self.angle_low = -1
+        self.expected_distance = expected_distance
+        self.expected_angle = expected_angle
+        from simple_pid import PID
+        self.angle_pid = PID(1, 0.01, 0, setpoint=1)
+        self.velocity_pid = PID(5, 0.1, 0.05, setpoint=1)
+
+    def act(self, pose, target_pose):
+        delt_yaw = misc.get_direction(pose, target_pose) # get the angle between current pose and goal in x-y plane
+        # angle = np.clip(self.angle_pid(-delt_yaw), self.angle_low, self.angle_high)
+        angle = np.clip(self.angle_pid(self.expected_angle-delt_yaw), self.angle_low, self.angle_high)
+
+        delt_distance = (np.linalg.norm(np.array(pose[:2]) - np.array(target_pose[:2])) - self.expected_distance)
+        velocity = np.clip(self.velocity_pid(-delt_distance), self.velocity_low, self.velocity_high)
+
+        return [velocity,0,0,angle]

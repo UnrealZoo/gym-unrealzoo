@@ -205,11 +205,11 @@ We have predefined a naming rule to launch different environment maps and their 
 #### 1. Run random agents
 User could choose a map from the available map list, and run the random agent to interact with the environment.
 ```
-python ./example/random_agent_multi.py -e UnrealTrack-track_train-ContinusouColor-v0
+python ./example/random_agent_multi.py -e UnrealTrack-track_train-ContinuousColor-v0
 ```
 #### 2. Run a rule-based tracking agent 
 ```
-python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinusouColor-v0
+python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinuousColor-v0
 ```
 
 #### 2. Run a keyboard tracking agent 
