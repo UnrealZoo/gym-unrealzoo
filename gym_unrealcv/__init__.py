@@ -138,13 +138,25 @@ for env in maps:
                 for task in Tasks:
                         name = f'Unreal{task}-{env}-{action}{obs}-v{i}'
                         setting_file = '{task}/{env}.json'.format(task=task,env=env)
-                        register(
-                            id=name,
-                            entry_point=f'gym_unrealcv.envs:{task}',
-                            kwargs={'env_file': setting_file,
-                                    'action_type': action,
-                                    'observation_type': obs,
-                                    'reset_type': i,
-                                    },
-                            max_episode_steps=500
+                        if task =='Navigation':
+                            register(
+                                id=name,
+                                entry_point=f'gym_unrealcv.envs:{task}',
+                                kwargs={'env_file': setting_file,
+                                        'action_type': action,
+                                        'observation_type': obs,
+                                        'reset_type': i,
+                                        },
+                                max_episode_steps=1000
                             )
+                        else:
+                            register(
+                                id=name,
+                                entry_point=f'gym_unrealcv.envs:{task}',
+                                kwargs={'env_file': setting_file,
+                                        'action_type': action,
+                                        'observation_type': obs,
+                                        'reset_type': i,
+                                        },
+                                max_episode_steps=500
+                                )
