@@ -132,15 +132,15 @@ pip install opencv-python
 Before running the environments, you need to prepare unreal binaries. 
 You can load them from the following link:
 
-| Environment                                    | Download Link                                                                                                 | Size       |
-|------------------------------------------------|---------------------------------------------------------------------------------------------------------------|------------|
-| UE4 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/16d71f8c-7343-4c71-8596-d2c812deba36#CIVfQumTbagwLtvyplxKP8DpkZpeR3k3)    | ~3GB       |
-| UE4 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/88d13df9-a6b1-48e8-87c1-60e9d23bd41c#aUlhzcUSd0SzDXHvRkhRtzDGS2gXCv9j)    | ~3GB       |
-| UE4 Example Scene (Mac)                        | [Download]()    | ~3GB       |
-| UE5 Example Scene (Linux)                      | [Download]()    | ~10GB      |
-| UE5 Example Scene (Windows)                    | [Download]()    | ~10GB      |
-| UE4_Scene_Collection_preview(Linux, 50 maps)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD)    | **\>60GB** |
-| UE4_Scene_Collection_preview(Windows, 50 maps) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb)    | **\>60GB** |
+| Environment                                    | Download Link                                                                                              | Size       |
+|------------------------------------------------|------------------------------------------------------------------------------------------------------------|------------|
+| UE4 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/16d71f8c-7343-4c71-8596-d2c812deba36#CIVfQumTbagwLtvyplxKP8DpkZpeR3k3) | ~3GB       |
+| UE4 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/88d13df9-a6b1-48e8-87c1-60e9d23bd41c#aUlhzcUSd0SzDXHvRkhRtzDGS2gXCv9j) | ~3GB       |
+| UE4 Example Scene (Mac)                        | coming soon                                                                                                | -          |
+| UE5 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/7583151b-68c1-4617-9622-d6ab058ab0ab#mHcE9joY1is8W8lxcNAie6jd6BjR3VYP)                                                                                               | ~10GB      |
+| UE5 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/00fb2bb7-8b0f-4b5f-8650-087a106fd8f9#O2l0dpqTnadH9CUGhXm8XcbeVDGMaNFt)                                                                                               | ~10GB      |
+| UE4_Scene_Collection_preview(Linux, 50 maps)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD) | **\>60GB** |
+| UE4_Scene_Collection_preview(Windows, 50 maps) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb) | **\>60GB** |
 
 [//]: # (`ENV_NAME` can be `RealisticRoom`, `RandomRoom`, `Arm`, etc. )
 
@@ -214,5 +214,5 @@ python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinuousColor-v0
 
 #### 2. Run a keyboard tracking agent 
 ```
-python ./example/keuboard_agent.py -e UnrealTrack-Old_Town-MixedColor-v0
+python ./example/keyboard_agent.py -e UnrealTrack-Old_Town-MixedColor-v0
 ```
