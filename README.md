@@ -2,9 +2,53 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 ===
 
 # Introduction
-**UnrealZoo is a suite of large-scale, photorealistic virtual environments designed to enhance the development of general visual intelligence, particularly for embodied AI. Leveraging the Unreal Engine and UnrealCV, these environments provide a scalable, controllable, and diverse play ground for AI agents, helping to speed up advancements in embodied artificial intelligence. The use of high-fidelity graphics and physics simulations allows for the study of complex interactive visual tasks in open worlds. We outline the technical framework of UnrealCV+, emphasizing its integration with machine learning pipelines and its utility in generating synthetic data for AI research. We demonstrate the applications of the virtual environments in developing the visual intelligence for embodied agents. This project concludes with a perspective on the future integration of multi-modal inputs and the role of UnrealCV+ in shaping the next generation of AI systems with advanced visual intelligence.**
+![framework](doc/figs/overview.png)
+UnrealZoo is a rich collection of photo-realistic 3D virtual worlds (🛖🛣️⛰️🏭🏟️🏰🛕🏙️🚉🏗️🏥🤽🏻‍♂️🏝️🛶) built on Unreal Engine, designed to reflect the complexity and variability of the open worlds. 
+There are various playable entities (🚶🏻‍♂️🚶🏻🤖🚗🏍️🛩️🐘🐕🐎🐧🐢🐖🐏🐂 ) for embodied AI. 
+Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of easy-to-use Python APIs and tools for various potential applications, such as data annotation and collection, environment augmentation, distributed training, and benchmarking agents.
+**This repository provides the gym interface based on UnrealCV APIs for UnrealZoo, which is compatible with OpenAI Gym and supports the high-level agent-environment interactions in UnrealZoo.**
+## Key Features
+- **Large-scale Photo-realistic Scenes**:🛖🛣️⛰️🏭🏟️🏰🛕🏙️🚉🏗️🏥🤽🏻‍♂️🏝️🛶
+- **Various Playable Entities**:🚶🏻‍♂️️🚶🏻🤖🚗🏍️🛩️🐘🐕🐎🐧🐢🐖🐏🐂
+- **Rich Agent-Object Interactions**: Climbing, Jumping, Running, Squatting, Sitting, Pick-up, etc.
+- **Easy-to-use Python APIs**: Integrated with UnrealCV and Gym Interfaces.
+- **Multi-agent Support**: Real-time interaction of 10+ vision-based agents in one scene.
 
-To accommodate users' local memory limitations, we provide two different lightweight environment options based on **UE4 and UE5**. A larger preview-version environment package, which currently contain 50 scene maps (>60GB), is also available for download **here**. The full version of the UnrealZoo environment package will be released soon.
+# Framework
+![framework](doc/figs/framework.png)
+
+[//]: # (- ```UnrealCV``` is the basic bridge between ```Unreal Engine``` and ```OpenAI Gym```.)
+
+[//]: # (- ```OpenAI Gym``` is a toolkit for developing an RL algorithm, compatible with most numerical computation libraries, such as TensorFlow or PyTorch. )
+- The ```Unreal Engine Environments (Binary)``` contains the scenes and playable entities.
+- The ```UnrealCV+ Server``` is built in the UE binary as a plugin, icluding modules for rendering , data capture, object/agent control, and command parsing. We have optimized the rendering pipeline and command system in the server.
+- The ```UnrealCV+ Client``` provides Python-based utility functions for launching the binary, connecting with the server, and interacting with UE environments. It uses IPC sockets and batch commands for optimized performance.
+- The ```OpenAI Gym Interface``` provides agent-level interface for agent-environment interactions, which has been widely used in the community. Our gym interface supports customizing the task in a configuration file and contains a toolkit with a set of gym wrappers for environment augmentation, population control, etc.
+
+# Installation
+## Dependencies
+- UnrealCV
+- Gym
+- CV2
+- Matplotlib
+- Numpy
+- Docker(Optional)
+- Nvidia-Docker(Optional)
+ 
+We recommend you use [anaconda](https://www.continuum.io/downloads) to install and manage your Python environment.
+```CV2``` is used for image processing, like extracting object masks and bounding boxes. ```Matplotlib``` is used for visualization.
+## Install Gym-UnrealZoo
+
+It is easy to install gym-unrealzoo, just run
+```
+git clone https://github.com/UnrealZoo/gym-unrealzoo.git
+cd gym-unrealzoo
+pip install -e . 
+```
+While installing gym-unrealcv, dependencies including [OpenAI Gym](https://github.com/openai/gym), unrealcv, numpy and matplotlib are installed.
+
+## Prepare UE Binary
+Before running the environments, you need to prepare unreal binaries. To accommodate users' local memory limitations, we provide two different lightweight environment options based on **UE4 and UE5**. A larger preview-version environment package, which currently contain 50 scene maps (>60GB), is also available for download **here**. The full version of the UnrealZoo environment package will be released soon.
 
 **UE4 Example Scenes**
 <table>
@@ -82,65 +126,19 @@ To accommodate users' local memory limitations, we provide two different lightwe
     </td>
  
   </tr>
-</table>
+</table> 
 
-# FrameWork
-![framework](doc/figs/framework.png)
-
-[//]: # (- ```UnrealCV``` is the basic bridge between ```Unreal Engine``` and ```OpenAI Gym```.)
-
-[//]: # (- ```OpenAI Gym``` is a toolkit for developing an RL algorithm, compatible with most numerical computation libraries, such as TensorFlow or PyTorch. )
-- The ```Unreal Engine Environments (Binary)``` contains the scenes and playable entities.
-- The ```UnrealCV+ Server``` is built in the UE binary as a plugin, icluding modules for rendering , data capture, object/agent control, and command parsing. We have optimized the rendering pipeline and command system in the server.
-- The ```UnrealCV+ Client``` provides Python-based utility functions for launching the binary, connecting with the server, and interacting with UE environments. It uses IPC sockets and batch commands for optimized performance.
-- The ```OpenAI Gym Interface``` provides agent-level interface for agent-environment interactions, which has been widely used in the community. Our gym interface supports customizing the task in a configuration file and contains a toolkit with a set of gym wrappers for environment augmentation, population control, etc.
-
-
-# Installation
-## Dependencies
-- UnrealCV
-- Gym
-- CV2
-- Matplotlib
-- Numpy
-- Docker(Optional)
-- Nvidia-Docker(Optional)
- 
-We recommend you use [anaconda](https://www.continuum.io/downloads) to install and manage your Python environment.
-```CV2``` is used for image processing, like extracting object masks and bounding boxes. ```Matplotlib``` is used for visualization.
-## Install Gym-UnrealZoo
-
-It is easy to install gym-unrealzoo, just run
-```
-git clone https://github.com/UnrealZoo/gym-unrealzoo.git
-cd gym-unrealzoo
-pip install -e . 
-```
-While installing gym-unrealcv, dependencies including [OpenAI Gym](https://github.com/openai/gym), unrealcv, numpy and matplotlib are installed.
-`Opencv` should be installed additionally. 
-If you use ```anaconda```, you can run
-```
-conda update conda
-conda install --channel menpo opencv
-```
-or
-```
-pip install opencv-python
-```
-
-## Prepare Unreal Binary
-Before running the environments, you need to prepare unreal binaries. 
 You can load them from the following link:
 
-| Environment                                    | Download Link                                                                                              | Size       |
-|------------------------------------------------|------------------------------------------------------------------------------------------------------------|------------|
-| UE4 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/16d71f8c-7343-4c71-8596-d2c812deba36#CIVfQumTbagwLtvyplxKP8DpkZpeR3k3) | ~3GB       |
-| UE4 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/88d13df9-a6b1-48e8-87c1-60e9d23bd41c#aUlhzcUSd0SzDXHvRkhRtzDGS2gXCv9j) | ~3GB       |
-| UE4 Example Scene (Mac)                        | coming soon                                                                                                | -          |
-| UE5 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/7583151b-68c1-4617-9622-d6ab058ab0ab#mHcE9joY1is8W8lxcNAie6jd6BjR3VYP)                                                                                               | ~10GB      |
-| UE5 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/00fb2bb7-8b0f-4b5f-8650-087a106fd8f9#O2l0dpqTnadH9CUGhXm8XcbeVDGMaNFt)                                                                                               | ~10GB      |
-| UE4_Scene_Collection_preview(Linux, 50 maps)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD) | **\>60GB** |
-| UE4_Scene_Collection_preview(Windows, 50 maps) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb) | **\>60GB** |
+| Environment                                    | Download Link                                                                                                 | Size       |
+|------------------------------------------------|---------------------------------------------------------------------------------------------------------------|------------|
+| UE4 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/16d71f8c-7343-4c71-8596-d2c812deba36#CIVfQumTbagwLtvyplxKP8DpkZpeR3k3)    | ~3GB       |
+| UE4 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/88d13df9-a6b1-48e8-87c1-60e9d23bd41c#aUlhzcUSd0SzDXHvRkhRtzDGS2gXCv9j)    | ~3GB       |
+| UE4 Example Scene (Mac)                        | [Download]()    | ~3GB       |
+| UE5 Example Scene (Linux)                      | [Download]()    | ~10GB      |
+| UE5 Example Scene (Windows)                    | [Download]()    | ~10GB      |
+| UE4_Scene_Collection_preview(Linux, 50 maps)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD)    | **\>60GB** |
+| UE4_Scene_Collection_preview(Windows, 50 maps) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb)    | **\>60GB** |
 
 [//]: # (`ENV_NAME` can be `RealisticRoom`, `RandomRoom`, `Arm`, etc. )
 
@@ -194,7 +192,7 @@ python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\
 - If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
 
 
-#### Naming rule
+#### Naming rule for the environment
 We have predefined a naming rule to launch different environment maps and their corresponding task interfaces.  
 ```Unreal{task}-{MapName}-{ActionSpace}{ObservationType}-v{version} ```
 - ```{task}```: correspongding to different task interface, we currently support: ```Track```,```Rescue```,```Rendezvous```.
@@ -214,5 +212,5 @@ python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinuousColor-v0
 
 #### 2. Run a keyboard tracking agent 
 ```
-python ./example/keyboard_agent.py -e UnrealTrack-Old_Town-MixedColor-v0
+python ./example/keyboard_agent.py -e UnrealTrack-Greek_Island-MixedColor-v0
 ```
