@@ -1,6 +1,6 @@
 {
     "env_name": "track_train",
-    "env_bin": "UE4_ExampleScene_WindowsNoEditor/UE4_ExampleScene/Binaries/Win64/UE4_ExampleScene.exe",
+    "env_bin": "UE4_ExampleScene_LinuxNoEditor/UE4_ExampleScene/Binaries/Linux/UE4_ExampleScene",
     "env_map": "track_train",
     "env_bin_win": "UE4_ExampleScene_WindowsNoEditor\\UE4_ExampleScene\\Binaries\\Win64\\UE4_ExampleScene.exe",
     "third_cam": {
