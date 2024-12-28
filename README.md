@@ -193,9 +193,9 @@ python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\
 #### Naming rule for the environment
 We have predefined a naming rule to launch different environment maps and their corresponding task interfaces.  
 ```Unreal{task}-{MapName}-{ActionSpace}{ObservationType}-v{version} ```
-- ```{task}```: the name of the task, we currently support: ```Track```,```Rescue```,```Rendezvous```.
+- ```{task}```: the name of the task, we currently support: ```Track```,```Navigation```,```Rendezvous```.
 - ```{MapName}```: the name of the map you want to run, ```track_train```, ```Greek_Island```, etc.
-- ```{ActionSpace}```: the action space of the agent, ```Discrete```, ```Continuous```, ```Mixed```.
+- ```{ActionSpace}```: the action space of the agent, ```Discrete```, ```Continuous```, ```Mixed```. (Only Mixed type support interactive actions)
 - ```{ObservationType}```: the observation type of the agent, ```Color```, ```Depth```, ```Rgbd```, ```Gray```, ```CG```, ```Mask```, ```Pose```,```MaskDepth```,```ColorMask```.
 - ```{version}```: works on ```track_train``` map, ```0-5``` various the augmentation factor(light, obstacles, layout, textures).
 
@@ -214,9 +214,40 @@ python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinuousColor-v0
 ```
 
 #### 3. Run a keyboard tracking agent 
+Use the "I", "J", "K", and "L" keys to control the agent's movement.
 ```
 python ./example/keyboard_agent.py -e UnrealTrack-Greek_Island-MixedColor-v0
 ```
+#### 4. Run a keyboard Navigation agent
+Use the "I", "J", "K", and "L" keys to control the agent's movement.  
+Space( ␣ ): Jump.  
+Up Arrow(⬆️): Look up.  
+Down Arrow(⬇️): Look down.  
+(Double "Jump" will trigger the agent to climb)
+```
+python ./example/keyboard_Navigationagent.py -e UnrealNavigation-Demo_Roof-MixedColor-v0
+```
+Control the agent to navigate to the target location by using the keyboard. 
+
+<table>
+  <tr>
+    <td>
+      <figure>
+        <img src="./doc/figs/navigation/map.png" width="320" height="180">
+        <figcaption> Map reference</figcaption>
+      </figure>
+    </td>
+    <td>
+      <figure>
+        <img src="./doc/figs/navigation/target.png" width="240" height="190
+">
+        <figcaption>Target Reference</figcaption>
+      </figure>
+    </td>
+
+  </tr>
+ 
+</table> 
 
 ## Wrappers for Advanced Usage
 We provide a set of wrappers for FPS control, population randomization, etc.
