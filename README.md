@@ -1,12 +1,31 @@
 UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 ===
-
-# Introduction
 ![framework](doc/figs/overview.png)
+
+# 🔥 News
+- Paper Link: [UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI]()
+- Comprehensive documentation is available in [Doc]() 
+- Project website is available at [UnrealZoo](https://unrealzoo.github.io/)
+
+# Table of Contents
+
+1. [What is UnrealZoo?](#what-is-unrealzoo)
+2. [Key Features](#key-features)
+3. [Framework](#framework)
+4. [Quick Installation](#installation)
+5. [Run example code](#run-the-example-code)
+6. [Documentation](#documentation)
+7. [License and Acknowledgments](#license-and-acknowledgments)
+8. [Citation](#citation)
+
+
+## What is UnrealZoo?
+
 UnrealZoo is a rich collection of photo-realistic 3D virtual worlds built on Unreal Engine, designed to reflect the complexity and variability of the open worlds. 
 There are various playable entities for embodied AI. 
 Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of easy-to-use Python APIs and tools for various potential applications, such as data annotation and collection, environment augmentation, distributed training, and benchmarking agents.
 **This repository provides the gym interface based on UnrealCV APIs for UnrealZoo, which is compatible with OpenAI Gym and supports the high-level agent-environment interactions in UnrealZoo.**
+
 ## Key Features
 - **Large-scale Photo-realistic Scenes**:🛖🛣️⛰️🏭🏟️🏰🛕🏙️🚉🏗️🏥🤽🏻‍♂️🏝️🛶
 - **Various Playable Entities**:🚶🏻‍♂️️🚶🏻🤖🚗🏍️🛩️🐘🐕🐎🐧🐢🐖🐏🐂
@@ -14,7 +33,7 @@ Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of
 - **Easy-to-use Python APIs**: Integrated with UnrealCV and Gym Interfaces.
 - **Multi-agent Support**: Real-time interaction of 10+ vision-based agents in one scene.
 
-# Framework
+## Framework
 ![framework](doc/figs/framework.png)
 
 [//]: # (- ```UnrealCV``` is the basic bridge between ```Unreal Engine``` and ```OpenAI Gym```.)
@@ -25,8 +44,8 @@ Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of
 - The ```UnrealCV+ Client``` provides Python-based utility functions for launching the binary, connecting with the server, and interacting with UE environments. It uses IPC sockets and batch commands for optimized performance.
 - The ```OpenAI Gym Interface``` provides agent-level interface for agent-environment interactions, which has been widely used in the community. Our gym interface supports customizing the task in a configuration file and contains a toolkit with a set of gym wrappers for environment augmentation, population control, etc.
 
-# Installation
-## Dependencies
+## Quick Installation
+### Dependencies
 - UnrealCV
 - Gym
 - CV2
@@ -37,7 +56,7 @@ Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of
  
 We recommend you use [anaconda](https://www.continuum.io/downloads) to install and manage your Python environment.
 ```CV2``` is used for image processing, like extracting object masks and bounding boxes. ```Matplotlib``` is used for visualization.
-## Install Gym-UnrealZoo
+### Install Gym-UnrealZoo
 
 It is easy to install gym-unrealzoo, just run
 ```
@@ -47,7 +66,7 @@ pip install -e .
 ```
 While installing gym-unrealcv, dependencies including OpenAI Gym, UnrealCV, numpy and matplotlib are installed.
 
-## Prepare UE Binary
+### Prepare UE Binary
 Before running the environments, you need to prepare unreal binaries. To accommodate users' local memory limitations, we provide two different lightweight environment options based on **UE4 and UE5**. A larger preview-version environment package, which currently contain 50 scene maps (>60GB), is also available for download **here**. The full version of the UnrealZoo environment package will be released soon.
 
 **UE4 Example Scenes**
@@ -249,6 +268,31 @@ Control the agent to navigate to the target location by using the keyboard.
  
 </table> 
 
-## Wrappers for Advanced Usage
+[//]: # (## Wrappers for Advanced Usage)
+## Documentation
 We provide a set of wrappers for FPS control, population randomization, etc.
 Please refer to the [wrapper](doc/wrapper.md) for more details.
+
+## License and Acknowledgments
+The UnrealZoo project is licensed under the Apache 2.0. 
+We acknowledge the following projects for their contributions to the UnrealZoo project:
+- [UnrealCV](https://unrealcv.org/)
+- [OpenAI Gym](https://gym.openai.com/)
+- [UnrealEngine](https://www.unrealengine.com/)
+- [UnrealEngine Artist]
+  -  [SmartLocomotion](https://www.fab.com/zh-cn/listings/7f881534-bf40-493b-97b4-a917daa87af0)
+  -  [AnimalPack](https://www.fab.com/zh-cn/listings/856c42d7-58a3-4b95-8f70-1302e5bdafa0)
+  -  [Vehicle](https://www.fab.com/zh-cn/listings/65a0844c-6be4-4e38-9d7a-b9697681a274)
+
+## Citation
+
+If you use UnrealZoo in your research, please consider citing:
+
+```bibtex
+@software{UnrealZoo,
+  author = {},
+  title = {},
+  month = {December},
+  year = {2024},
+  url = {}
+}
