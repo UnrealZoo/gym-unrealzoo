@@ -10,10 +10,13 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 # Table of Contents
 
 1. [What is UnrealZoo?](#what-is-unrealzoo)
-2. [Key Features](#key-features)
-3. [Framework](#framework)
-4. [Quick Installation](#installation)
-5. [Run example code](#run-the-example-code)
+   - [Key Features](#key-features)
+   - [Framework](#framework)
+4. [Quick Installation](#quick-installation)
+   - [Dependencies](#dependencies)
+   - [Install Gym-UnrealZoo](#install-gym-unrealzoo)
+   - [Prepare UE Binary](#prepare-ue-binary)
+5. [Run the Example Code](#run-the-example-code)
 6. [Documentation](#documentation)
 7. [License and Acknowledgments](#license-and-acknowledgments)
 8. [Citation](#citation)
@@ -256,19 +259,21 @@ Control the agent to navigate to the target location by using the keyboard.
 
 [//]: # (## Wrappers for Advanced Usage)
 ## Documentation
-We provide a set of wrappers for FPS control, population randomization, etc.
+- We provide a set of wrappers for FPS control, population randomization, etc.
 Please refer to the [wrapper](doc/wrapper.md) for more details.
+- We provide a document for adding a new environment in gym-unrealzoo. Please refer to the [addEnv](doc/addEnv.md) for more details.
 
 ## License and Acknowledgments
 The UnrealZoo project is licensed under the Apache 2.0. 
 We acknowledge the following projects for their contributions to the UnrealZoo project:
 - [UnrealCV](https://unrealcv.org/)
 - [OpenAI Gym](https://gym.openai.com/)
-- [UnrealEngine](https://www.unrealengine.com/)
-- [UnrealEngine Artist]
-  -  [SmartLocomotion](https://www.fab.com/zh-cn/listings/7f881534-bf40-493b-97b4-a917daa87af0)
-  -  [AnimalPack](https://www.fab.com/zh-cn/listings/856c42d7-58a3-4b95-8f70-1302e5bdafa0)
-  -  [Vehicle](https://www.fab.com/zh-cn/listings/65a0844c-6be4-4e38-9d7a-b9697681a274)
+- [Unreal Engine](https://www.unrealengine.com/)
+- [The fantastic Plugins/Content from UE Marketplace](https://www.unrealengine.com/marketplace)
+  -  [Smart Locomotion](https://www.fab.com/zh-cn/listings/7f881534-bf40-493b-97b4-a917daa87af0)
+  -  [Animal Pack](https://www.fab.com/zh-cn/listings/856c42d7-58a3-4b95-8f70-1302e5bdafa0)
+  -  [Drivable Car](https://www.fab.com/zh-cn/listings/65a0844c-6be4-4e38-9d7a-b9697681a274)
+  - ...
 
 ## Citation
 
