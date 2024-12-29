@@ -105,6 +105,8 @@ class UnrealCv_base(gym.Env):
         # config unreal env
         if 'linux' in sys.platform:
             env_bin = setting['env_bin']
+        elif 'darwin' in sys.platform:
+            env_bin = setting['env_bin_mac']
         elif 'win' in sys.platform:
             env_bin = setting['env_bin_win']
         if 'env_map' in setting.keys():
@@ -614,10 +616,12 @@ class UnrealCv_base(gym.Env):
         # launch the UE4 binary
         env_ip, env_port = self.ue_binary.start(docker=self.docker, resolution=self.resolution, display=self.display,
                                                opengl=self.use_opengl, offscreen=self.offscreen_rendering,
-                                               nullrhi=self.nullrhi)
+                                               nullrhi=self.nullrhi,sleep_time=10)
+
+
         # connect to UnrealCV Server
         self.unrealcv = Character_API(port=env_port, ip=env_ip, resolution=self.resolution, comm_mode=self.comm_mode)
-
+        self.unrealcv.set_map(self.env_name)
         return True
 
     def init_agents(self):
