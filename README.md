@@ -198,7 +198,7 @@ python generate_env_config.py --env-bin {binary relative path} --env-map {map na
 python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\\Collection\\Binaries\\Win64\\Collection.exe --env-map track_train
 ```
 
-### Available Map Name in Exemplar Binary
+#### Available Map Name in Exemplar Binary
 
 | UE4                     | UE5                     |
 |-------------------------|-------------------------|
