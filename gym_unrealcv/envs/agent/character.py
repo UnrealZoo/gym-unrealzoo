@@ -34,6 +34,17 @@ class Character_API(UnrealCv_API):
             self.color_dict = self.build_color_dict(self.targets)
 
     def get_observation(self, cam_id, observation_type, mode='bmp'):
+        """
+        Get the observation from the specified camera.
+
+        Args:
+            cam_id (int): The ID of the camera.
+            observation_type (str): The type of observation to retrieve. Options are 'Color', 'Mask', 'Depth', 'Rgbd', 'Gray', 'Pose'.
+            mode (str, optional): The mode in which to retrieve the image. Defaults to 'bmp'.
+
+        Returns:
+            np.ndarray: The observation data.
+        """
         if observation_type == 'Color':
             self.img_color = state = self.get_image(cam_id, 'lit', mode)
         elif observation_type == 'Mask':
@@ -53,7 +64,17 @@ class Character_API(UnrealCv_API):
             state = self.get_pose() # fake pose
         return state
 
-    def get_pose(self, cam_id, newest=True):  # pose = [x, y, z, roll, yaw, pitch]
+    def get_pose(self, cam_id, newest=True):
+        """
+        Get the pose of the specified camera.
+
+        Args:
+            cam_id (int): The ID of the camera.
+            newest (bool, optional): If True, get the latest camera pose. If False, get the stored camera pose. Defaults to True.
+
+        Returns:
+            list: The pose of the camera in the format [x, y, z, roll, yaw, pitch].
+        """
         if newest:
             pose = self.get_cam_location(cam_id) + self.get_cam_rotation(cam_id)
         else:
@@ -62,7 +83,17 @@ class Character_API(UnrealCv_API):
 
     # functions for character setting
     def set_max_speed(self, player, speed, return_cmd=False):
-        # set the max velocity of the agent object
+        """
+        Set the maximum velocity of the agent object.
+
+        Args:
+            player (str): The identifier of the player.
+            speed (float): The maximum speed to set for the player.
+            return_cmd (bool, optional): If True, return the command string instead of executing it. Defaults to False.
+
+        Returns:
+            float: The speed that was set.
+        """
         cmd = f'vbp {player} set_speed {speed}'
         res = None
         while res is None:
@@ -70,6 +101,16 @@ class Character_API(UnrealCv_API):
         return speed
 
     def set_acceleration(self, player, acc):
+        """
+        Set the acceleration of the agent object.
+
+        Args:
+            player (str): The identifier of the player.
+            acc (float): The acceleration value to set for the player.
+
+        Returns:
+            float: The acceleration that was set.
+        """
         cmd = f'vbp {player} set_acc {acc}'
         res = None
         while res is None:
@@ -77,7 +118,16 @@ class Character_API(UnrealCv_API):
         return acc
 
     def set_appearance(self, player, id):
-        # set the appearance of the agent object, id: 0~19
+        """
+           Set the appearance of the agent object.
+
+           Args:
+               player (str): The identifier of the player.
+               id (int): The appearance ID to set for the player.
+
+           Returns:
+               int: The appearance ID that was set.
+           """
         cmd = f'vbp {player} set_app {id}'
         res = None
         while res is None:
@@ -85,10 +135,26 @@ class Character_API(UnrealCv_API):
         return id
 
     def move_cam_2d(self, cam_id, angle, distance):
-        # move the camera in 2D as a mobile agent
+        """
+            Move the camera in 2D as a mobile agent.
+
+            Args:
+                cam_id (int): The ID of the camera.
+                angle (float): The angle to move the camera.
+                distance (float): The distance to move the camera.
+        """
         self.move_cam_forward(cam_id, angle, distance, height=0, pitch=0)
 
     def get_speed(self, player):
+        """
+            Get the speed of the agent object.
+
+            Args:
+                player (str): The identifier of the player.
+
+            Returns:
+                float: The speed of the player.
+        """
         cmd = f'vbp {player} get_speed'
         res = None
         while res is None:
@@ -96,6 +162,15 @@ class Character_API(UnrealCv_API):
         return self.decoder.string2vector(res)[0]
 
     def get_angle(self, player):
+        """
+           Get the angular of the agent object.
+
+           Args:
+               player (str): The identifier of the player.
+
+           Returns:
+               float: The angle of the player.
+        """
         cmd = f'vbp {player} get_angle'
         res = None
         while res is None:
@@ -103,12 +178,24 @@ class Character_API(UnrealCv_API):
         return self.decoder.string2vector(res)[0]
 
     def reset_player(self, player):
+        """
+            Reset the agent object.
+
+            Args:
+                player (str): The identifier of the player.
+        """
         cmd = f'vbp {player} reset'
         res=None
         while res is None:
             res = self.client.request(cmd)
 
     def set_phy(self, obj, state):
+        """
+            Set the physics state of the object.
+            Args:
+                obj (str): The identifier of the object.
+                state (int): The physics state to set (0 or 1).
+        """
         cmd = f'vbp {obj} set_phy {state}'
         res=None
         while res is None:

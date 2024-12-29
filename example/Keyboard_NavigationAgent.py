@@ -114,6 +114,7 @@ if __name__ == '__main__':
     env.seed(int(args.seed))
     obs = env.reset()
     t0 = time.time()
+    print('Use the "I", "J", "K", and "L" keys to control the agent movement, "Space" to jump, and "Up" and "Down" to adjust the agents view. (Double "Jump" will trigger the agent to climb)')
     while True:
         action = get_key_action()
         obs, rewards, done, info = env.step([action])

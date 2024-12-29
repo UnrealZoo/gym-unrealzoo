@@ -116,6 +116,7 @@ if __name__ == '__main__':
     env.seed(int(args.seed))
     obs = env.reset()
     t0 = time.time()
+    print('Use the "I", "J", "K", and "L" keys to control the agent  movement.')
     while True:
         action = get_key_action()
         obs, rewards, done, info = env.step([action])
