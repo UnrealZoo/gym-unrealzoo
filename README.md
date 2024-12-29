@@ -10,30 +10,38 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 # Table of Contents
 
 1. [What is UnrealZoo?](#what-is-unrealzoo)
-2. [Key Features](#key-features)
-3. [Framework](#framework)
-4. [Quick Installation](#installation)
-5. [Run example code](#run-the-example-code)
-6. [Documentation](#documentation)
-7. [License and Acknowledgments](#license-and-acknowledgments)
-8. [Citation](#citation)
+   - [Key Features](#key-features)
+   - [Framework](#framework)
+2. [Quick Installation](#quick-installation)
+   - [Dependencies](#dependencies)
+   - [Install Gym-UnrealZoo](#install-gym-unrealzoo)
+   - [Prepare UE Binary](#prepare-ue-binary)
+3. [Run the Example Code](#run-the-example-code)
+4. [Documentation](#documentation)
+5. [License and Acknowledgments](#license-and-acknowledgments)
+6. [Citation](#citation)
 
 
 ## What is UnrealZoo?
 
 UnrealZoo is a rich collection of photo-realistic 3D virtual worlds built on Unreal Engine, designed to reflect the complexity and variability of the open worlds. 
-There are various playable entities for embodied AI. 
+There are various playable entities for embodied AI, including human characters, robots, vehicles, and animals.
 Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of easy-to-use Python APIs and tools for various potential applications, such as data annotation and collection, environment augmentation, distributed training, and benchmarking agents.
-**This repository provides the gym interface based on UnrealCV APIs for UnrealZoo, which is compatible with OpenAI Gym and supports the high-level agent-environment interactions in UnrealZoo.**
 
-## Key Features
-- **Large-scale Photo-realistic Scenes**:🛖🛣️⛰️🏭🏟️🏰🛕🏙️🚉🏗️🏥🤽🏻‍♂️🏝️🛶
-- **Various Playable Entities**:🚶🏻‍♂️️🚶🏻🤖🚗🏍️🛩️🐘🐕🐎🐧🐢🐖🐏🐂
-- **Rich Agent-Object Interactions**: Climbing, Jumping, Running, Squatting, Sitting, Pick-up, etc.
-- **Easy-to-use Python APIs**: Integrated with UnrealCV and Gym Interfaces.
-- **Multi-agent Support**: Real-time interaction of 10+ vision-based agents in one scene.
+**💡This repository provides the gym interface based on UnrealCV APIs for UE-based environments, which is compatible with OpenAI Gym and supports the high-level agent-environment interactions in UnrealZoo.**
 
-## Framework
+### Key Features
+- **Photorealistic**: High-quality graphics rendering empowered by Unreal Engine (4.27/5.4).
+- **Large-scale**: 100+ Scenes, the largest one covers 16km².
+- **Diverse Scenes**: landscape🏜️🏞️🏝️, historic architecture⛩️🛕🏰, settlement🏘️🏙️, industrial zone🏭🏗️, facilities🤽🏻‍♂️🚉🏪...
+- **Diverse Bodies**: human🚶🏻‍♂️️🚶🏻, robot🤖, vehicles🚗🏍️🛩️,animals🐘🐕🐎🐧🐢🐖🐏🐂...
+- **Diverse Actions**: running🏃🏻‍♂️, climbing🧗🏻, sitting🧘🏻, jumping, squatting, pick-up...
+- **Easy-to-use**: Pre-build UE binaries, integrated with optimized UnrealCV, are to be used without any prior knowledge of UE.
+- **Cross-platform**: Runs on Linux, Windows, macOS
+- **Flexible Python APIs**: Provide UnrealCV Python APIs and Gym Interfaces for various potential applications.
+- **Multi-agent Interactions**: Real-time interaction of 10+ vision-based agents👩‍👩‍👧‍👧 in one scene.
+
+### Framework
 ![framework](doc/figs/framework.png)
 
 [//]: # (- ```UnrealCV``` is the basic bridge between ```Unreal Engine``` and ```OpenAI Gym```.)
@@ -162,16 +170,7 @@ You can load them from the following link:
 | UE4_Scene_Collection_preview(Linux, 50 maps)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD)    | **\>60GB** |
 | UE4_Scene_Collection_preview(Windows, 50 maps) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb)    | **\>60GB** |
 
-[//]: # (`ENV_NAME` can be `RealisticRoom`, `RandomRoom`, `Arm`, etc. )
-
-[//]: # (After that, it will automatically download a related env binary)
-
-[//]: # (to the [UnrealEnv]&#40;gym_unrealcv/envs/UnrealEnv&#41; directory.)
-
-[//]: # ()
-[//]: # (**Please refer the ``binary_list`` in [load_env.py]&#40;load_env.py&#41; for more available example environments.**)
-
-Then move the downloaded binary to the UnrealEnv  folder, which is our default location for binaries, the folder structures are as follows:
+Then unzip and move the downloaded binary to the `UnrealEnv` folder, which is our default location for binaries, the folder structures are as follows:
 ```
 gym-unrealcv/  
 |-- docs/                  
@@ -187,15 +186,6 @@ gym-unrealcv/
 generate_env_config.py                    # generate environment config json file
 ...
 
-```
-Run **generate_env_config.py** to automatically generate  and store  the config JSON file for the desired map
-```
-python generate_env_config.py --env-bin {binary relative path} --env-map {map name}  
-# binary relative path : the executable file path relative to UnrealEnv folder
-# map name: the user desired map for running.
-
-#example:
-python generate_env_config.py --env-bin Collection_WinNoEditor\\WindowsNoEditor\\Collection\\Binaries\\Win64\\Collection.exe --env-map track_train
 ```
 
 #### Available Map Name in Exemplar Binary
@@ -270,19 +260,21 @@ Control the agent to navigate to the target location by using the keyboard.
 
 [//]: # (## Wrappers for Advanced Usage)
 ## Documentation
-We provide a set of wrappers for FPS control, population randomization, etc.
+- We provide a set of wrappers for FPS control, population randomization, etc.
 Please refer to the [wrapper](doc/wrapper.md) for more details.
+- We provide a document for adding a new environment in gym-unrealzoo. Please refer to the [addEnv](doc/addEnv.md) for more details.
 
 ## License and Acknowledgments
 The UnrealZoo project is licensed under the Apache 2.0. 
 We acknowledge the following projects for their contributions to the UnrealZoo project:
 - [UnrealCV](https://unrealcv.org/)
 - [OpenAI Gym](https://gym.openai.com/)
-- [UnrealEngine](https://www.unrealengine.com/)
-- [UnrealEngine Artist]
-  -  [SmartLocomotion](https://www.fab.com/zh-cn/listings/7f881534-bf40-493b-97b4-a917daa87af0)
-  -  [AnimalPack](https://www.fab.com/zh-cn/listings/856c42d7-58a3-4b95-8f70-1302e5bdafa0)
-  -  [Vehicle](https://www.fab.com/zh-cn/listings/65a0844c-6be4-4e38-9d7a-b9697681a274)
+- [Unreal Engine](https://www.unrealengine.com/)
+- [The fantastic Plugins/Content from UE Marketplace](https://www.unrealengine.com/marketplace)
+  -  [Smart Locomotion](https://www.fab.com/zh-cn/listings/7f881534-bf40-493b-97b4-a917daa87af0)
+  -  [Animal Pack](https://www.fab.com/zh-cn/listings/856c42d7-58a3-4b95-8f70-1302e5bdafa0)
+  -  [Drivable Car](https://www.fab.com/zh-cn/listings/65a0844c-6be4-4e38-9d7a-b9697681a274)
+  - ...
 
 ## Citation
 
