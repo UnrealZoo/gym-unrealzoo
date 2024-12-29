@@ -17,9 +17,10 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
    - [Install Gym-UnrealZoo](#install-gym-unrealzoo)
    - [Prepare UE Binary](#prepare-ue-binary)
 3. [Run the Example Code](#run-the-example-code)
-4. [Documentation](#documentation)
-5. [License and Acknowledgments](#license-and-acknowledgments)
-6. [Citation](#citation)
+4. [Build your agent](#build-your-agent)
+5. [Documentation](#documentation)
+6. [License and Acknowledgments](#license-and-acknowledgments)
+7. [Citation](#citation)
 
 
 ## What is UnrealZoo?
@@ -258,7 +259,13 @@ Control the agent to navigate to the target location by using the keyboard.
  
 </table> 
 
-[//]: # (## Wrappers for Advanced Usage)
+## Build your agent
+You can build your agent based on the latest method in reinforcement learning, evaluating it in UnrealZoo.
+
+[Embodied Visual Tracking Agent(ECCV24)](https://github.com/wukui-muc/Offline_RL_Active_Tracking)  
+[Visual Navigation Agent(online RL method)]() comming soon..
+
+
 ## Documentation
 - We provide a set of wrappers for FPS control, population randomization, etc.
 Please refer to the [wrapper](doc/wrapper.md) for more details.
