@@ -12,14 +12,14 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 1. [What is UnrealZoo?](#what-is-unrealzoo)
    - [Key Features](#key-features)
    - [Framework](#framework)
-4. [Quick Installation](#quick-installation)
+2. [Quick Installation](#quick-installation)
    - [Dependencies](#dependencies)
    - [Install Gym-UnrealZoo](#install-gym-unrealzoo)
    - [Prepare UE Binary](#prepare-ue-binary)
-5. [Run the Example Code](#run-the-example-code)
-6. [Documentation](#documentation)
-7. [License and Acknowledgments](#license-and-acknowledgments)
-8. [Citation](#citation)
+3. [Run the Example Code](#run-the-example-code)
+4. [Documentation](#documentation)
+5. [License and Acknowledgments](#license-and-acknowledgments)
+6. [Citation](#citation)
 
 
 ## What is UnrealZoo?
@@ -27,7 +27,8 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 UnrealZoo is a rich collection of photo-realistic 3D virtual worlds built on Unreal Engine, designed to reflect the complexity and variability of the open worlds. 
 There are various playable entities for embodied AI, including human characters, robots, vehicles, and animals.
 Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of easy-to-use Python APIs and tools for various potential applications, such as data annotation and collection, environment augmentation, distributed training, and benchmarking agents.
-**This repository provides the gym interface based on UnrealCV APIs for UnrealZoo, which is compatible with OpenAI Gym and supports the high-level agent-environment interactions in UnrealZoo.**
+
+**💡This repository provides the gym interface based on UnrealCV APIs for UE-based environments, which is compatible with OpenAI Gym and supports the high-level agent-environment interactions in UnrealZoo.**
 
 ### Key Features
 - **Photorealistic**: High-quality graphics rendering empowered by Unreal Engine (4.27/5.4).
