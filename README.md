@@ -7,12 +7,7 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 - Comprehensive documentation is available in [Doc]() 
 - Project website is available at [UnrealZoo](https://unrealzoo.github.io/)
 
-# 🗓️ TODO List
-- [ ]  Release the full version of the UnrealZoo environment package.
-- [ ]  Add gym interface for heterogeneous mutli-agent co-operation.
-- [ ]  Expand the list of supported interactive actions.
-- [ ]  Add more detailed examples for reinforcement learning agents.
-- [ ]  Add more detailed examples for large vision-language models.
+
 
 # Table of Contents
 
@@ -26,8 +21,9 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 3. [Run the Example Code](#run-the-example-code)
 4. [Build your agent](#build-your-agent)
 5. [Documentation](#documentation)
-6. [License and Acknowledgments](#license-and-acknowledgments)
-7. [Citation](#citation)
+6. [TODO List](#todo-list)
+7. [License and Acknowledgments](#license-and-acknowledgments)
+8. [Citation](#citation)
 
 
 ## What is UnrealZoo?
@@ -282,6 +278,13 @@ You can build your agent based on the latest method in reinforcement learning, e
 - We provide a set of wrappers for FPS control, population randomization, etc.
 Please refer to the [wrapper](doc/wrapper.md) for more details.
 - We provide a document for adding a new environment in unrealzoo-gym. Please refer to the [addEnv](doc/addEnv.md) for more details.
+
+# 🗓️ TODO List
+- [ ]  Release an all-in-one package of the collected environments
+- [ ]  Add gym interface for heterogeneous mutli-agent co-operation.
+- [ ]  Expand the list of supported interactive actions.
+- [ ]  Add more detailed examples for reinforcement learning agents.
+- [ ]  Add more detailed examples for large vision-language models.
 
 ## License and Acknowledgments
 The UnrealZoo project is licensed under the Apache 2.0. 
