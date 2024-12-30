@@ -1,12 +1,6 @@
-import os
-import gym
 import numpy as np
-from gym_unrealcv.envs.navigation import reward, reset_point
-from gym_unrealcv.envs.navigation.visualization import show_info
-from gym_unrealcv.envs.navigation.interaction import Navigation
-
 from gym_unrealcv.envs.base_env import UnrealCv_base
-from gym_unrealcv.envs.utils import misc
+from gym_unrealcv.envs.utils import misc, reward
 
 '''
 It is a general env for navigating to a target object.
