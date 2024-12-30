@@ -164,15 +164,11 @@ Before running the environments, you need to prepare unreal binaries. To accommo
 
 You can load them from the following link:
 
-| Environment                                    | Download Link                                                                                                 | Size       |
-|------------------------------------------------|---------------------------------------------------------------------------------------------------------------|------------|
-| UE4 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/4f93709c-a0e8-472d-893b-998f80d09a72#mxp3jO4rN0lIlGggK2qMr6m2tj1lMhkv)    | ~3GB       |
-| UE4 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/56adecaa-6888-4514-a8bf-54cd2045d9e3#dHekxfLEPzGymO4Ebu8eEbeXPrCXxLSy)    | ~3GB       |
-| UE4 Example Scene (Mac)                        | [Download]()    | ~3GB       |
-| UE5 Example Scene (Linux)                      | [Download](https://app.filen.io/#/d/7583151b-68c1-4617-9622-d6ab058ab0ab#mHcE9joY1is8W8lxcNAie6jd6BjR3VYP)    | ~10GB      |
-| UE5 Example Scene (Windows)                    | [Download](https://app.filen.io/#/d/00fb2bb7-8b0f-4b5f-8650-087a106fd8f9#O2l0dpqTnadH9CUGhXm8XcbeVDGMaNFt)    | ~10GB      |
-| UE4_Scene_Collection_preview(Linux, 50 maps)   | [Download](https://app.filen.io/#/d/c3e1c06f-9d63-4c6f-8940-55b0812e922b#ZkTVetGo8EaF6TUNQV4rwtbEdFitstGD)    | **\>60GB** |
-| UE4_Scene_Collection_preview(Windows, 50 maps) | [Download](https://drive.filen.io/d/9fc755ac-19b5-4284-9385-9387e9a5ee86#ZzGNVRVV8fyp99VJfPMehsTk0xH7cXcb)    | **\>60GB** |
+| Environment                                    | Download Link                                                                                                                   | Size       |
+|------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|------------|
+| UE4 Example Scene                     | [Linux](https://app.filen.io/#/f/1d8f4f66-eeb7-4c82-8269-ea968dd59fd0%23eGfdPIjsjeu3ZlwADwE33XCI0jClavjv) [Windows](https://app.filen.io/#/f/fe1ccbff-85c7-4b8c-a155-41b51ac75d16%23LpR6CZdX7Sxqk0HjhrgMQL7qltYdRKOM) [MacOs](https://app.filen.io/#/f/3be33a7d-297b-4faf-87e7-450cb0f833f9%23IECcaSYlzkBzh4GIP5yy0eJbqqZ7fpPF) | ~3GB       |
+| UE5 Example Scene                   | [Linux](https://app.filen.io/#/f/1d8f4f66-eeb7-4c82-8269-ea968dd59fd0%23eGfdPIjsjeu3ZlwADwE33XCI0jClavjv) [Windows](https://app.filen.io/#/f/fe1ccbff-85c7-4b8c-a155-41b51ac75d16%23LpR6CZdX7Sxqk0HjhrgMQL7qltYdRKOM) [MacOs](https://app.filen.io/#/f/3be33a7d-297b-4faf-87e7-450cb0f833f9%23IECcaSYlzkBzh4GIP5yy0eJbqqZ7fpPF)                | ~10GB      |
+| UE4_Scene_Collection_preview( 50 maps)   | [Linux](https://app.filen.io/#/f/1d8f4f66-eeb7-4c82-8269-ea968dd59fd0%23eGfdPIjsjeu3ZlwADwE33XCI0jClavjv) [Windows](https://app.filen.io/#/f/fe1ccbff-85c7-4b8c-a155-41b51ac75d16%23LpR6CZdX7Sxqk0HjhrgMQL7qltYdRKOM) [MacOs](https://app.filen.io/#/f/3be33a7d-297b-4faf-87e7-450cb0f833f9%23IECcaSYlzkBzh4GIP5yy0eJbqqZ7fpPF)                 | **\>60GB** |
 
 Then unzip and move the downloaded binary to the `UnrealEnv` folder, which is our default location for binaries, the folder structures are as follows:
 ```
