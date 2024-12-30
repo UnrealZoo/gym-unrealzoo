@@ -129,3 +129,4 @@ if __name__ == '__main__':
             print('Success')
             print('Fps:' + str(fps))
             break
+    env.close()

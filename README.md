@@ -226,7 +226,7 @@ python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinuousColor-v0
 #### 3. Run a keyboard tracking agent 
 Use the "I", "J", "K", and "L" keys to control the agent's movement.
 ```
-python ./example/keyboard_agent.py -e UnrealTrack-Greek_Island-MixedColor-v0
+python ./example/keyboard_agent.py -e UnrealTrack-Old_Town-MixedColor-v0
 ```
 #### 4. Run a keyboard Navigation agent
 Use the "I", "J", "K", and "L" keys to control the agent's movement.  

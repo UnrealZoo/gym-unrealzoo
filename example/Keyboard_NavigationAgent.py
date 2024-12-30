@@ -130,3 +130,4 @@ if __name__ == '__main__':
             fps = count_step / (time.time() - t0)
             print('Fps:' + str(fps))
             break
+    env.close()
