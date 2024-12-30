@@ -14,7 +14,7 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
    - [Framework](#framework)
 2. [Quick Installation](#quick-installation)
    - [Dependencies](#dependencies)
-   - [Install Gym-UnrealZoo](#install-gym-unrealzoo)
+   - [Install UnrealZoo-Gym](#install-gym-unrealzoo)
    - [Prepare UE Binary](#prepare-ue-binary)
 3. [Run the Example Code](#run-the-example-code)
 4. [Build your agent](#build-your-agent)
@@ -65,12 +65,12 @@ Integrated with [UnrealCV](https://unrealcv.org/), UnrealZoo provides a suite of
  
 We recommend you use [anaconda](https://www.continuum.io/downloads) to install and manage your Python environment.
 ```CV2``` is used for image processing, like extracting object masks and bounding boxes. ```Matplotlib``` is used for visualization.
-### Install Gym-UnrealZoo
+### Install UnrealZoo-Gym
 
-It is easy to install gym-unrealzoo, just run
+It is easy to install unrealzoo-gym, just run
 ```
-git clone https://github.com/UnrealZoo/gym-unrealzoo.git
-cd gym-unrealzoo
+git clone https://github.com/UnrealZoo/unrealzoo-gym.git
+cd unrealzoo-gym
 pip install -e . 
 ```
 While installing gym-unrealcv, dependencies including OpenAI Gym, UnrealCV, numpy and matplotlib are installed.
@@ -274,7 +274,7 @@ You can build your agent based on the latest method in reinforcement learning, e
 ## Documentation
 - We provide a set of wrappers for FPS control, population randomization, etc.
 Please refer to the [wrapper](doc/wrapper.md) for more details.
-- We provide a document for adding a new environment in gym-unrealzoo. Please refer to the [addEnv](doc/addEnv.md) for more details.
+- We provide a document for adding a new environment in unrealzoo-gym. Please refer to the [addEnv](doc/addEnv.md) for more details.
 
 ## License and Acknowledgments
 The UnrealZoo project is licensed under the Apache 2.0. 
