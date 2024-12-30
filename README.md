@@ -261,9 +261,14 @@ Control the agent to navigate to the target location by using the keyboard.
 
 ## Build your agent
 You can build your agent based on the latest method in reinforcement learning, evaluating it in UnrealZoo.
+- Reinforcement Learning
+  - Online RL
+    - [Visual Navigation Agent]() comming soon..
 
-[Embodied Visual Tracking Agent(ECCV24)](https://github.com/wukui-muc/Offline_RL_Active_Tracking)  
-[Visual Navigation Agent(online RL method)]() comming soon..
+  - Offline RL
+    - [Embodied Visual Tracking Agent(ECCV24)](https://github.com/wukui-muc/Offline_RL_Active_Tracking)
+- Large Vision-Language Model
+  
 
 
 ## Documentation
