@@ -1,7 +1,7 @@
 {
-    "env_name": "track_train",
+    "env_name": "ContainerYard_Night",
     "env_bin": "UE4_ExampleScene_Linux/UE4_ExampleScene/Binaries/Linux/UE4_ExampleScene",
-    "env_map": "track_train",
+    "env_map": "ContainerYard_Night",
     "env_bin_win": "UE4_ExampleScene_Win\\UE4_ExampleScene\\Binaries\\Win64\\UE4_ExampleScene.exe",
     "env_bin_mac": "UE4_ExampleScene_Mac/UE4_ExampleScene.app",
     "third_cam": {
@@ -9,10 +9,10 @@
         "pitch": -90,
         "yaw": 0,
         "roll": 0,
-        "height_top_view": 1218.15,
+        "height_top_view": 1143.165,
         "fov": 90
     },
-    "height": 218.15,
+    "height": 143.165,
     "interval": 1000,
     "agents": {
         "player": {
@@ -20,7 +20,7 @@
                 "BP_Character_2"
             ],
             "cam_id": [
-                4
+                5
             ],
             "class_name": [
                 "bp_character_C"
@@ -188,7 +188,7 @@
                 "BP_Drone01_2"
             ],
             "cam_id": [
-                3
+                2
             ],
             "class_name": [
                 "BP_drone01_C"
@@ -285,10 +285,69 @@
                 "BP_BaseCar_2"
             ],
             "cam_id": [
-                2
+                4
             ],
             "class_name": [
                 "BP_BaseCar_C"
+            ],
+            "internal_nav": true,
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "relative_location": [
+                0,
+                0,
+                0
+            ],
+            "relative_rotation": [
+                0,
+                0,
+                0
+            ],
+            "move_action": [
+                [
+                    1,
+                    0
+                ],
+                [
+                    -0.3,
+                    0
+                ],
+                [
+                    0.5,
+                    1
+                ],
+                [
+                    0.5,
+                    -1
+                ],
+                [
+                    0,
+                    0
+                ]
+            ],
+            "move_action_continuous": {
+                "high": [
+                    1,
+                    1
+                ],
+                "low": [
+                    0,
+                    -1
+                ]
+            }
+        },
+        "motorbike": {
+            "name": [
+                "Sport_2"
+            ],
+            "cam_id": [
+                3
+            ],
+            "class_name": [
+                "MotorBikes_C"
             ],
             "internal_nav": true,
             "scale": [
@@ -342,89 +401,94 @@
     },
     "safe_start": [
         [
-            2090.0,
-            560.0,
-            60.308
+            -4110.0,
+            -7540.0,
+            143.165
         ],
         [
-            -530.0,
-            -100.0,
-            218.15
+            -3010.0,
+            -20.0,
+            106.886
         ],
         [
-            429.475,
-            815.294,
-            151.0
+            -4540.283,
+            881.566,
+            60.0
         ],
         [
-            -1752.185,
-            782.182,
-            151.0
+            -1641.302,
+            -998.585,
+            60.0
         ],
         [
-            -1499.903,
-            -156.136,
-            151.0
+            -3984.07,
+            -688.451,
+            60.0
         ],
         [
-            -443.623,
-            1103.178,
-            151.0
+            -1523.538,
+            -29.976,
+            60.0
         ],
         [
-            -2099.483,
-            -1206.975,
-            151.0
+            -3666.184,
+            807.538,
+            60.0
         ],
         [
-            206.92,
-            -947.745,
-            151.0
+            -2160.528,
+            494.0,
+            60.0
         ],
         [
-            4.933,
-            -631.278,
-            151.0
+            -3248.533,
+            839.737,
+            60.0
         ],
         [
-            -463.186,
-            697.768,
-            151.0
+            -4346.173,
+            -921.2,
+            60.0
         ],
         [
-            -1067.106,
-            -1165.355,
-            151.0
+            -3963.134,
+            -1425.167,
+            60.0
         ],
         [
-            -2057.718,
-            470.39,
-            151.0
+            -4545.373,
+            -691.293,
+            60.0
         ],
         [
-            -1650.0,
-            155.998,
-            118.597
+            -3388.13,
+            -6919.812,
+            10.553
+        ],
+        [
+            -3238.432,
+            -8280.06,
+            2.829
         ]
     ],
     "reset_area": [
-        -2099.483,
-        2090.0,
-        -1206.975,
-        1103.178,
-        60.308,
-        218.15
+        -4545.373,
+        -1523.538,
+        -8280.06,
+        881.566,
+        2.829,
+        143.165
     ],
     "random_init": false,
     "env": {
         "interactive_door": []
     },
-    "obj_num": 71,
-    "size": 0.0,
-    "area": 1952.288,
+    "obj_num": 3604,
+    "size": 821259.23152,
+    "area": 483093.6656,
     "bbox": [
-        49.4,
-        39.52,
-        0.0
+        484.12,
+        997.88,
+        1.7
     ]
 }

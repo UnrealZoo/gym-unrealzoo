@@ -144,6 +144,7 @@ env_config = {
     "env_bin": None,
     "env_map": None,
     "env_bin_win": None,
+    "env_bin_mac": None,
     "third_cam": {
         "cam_id": 0,
         "pitch": -90,
@@ -165,12 +166,12 @@ env_config = {
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env-bin', default='UE4_ExampleScene_WindowsNoEditor/UE4_ExampleScene/Binaries/Win64/UE4_ExampleScene.exe', help='The path to the UE4Editor binary')
-    # parser.add_argument('--env-bin', default='UE5_ExampleScene_Win64\Compile_unrealcv5_4\Binaries\Win64\Compile_unrealcv5_4.exe', help='The path to the UE4Editor binary')
+    # parser.add_argument('--env-bin', default='UE4_ExampleScene_Win/UE4_ExampleScene/Binaries/Win64/UE4_ExampleScene.exe', help='The path to the UE4Editor binary')
+    parser.add_argument('--env-bin', default='UE5_ExampleScene_Win64\Compile_unrealcv5_4\Binaries\Win64\Compile_unrealcv5_4.exe', help='The path to the UE4Editor binary')
     # parser.add_argument('--env-bin', default='Collection_WinNoEditor\WindowsNoEditor\Collection\Binaries\Win64\Collection.exe', help='The path to the UE4Editor binary')
 
-    parser.add_argument('--env-map', default='track_train', help='The map to load')
-    parser.add_argument('--target_dir', default='gym_unrealcv/envs/setting/env_config', help='The folder to save the json file')
+    parser.add_argument('--env-map', default='Demo_Roof', help='The map to load')
+    parser.add_argument('--target_dir', default='gym_unrealcv/envs/setting/track', help='The folder to save the json file')
     parser.add_argument('--use-docker', action='store_true', help='Run the game in a docker container')
     parser.add_argument('--resolution', '-res', default='640x480', help='The resolution in the unrealcv.ini file')
     parser.add_argument('--display', default=None, help='The display to use')
@@ -194,7 +195,7 @@ if __name__ == '__main__':
                 'LV_Soul_Cave', 'Dungeon_Demo_00', 'SwimmingPool', 'DesertMap', 'RainMap', 'SnowMap', 'ModularVictorianCity_scene1',
                 'SuburbNeighborhood_Day', 'SuburbNeighborhood_Night', 'ModularSciFiVillage', 'Storagehouse', 'OceanFloor',
                 'ModularNeighborhood', 'ModularSciFiVillage', 'ModularSciFiSeason1', 'LowPolyMedievalInterior_1',
-                'QA_Holding_Cells_A', 'ParkingLot','Map_ChemicalPlant_1'
+                'QA_Holding_Cells_A', 'ParkingLot','Map_ChemicalPlant_1','MiddleEast'
                 ]
         env_map = maps[0]
     else:
@@ -218,6 +219,7 @@ if __name__ == '__main__':
             "env_bin": None,
             "env_map": None,
             "env_bin_win": None,
+            "env_bin_mac": None,
             "third_cam": {
                 "cam_id": 0,
                 "pitch": -90,
@@ -241,6 +243,8 @@ if __name__ == '__main__':
         env_config['env_map'] = env_map
         env_config['env_bin'] = ue_binary.env_bin
         env_config['env_bin_win'] = ue_binary.env_bin.replace("/", "\\").replace("Linux", "Win")
+        env_config['env_bin_mac'] = ue_binary.env_bin
+
         # time.sleep(1)
         cam_num = unrealcv.get_camera_num()
         start_pos_list = []
