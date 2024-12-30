@@ -7,6 +7,13 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 - Comprehensive documentation is available in [Doc]() 
 - Project website is available at [UnrealZoo](https://unrealzoo.github.io/)
 
+# 🗓️ TODO List
+- [ ]  Release the full version of the UnrealZoo environment package.
+- [ ]  Add gym interface for heterogeneous mutli-agent co-operation.
+- [ ]  Expand the list of supported interactive actions.
+- [ ]  Add more detailed examples for reinforcement learning agents.
+- [ ]  Add more detailed examples for large vision-language models.
+
 # Table of Contents
 
 1. [What is UnrealZoo?](#what-is-unrealzoo)
