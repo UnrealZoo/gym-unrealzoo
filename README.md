@@ -245,7 +245,7 @@ Control the agent to navigate to the target location by using the keyboard.
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/navigation/map.png" width="480" height="200">
+        <img src="./doc/figs/navigation/map.png" width="380" height="200">
            <figcaption> Map reference</figcaption>
       </figure>
     </td>
