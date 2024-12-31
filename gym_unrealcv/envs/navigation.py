@@ -144,7 +144,7 @@ class Navigation(UnrealCv_base):
 
     def close(self):
         self.unrealcv.client.disconnect()
-        self.unrealcv.close()
+        self.ue_binary.close()
 
     def get_action_size(self):
         return len(self.action)

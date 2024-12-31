@@ -462,8 +462,8 @@ class UnrealCv_base(gym.Env):
         else:  # Hybrid
             move_space = spaces.Box(low=np.array(agent_info["move_action_continuous"]['low']),
                                     high=np.array(agent_info["move_action_continuous"]['high']), dtype=np.float32)
-            turn_space = None
-            animation_space = None
+            turn_space = spaces.Discrete(2)
+            animation_space = spaces.Discrete(2)
             if "head_action" in agent_info.keys():
                 turn_space = spaces.Discrete(len(agent_info["head_action"]))
             if "animation_action" in agent_info.keys():
