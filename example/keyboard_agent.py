@@ -123,7 +123,6 @@ if __name__ == '__main__':
         cv2.imshow('obs',obs[0])
         cv2.waitKey(1)
         count_step += 1
-        print(count_step)
         if done:
             fps = count_step / (time.time() - t0)
             print('Success')
