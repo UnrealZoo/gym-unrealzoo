@@ -246,13 +246,28 @@ Control the agent to navigate to the target location by using the keyboard.
     <td>
       <figure>
         <img src="./doc/figs/navigation/map.png" width="400" height="220">
-           <figcaption> Map Reference</figcaption>
+           <figcaption> Map Reference(Demo_Roof)</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/navigation/target.png" width="320" height="200">
-           <figcaption>Target Reference</figcaption>
+           <figcaption>Target Reference(Demo_Roof)</figcaption>
+      </figure>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <figure>
+        <img src="./doc/figs/navigation/map_2.png" width="400" height="220">
+           <figcaption> Map Reference(SuburbNeighborhood)</figcaption>
+      </figure>
+    </td>
+    <td>
+      <figure>
+        <img src="./doc/figs/navigation/target_2.png" width="320" height="200">
+           <figcaption>Target Reference(SuburbNeighborhood)</figcaption>
       </figure>
     </td>
   </tr>
