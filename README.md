@@ -190,7 +190,7 @@ generate_env_config.py                    # generate environment config json fil
 ...
 
 ```
-
+If there is a permission issue, run the command ```chmod +x ./``` under the ```UnrealEnv``` folder path to give the necessary permissions.
 #### Available Map Name in Exemplar Binary
 
 | UE4                     | UE5                     |
