@@ -3,8 +3,8 @@ UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI
 ![framework](doc/figs/overview.png)
 
 # 🔥 News
-- Paper Link: [UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI]()
-- Comprehensive documentation is available in [Doc]() 
+- Paper Link: [UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI](https://arxiv.org/abs/2412.20977)
+- Comprehensive documentation is available in [Doc](/doc) 
 - Project website is available at [UnrealZoo](https://unrealzoo.github.io/)
 
 
