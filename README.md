@@ -87,7 +87,7 @@ Before running the environments, you need to prepare unreal binaries. To accommo
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/track_train.png" width="480" height="200">  
-        <figcaption style="text-align: center;">track train</figcaption>
+        <figcaption style="text-align: center;">Track Train</figcaption>
       </figure>
     </td>
     <td>
