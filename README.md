@@ -86,13 +86,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/track_train.png" width="480" height="180">  
+        <img src="./doc/figs/UE4_ExampleScene/track_train.png" width="480" height="200">  
         <figcaption style="text-align: center;">track train</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/Greek_island.png" width="480" height="180">  
+        <img src="./doc/figs/UE4_ExampleScene/Greek_island.png" width="480" height="200">  
         <figcaption style="text-align: center;">Greek Island</figcaption>
       </figure>
     </td>
@@ -100,13 +100,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/Containeryard_Day.png" width="480" height="180">  
+        <img src="./doc/figs/UE4_ExampleScene/Containeryard_Day.png" width="480" height="200">  
         <figcaption style="text-align: center;">ContainerYard_Day</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/ContainerYard_Night.png" width="480" height="180">  
+        <img src="./doc/figs/UE4_ExampleScene/ContainerYard_Night.png" width="480" height="200">  
         <figcaption style="text-align: center;">ContainerYard_Night</figcaption>
       </figure>
     </td>
@@ -114,13 +114,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Day.png" width="480" height="180">  
+        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Day.png" width="480" height="200">  
         <figcaption style="text-align: center;">SuburbNeighborhood_Day</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Night.png" width="480" height="180">  
+        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Night.png" width="480" height="200">  
         <figcaption style="text-align: center;">SuburbNeighborhood_Night</figcaption>
       </figure>
     </td>
@@ -133,13 +133,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/ChemicalFactory.png" width="320" height="180">  
+        <img src="./doc/figs/UE5_ExampleScene/ChemicalFactory.png" width="480" height="200">  
         <figcaption style="text-align: center;"> ChemicalFactory</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/ModularOldTown.png" width="320" height="180">  
+        <img src="./doc/figs/UE5_ExampleScene/ModularOldTown.png" width="480" height="200">  
         <figcaption style="text-align: center;">Modular Old Town</figcaption>
       </figure>
     </td>
@@ -148,13 +148,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/MiddleEast.png" width="320" height="180">  
+        <img src="./doc/figs/UE5_ExampleScene/MiddleEast.png" width="480" height="200">  
         <figcaption style="text-align: center;">MiddleEast</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/Roof-City.png" width="320" height="180">  
+        <img src="./doc/figs/UE5_ExampleScene/Roof-City.png" width="480" height="200">  
         <figcaption style="text-align: center;">Roof-City</figcaption>
       </figure>
     </td>
@@ -245,13 +245,13 @@ Control the agent to navigate to the target location by using the keyboard.
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/navigation/map.png" width="320" height="180">
+        <img src="./doc/figs/navigation/map.png" width="480" height="200">
            <figcaption> Map reference</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/navigation/target.png" width="240" height="190">
+        <img src="./doc/figs/navigation/target.png" width="320" height="200">
            <figcaption>Target Reference</figcaption>
       </figure>
     </td>
