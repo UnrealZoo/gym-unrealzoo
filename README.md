@@ -251,7 +251,7 @@ Control the agent to navigate to the target location by using the keyboard.
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/navigation/target.png" width="380" height="200">
+        <img src="./doc/figs/navigation/target.png" width="380" height="220">
            <figcaption>Target Reference(Demo_Roof)</figcaption>
       </figure>
     </td>
@@ -266,7 +266,7 @@ Control the agent to navigate to the target location by using the keyboard.
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/navigation/target_2.png" width="380" height="200">
+        <img src="./doc/figs/navigation/target_2.png" width="380" height="220">
            <figcaption>Target Reference(SuburbNeighborhood)</figcaption>
       </figure>
     </td>
