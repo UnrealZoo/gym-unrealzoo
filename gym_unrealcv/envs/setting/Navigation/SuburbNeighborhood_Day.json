@@ -12,7 +12,7 @@
         "height_top_view": 1397.538,
         "fov": 90
     },
-    "height": 397.538,
+    "height": 142,
     "interval": 1000,
     "agents": {
         "player": {
