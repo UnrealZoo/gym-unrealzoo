@@ -86,7 +86,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
     # parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-ContinuousMask-v4',
     #                     help='Select the environment to run')
-    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-Old_Town-MixedColor-v0',
+    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-MixedColor-v0',
                         help='Select the environment to run')
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     parser.add_argument("-s", '--seed', dest='seed', default=10, help='random seed')
@@ -97,6 +97,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     env = gym.make(args.env_id)
+    env = configUE.ConfigUEWrapper(env, offscreen=True, resolution=(240, 240))
     env.unwrapped.agents_category=['player'] #choose the agent type in the scene
 
     if int(args.time_dilation) > 0:  # -1 means no time_dilation
@@ -107,7 +108,6 @@ if __name__ == '__main__':
         env = monitor.DisplayWrapper(env)
     env = augmentation.RandomPopulationWrapper(env, 2, 2, random_target=False)
     env = agents.NavAgents(env, mask_agent=False)
-    env = configUE.ConfigUEWrapper(env, offscreen=True, resolution=(240, 240))
     agent = RandomAgent(env.action_space[0])
     rewards = 0
     done = False
