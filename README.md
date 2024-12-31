@@ -86,13 +86,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/track_train.png" width="320" height="180">
+        <img src="./doc/figs/UE4_ExampleScene/track_train.png" width="320" height="180">  
         <figcaption> track train</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/Greek_island.png" width="320" height="180">
+        <img src="./doc/figs/UE4_ExampleScene/Greek_island.png" width="320" height="180">  
         <figcaption>Greek Island</figcaption>
       </figure>
     </td>
@@ -100,13 +100,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/Containeryard_Day.png" width="320" height="180">
+        <img src="./doc/figs/UE4_ExampleScene/Containeryard_Day.png" width="320" height="180">  
         <figcaption>ContainerYard_Day</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/ContainerYard_Night.png" width="320" height="180">
+        <img src="./doc/figs/UE4_ExampleScene/ContainerYard_Night.png" width="320" height="180">  
         <figcaption>ContainerYard_Night</figcaption>
       </figure>
     </td>
@@ -114,13 +114,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Day.png" width="320" height="180">
+        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Day.png" width="320" height="180">  
         <figcaption>SuburbNeighborhood_Day</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Night.png" width="320" height="180">
+        <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Night.png" width="320" height="180">  
         <figcaption>SuburbNeighborhood_Night</figcaption>
       </figure>
     </td>
@@ -133,13 +133,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/ChemicalFactory.png" width="320" height="180">
+        <img src="./doc/figs/UE5_ExampleScene/ChemicalFactory.png" width="320" height="180">  
         <figcaption> ChemicalFactory</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/ModularOldTown.png" width="320" height="180">
+        <img src="./doc/figs/UE5_ExampleScene/ModularOldTown.png" width="320" height="180">  
         <figcaption>Modular Old Town</figcaption>
       </figure>
     </td>
@@ -148,13 +148,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
   <tr>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/MiddleEast.png" width="320" height="180">
+        <img src="./doc/figs/UE5_ExampleScene/MiddleEast.png" width="320" height="180">  
         <figcaption>MiddleEast</figcaption>
       </figure>
     </td>
     <td>
       <figure>
-        <img src="./doc/figs/UE5_ExampleScene/Roof-City.png" width="320" height="180">
+        <img src="./doc/figs/UE5_ExampleScene/Roof-City.png" width="320" height="180">  
         <figcaption>Roof-City</figcaption>
       </figure>
     </td>
