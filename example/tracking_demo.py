@@ -5,7 +5,7 @@ from gym import wrappers
 import cv2
 import time
 import numpy as np
-from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, agents, augmentation
+from gym_unrealcv.envs.wrappers import time_dilation, early_done, monitor, agents, augmentation,configUE
 from gym_unrealcv.envs.tracking.baseline import PoseTracker, Nav2GoalAgent
 
 
@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     env = gym.make(args.env_id)
+    env = configUE.ConfigUEWrapper(env, offscreen=False, resolution=(240, 240))
     env.unwrapped.agents_category=['player'] #choose the agent type in the scene
 
     if int(args.time_dilation) > 0:  # -1 means no time_dilation
