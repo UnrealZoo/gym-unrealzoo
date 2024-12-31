@@ -246,13 +246,13 @@ Control the agent to navigate to the target location by using the keyboard.
     <td>
       <figure>
         <img src="./doc/figs/navigation/map.png" width="320" height="180">
-        <figcaption style="text-align: -webkit-right;"> Map reference</figcaption>
+        <figcaption style="text-align: center;"> Map reference</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/navigation/target.png" width="240" height="190">
-        <figcaption style="text-align: -webkit-right;">Target Reference</figcaption>
+        <figcaption style="text-align: center;">Target Reference</figcaption>
       </figure>
     </td>
   </tr>
