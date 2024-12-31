@@ -87,13 +87,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/track_train.png" width="320" height="180">  
-        <figcaption> track train</figcaption>
+        <figcaption style="text-align: center;">track train</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/Greek_island.png" width="320" height="180">  
-        <figcaption>Greek Island</figcaption>
+        <figcaption style="text-align: center;">Greek Island</figcaption>
       </figure>
     </td>
   </tr>
@@ -101,13 +101,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/Containeryard_Day.png" width="320" height="180">  
-        <figcaption>ContainerYard_Day</figcaption>
+        <figcaption style="text-align: center;">ContainerYard_Day</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/ContainerYard_Night.png" width="320" height="180">  
-        <figcaption>ContainerYard_Night</figcaption>
+        <figcaption style="text-align: center;">ContainerYard_Night</figcaption>
       </figure>
     </td>
   </tr>
@@ -115,13 +115,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Day.png" width="320" height="180">  
-        <figcaption>SuburbNeighborhood_Day</figcaption>
+        <figcaption style="text-align: center;">SuburbNeighborhood_Day</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/UE4_ExampleScene/SuburbNeighborhood_Night.png" width="320" height="180">  
-        <figcaption>SuburbNeighborhood_Night</figcaption>
+        <figcaption style="text-align: center;">SuburbNeighborhood_Night</figcaption>
       </figure>
     </td>
 
@@ -134,13 +134,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
     <td>
       <figure>
         <img src="./doc/figs/UE5_ExampleScene/ChemicalFactory.png" width="320" height="180">  
-        <figcaption> ChemicalFactory</figcaption>
+        <figcaption style="text-align: center;"> ChemicalFactory</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/UE5_ExampleScene/ModularOldTown.png" width="320" height="180">  
-        <figcaption>Modular Old Town</figcaption>
+        <figcaption style="text-align: center;">Modular Old Town</figcaption>
       </figure>
     </td>
 
@@ -149,13 +149,13 @@ Before running the environments, you need to prepare unreal binaries. To accommo
     <td>
       <figure>
         <img src="./doc/figs/UE5_ExampleScene/MiddleEast.png" width="320" height="180">  
-        <figcaption>MiddleEast</figcaption>
+        <figcaption style="text-align: center;">MiddleEast</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/UE5_ExampleScene/Roof-City.png" width="320" height="180">  
-        <figcaption>Roof-City</figcaption>
+        <figcaption style="text-align: center;">Roof-City</figcaption>
       </figure>
     </td>
  
@@ -246,14 +246,14 @@ Control the agent to navigate to the target location by using the keyboard.
     <td>
       <figure>
         <img src="./doc/figs/navigation/map.png" width="320" height="180">
-        <figcaption> Map reference</figcaption>
+        <figcaption style="text-align: center;"> Map reference</figcaption>
       </figure>
     </td>
     <td>
       <figure>
         <img src="./doc/figs/navigation/target.png" width="240" height="190
 ">
-        <figcaption>Target Reference</figcaption>
+        <figcaption style="text-align: center;">Target Reference</figcaption>
       </figure>
     </td>
 
