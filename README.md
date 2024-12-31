@@ -202,7 +202,7 @@ generate_env_config.py                    # generate environment config json fil
 | SuburbNeighborhood\_Day |                         |
 | SuburbNeighborhood\_Night|                        |
 
-#### Naming rule for the environment
+#### Naming rule
 We have predefined a naming rule to launch different environment maps and their corresponding task interfaces.  
 ```Unreal{task}-{MapName}-{ActionSpace}{ObservationType}-v{version} ```
 - ```{task}```: the name of the task, we currently support: ```Track```,```Navigation```,```Rendezvous```.
