@@ -86,7 +86,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
     # parser.add_argument("-e", "--env_id", nargs='?', default='UnrealTrack-track_train-ContinuousMask-v4',
     #                     help='Select the environment to run')
-    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealNavigation-Demo_Roof-MixedColor-v0',
+    parser.add_argument("-e", "--env_id", nargs='?', default='UnrealNavigation-SuburbNeighborhood_Day-MixedColor-v0',
                         help='Select the environment to run')
     parser.add_argument("-r", '--render', dest='render', action='store_true', help='show env using cv2')
     parser.add_argument("-s", '--seed', dest='seed', default=10, help='random seed')
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     if args.monitor:
         env = monitor.DisplayWrapper(env)
     # env = augmentation.RandomPopulationWrapper(env, 2, 2, random_target=False)
-    env = configUE.ConfigUEWrapper(env, offscreen=True, resolution=(240, 240))
+    env = configUE.ConfigUEWrapper(env, offscreen=False, resolution=(240, 240))
     rewards = 0
     done = False
     Total_rewards = 0
