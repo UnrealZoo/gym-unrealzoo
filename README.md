@@ -314,10 +314,12 @@ We acknowledge the following projects for their contributions to the UnrealZoo p
 If you use UnrealZoo in your research, please consider citing:
 
 ```bibtex
-@software{UnrealZoo,
-  author = {},
-  title = {},
-  month = {December},
-  year = {2024},
-  url = {}
+@misc{zhong2024unrealzooenrichingphotorealisticvirtual,
+      title={UnrealZoo: Enriching Photo-realistic Virtual Worlds for Embodied AI}, 
+      author={Fangwei Zhong and Kui Wu and Churan Wang and Hao Chen and Hai Ci and Zhoujun Li and Yizhou Wang},
+      year={2024},
+      eprint={2412.20977},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2412.20977}, 
 }
