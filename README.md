@@ -175,18 +175,21 @@ The preview-version environment package contains **60+ scene maps** in total, th
 
 Then unzip and move the downloaded binary to the `UnrealEnv` folder, which is our default location for binaries, the folder structures are as follows:
 ```
-gym-unrealcv/  
+unrealzoo-gym/  
 |-- docs/                  
 |-- example/                
 |-- gym_unrealcv/              
 |   |-- envs/    
 |   |   |-- agent/     
-|   |   |-- UnrealEnv/                    # Binary default location
-|   |   |   |-- Collection_WinNoEditor/   # Binary folder
 |   |-- setting/
 |   |   |-- env_config/                   # environment config json file location  
 ...
-generate_env_config.py                    # generate environment config json file
+|-- generate_env_config.py                    # generate environment config json file
+...
+
+UnrealEnv/                    # Binary default location
+|-- Collection_WinNoEditor/   # Binary folder
+|-- UE4_Example_Scene/        # Binary folder
 ...
 
 ```
@@ -215,22 +218,30 @@ We have predefined a naming rule to launch different environment maps and their 
 #### Hint 💡 
 - If your mouse cursor disappears after the game launches, press ``` ` ``` (the key above Tab) to release the mouse cursor from the game.
 
-#### 1. Run random agents
+#### 1. Specify the environment location in the terminal. 
+ - Default path to UnrealEnv is in user home directory under .unrealcv  
+   - Windows: C:\\Users\\{username}\\.unrealcv\\UnrealEnv
+   - Linux: /home/{username}/.unrealcv/UnrealEnv
+   - Mac: /Users/{username}/.unrealcv/UnrealEnv
+```
+export UnrealEnv=/your/path/to/UnrealEnv
+```
+#### 2. Run random agents
 User could choose a map from the available map list, and run the random agent to interact with the environment.
 ```
 python ./example/random_agent_multi.py -e UnrealTrack-track_train-ContinuousColor-v0
 ```
-#### 2. Run a rule-based tracking agent 
+#### 3. Run a rule-based tracking agent 
 ```
 python ./example/tracking_demo.py -e UnrealTrack-Greek_Island-ContinuousColor-v0
 ```
 
-#### 3. Run a keyboard tracking agent 
+#### 4. Run a keyboard tracking agent 
 Use the "I", "J", "K", and "L" keys to control the agent's movement.
 ```
 python ./example/keyboard_agent.py -e UnrealTrack-Old_Town-MixedColor-v0
 ```
-#### 4. Run a keyboard Navigation agent
+#### 5. Run a keyboard Navigation agent
 Use the "I", "J", "K", and "L" keys to control the agent's movement.  
 Space( ␣ ): Jump.  
 Up Arrow(⬆️): Look up.  
