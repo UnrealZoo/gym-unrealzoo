@@ -1,5 +1,7 @@
+__version__ = "2.0.3"
 from gym.envs.registration import register
 import logging
+import os
 from gym_unrealcv.envs.utils.misc import load_env_setting
 logger = logging.getLogger(__name__)
 use_docker = False  # True: use nvidia docker   False: do not use nvidia-docker
@@ -15,7 +17,7 @@ for action in ['Discrete', 'Continuous']:  # action type
             register(
                     id='UnrealArm-{action}{obs}-v{version}'.format(action=action, obs=obs, version=i),
                     entry_point='gym_unrealcv.envs:UnrealCvRobotArm_reach',
-                    kwargs={'setting_file': 'robotarm/robotarm_reach.json',
+                    kwargs={'setting_file': os.path.join('robotarm', 'robotarm_reach.json'),
                             'action_type': action,
                             'observation_type': obs,
                             'docker': use_docker,
@@ -38,8 +40,7 @@ for env in ['City1', 'City2']:
                                '{action}{obs}-v{reset}'.format(env=env, target=target, path=path,
                                                                action=action, obs=obs, reset=i),
                             entry_point='gym_unrealcv.envs:UnrealCvTracking_spline',
-                            kwargs={'setting_file': 'tracking/v0/{env}{target}{path}.json'.format(
-                                env=env, target=target, path=path),
+                            kwargs={'setting_file': os.path.join('tracking', 'v0', f'{env}{target}{path}.json'),
                                     'reset_type': reset,
                                     'action_type': action,
                                     'observation_type': obs,
@@ -58,7 +59,7 @@ for env in ['MCRoom', 'Garden', 'UrbanTree']:
                 for nav in ['Random', 'Goal', 'Internal', 'None',
                             'RandomInterval', 'GoalInterval', 'InternalInterval', 'NoneInterval']:
                     name = 'Unreal{env}-{action}{obs}{nav}-v{reset}'.format(env=env, action=action, obs=obs, nav=nav, reset=i)
-                    setting_file = 'tracking/multicam/{env}.json'.format(env=env)
+                    setting_file = os.path.join('tracking', 'multicam', f'{env}.json')
                     register(
                         id=name,
                         entry_point='gym_unrealcv.envs:UnrealCvMC',
@@ -80,7 +81,7 @@ for env in ['FlexibleRoom', 'Garden', 'UrbanTree']:
                 for nav in ['Random', 'Goal', 'Internal', 'None',
                             'RandomInterval', 'GoalInterval', 'InternalInterval']:
                     name = 'UnrealMC{env}-{action}{obs}{nav}-v{reset}'.format(env=env, action=action, obs=obs, nav=nav, reset=i)
-                    setting_file = 'tracking/mcmt/{env}.json'.format(env=env)
+                    setting_file = os.path.join('tracking', 'mcmt', f'{env}.json')
                     register(
                         id=name,
                         entry_point='gym_unrealcv.envs:UnrealCvMultiCam',
@@ -119,7 +120,7 @@ for env in maps:
         for action in Actions:  # action type
             for obs in Observations:  # observation type
                         name = 'UnrealAgent-{env}-{action}{obs}-v{reset}'.format(env=env, action=action, obs=obs, target=target, reset=i)
-                        setting_file = 'env_config/{env}.json'.format(env=env)
+                        setting_file = os.path.join('env_config', f'{env}.json')
                         register(
                             id=name,
                             entry_point='gym_unrealcv.envs:UnrealCv_base',
@@ -137,7 +138,7 @@ for env in maps:
             for obs in Observations:  # observation type
                 for task in Tasks:
                         name = f'Unreal{task}-{env}-{action}{obs}-v{i}'
-                        setting_file = '{task}/{env}.json'.format(task=task,env=env)
+                        setting_file = os.path.join(task, f'{env}.json')
                         if task =='Navigation':
                             register(
                                 id=name,

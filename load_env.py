@@ -1,9 +1,11 @@
 import os
 import argparse
+import unrealcv.util
 import wget
 import zipfile
 import sys
 import shutil
+import unrealcv
 
 binary_linux = dict(
     # for searching
@@ -56,7 +58,7 @@ if __name__ == '__main__':
         with zipfile.ZipFile(filename, "r") as z:
             z.extractall()  # extract the zip file
         folder = filename[:-4]
-        target = 'gym_unrealcv/envs/UnrealEnv'
+        target = unrealcv.util.get_path2UnrealEnv()
         shutil.move(folder, target)
         os.remove(filename)
     else:

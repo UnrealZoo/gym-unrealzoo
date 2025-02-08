@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gym_unrealcv"
+description = "Gymnasium environments for UnrealCV"
+dynamic = ["version"]
+dependencies = [
+    "gym==0.10.9",
+    "matplotlib",
+    "numpy",
+    "unrealcv>=1.1.5",
+    "wget",
+    "opencv-python",
+    "simple_pid",
+    "pynput",
+    "docker",
+]
+authors = [
+    { name = "Fangwei Zhong", email = "zfw1226@gmail.com" },
+    { name = "Kui Wu" }
+]
+
+[tool.setuptools.package-data]
+"gym_unrealcv" = ["envs/setting/**/*"]
+
+[tool.setuptools]
+packages = ["gym_unrealcv"]
+
+[tool.setuptools.dynamic]
+version = {attr = "gym_unrealcv.__version__"}

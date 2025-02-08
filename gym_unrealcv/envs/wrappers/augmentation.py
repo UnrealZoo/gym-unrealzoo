@@ -2,6 +2,7 @@ from gym import Wrapper
 import numpy as np
 import os
 import gym_unrealcv
+import unrealcv
 class RandomPopulationWrapper(Wrapper):
     def __init__(self, env,  num_min=2, num_max=10, random_target=False, random_tracker=False):
         super().__init__(env)
@@ -10,7 +11,6 @@ class RandomPopulationWrapper(Wrapper):
         self.random_target_id = random_target
         self.random_tracker_id = random_tracker
 
-        gym_path = os.path.dirname(gym_unrealcv.__file__)
         self.reset_type = int(env.spec.id.split('-')[-1][-1])
         if 'track_train' in env.unwrapped.env_name and  self.reset_type>0:
             env.unwrapped.objects_list=["cube1", "cube2_7", "cube3", "cube4", "cube5",
@@ -18,14 +18,7 @@ class RandomPopulationWrapper(Wrapper):
                 "cone1", "cone2", "cone3", "cone4", "cone5","sphere1","sphere2","sphere3","sphere4","sphere5"]
             env.unwrapped.env_configs["backgrounds"]=[ "FLOOR","wall1","wall2","wall3","wall4","Cube7_13","Cube8","Cube9","Cube10"]
             env.unwrapped.env_configs["lights"] = ["light1", "light2", "light3", "light4", "light5", "light6"]
-            texture_dir = "textures"
-            texture_dir = os.path.join(gym_path, 'envs', 'UnrealEnv', texture_dir)
-            env.unwrapped.textures_list = os.listdir(texture_dir)
-            for i in range(len(env.unwrapped.textures_list)):
-                if env.unwrapped.docker:
-                    env.unwrapped.textures_list[i] = os.path.join('/unreal', texture_dir,  env.unwrapped.textures_list[i])
-                else:
-                    env.unwrapped.textures_list[i] = os.path.join(texture_dir,  env.unwrapped.textures_list[i])
+            env.unwrapped.textures_list = gym_unrealcv.envs.utils.misc.get_textures(texture_name="textures", docker=env.unwrapped.docker)
     def step(self, action):
         obs, reward, done, info = self.env.step(action)
         return obs, reward, done, info
